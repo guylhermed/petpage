@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply px-4; /* Adiciona padding horizontal */
+  background-color: #ffffff; /* Definindo o fundo branco */
+}
+
+:root {
+  --background: #ffffff; /* Cor de fundo padrão */
+  --foreground: #171717; /* Cor do texto padrão */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a; /* Fundo escuro no modo escuro */
+    --foreground: #ededed; /* Texto claro no modo escuro */
+  }
+}
+
+/* Outros estilos globais aqui */
