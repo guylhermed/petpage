@@ -8,8 +8,10 @@ module.exports = {
         '100': '25rem',  // 100
         '160': '40rem',  // 160, por exemplo
       },
+      colors: {
+        primaryGreen: '#72cb26', // Define a cor verde primário
+      },
     },
   },
   plugins: [],
 }
-

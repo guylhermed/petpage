@@ -4,7 +4,7 @@
 
 body {
   @apply px-4; /* Adiciona padding horizontal */
-  background-color: #ffffff; /* Definindo o fundo branco */
+  background-color: #0a0a0a; /* Definindo o fundo branco */
   font-family: 'Inter', sans-serif;
 }
 

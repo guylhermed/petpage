@@ -40,7 +40,7 @@ const Preview = ({ formData }) => {
 
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden w-80 md:w-96">
+            <div className="rounded-lg shadow-lg overflow-hidden w-80 md:w-96">
                 {/* Simulação de Navegador */}
                 <div className="bg-gray-800 text-white p-2 text-sm">
                     <p>{petPageUrl}</p>
@@ -48,7 +48,7 @@ const Preview = ({ formData }) => {
                 {/* Retângulo representando a tela do celular */}
                 <div className="h-160 bg-gray-900 flex flex-col p-4 overflow-y-auto">
                     {/* Área para a imagem do pet */}
-                    <div className="relative w-full h-100 bg-gray-200 border-4 border-pink-500 mb-2 flex items-center justify-center rounded-lg">
+                    <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryGreen mb-2 flex items-center justify-center rounded-lg">
                         {/* Exibe a imagem carregada no formulário, ajustando-a */}
                         {images.length > 0 ? (
                             <img
@@ -57,13 +57,13 @@ const Preview = ({ formData }) => {
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <FaImage className="text-pink-500 w-16 h-16" /> // Ícone de imagem no centro
+                            <FaImage className="text-primaryGreen w-16 h-16" /> // Ícone de imagem no centro
                         )}
                     </div>
                     {/* Informações do Pet */}
                     <div className="text-center text-white">
                         {formData.name ? (
-                            <h2 className="text-xl font-bold mb-2">Olá, eu sou o {capitalizeFirstLetter(formData.name)}</h2>
+                            <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(formData.name)}</h2>
                         ) : (
                             ''
                         )}
