@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from './Switch.js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -11,6 +11,17 @@ const Formulario = ({ formData, setFormData }) => {
     const [nicknames, setNicknames] = useState([]);
     const [nickname, setNickname] = useState("");
     const [images, setImages] = useState([]);
+    const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+    // Valida se o botão deve ser habilitado
+    useEffect(() => {
+        const isNameFilled = formData.name.trim() !== "";
+        const isDateFilled = (birthDateEnabled && formData.birthDate) || (adoptionDateEnabled && formData.adoptionDate);
+        const isMessageFilled = formData.message && formData.message.trim() !== "";
+        const isImageUploaded = images.length > 0;
+
+        setIsButtonEnabled(isNameFilled && (isDateFilled || isMessageFilled) && isImageUploaded);
+    }, [formData, birthDateEnabled, adoptionDateEnabled, images]);
 
     const handleAddNickname = () => {
         if (nickname.trim() !== "") {
@@ -48,8 +59,6 @@ const Formulario = ({ formData, setFormData }) => {
                 body: JSON.stringify({ nomePet: formData.name }),
             });
             const data = await response.json();
-
-            console.log(data); // Adicione isso para depuração
 
             if (data.url) {
                 window.location.href = data.url;
@@ -189,11 +198,7 @@ const Formulario = ({ formData, setFormData }) => {
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => {
-                                        const newImages = images.filter((_, i) => i !== index);
-                                        setImages(newImages);
-                                        setFormData({ ...formData, images: newImages }); // Atualiza o formData com as novas imagens
-                                    }}
+                                    onClick={() => handleRemoveImage(index)}
                                     className="absolute top-0 right-0 text-red-500 hover:text-red-700 focus:outline-none text-xl"
                                 >
                                     &times;
@@ -201,7 +206,6 @@ const Formulario = ({ formData, setFormData }) => {
                             </div>
                         ))}
                     </div>
-
                 </div>
 
                 {/* Campo Mensagem */}
@@ -219,14 +223,16 @@ const Formulario = ({ formData, setFormData }) => {
                     />
                 </div>
 
-
-                {/* Botão de Submissão fora do formulário */}
+                {/* Botão de Submissão */}
                 <button
-                    className="bg-primaryGreen text-white px-6 py-3 rounded mt-4 w-full text-lg"
+                    className={`bg-primaryGreen text-white px-6 py-3 rounded mt-4 w-full text-lg ${isButtonEnabled ? '' : 'opacity-50 cursor-not-allowed'}`}
                     onClick={(e) => {
                         e.preventDefault(); // Previne o recarregamento da página
-                        createCheckoutSession(); // Chama a função para criar a sessão de checkout
+                        if (isButtonEnabled) {
+                            createCheckoutSession(); // Chama a função para criar a sessão de checkout
+                        }
                     }}
+                    disabled={!isButtonEnabled}
                 >
                     Criar Página
                 </button>
