@@ -1,5 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app"; 
+import { getAnalytics, isSupported } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore"; // Importa o Firestore
+import { getStorage } from "firebase/storage"; // Importa o Storage
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,4 +14,17 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+const db = getFirestore(app); // Inicializa o Firestore
+const storage = getStorage(app); // Inicializa o Storage
+
+export { db, storage }; // Exporta o Firestore e o Storage
+
+// Verifica se o ambiente suporta o uso do Analytics
+if (typeof window !== "undefined") {
+  isSupported().then((supported) => {
+    if (supported) {
+      const analytics = getAnalytics(app);
+    }
+  });
+}

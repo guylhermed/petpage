@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Switch from './Switch.js';
+import { db, storage } from '../firebaseConfig'; // Isso deve funcionar agora
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from 'firebase/firestore';
 import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+import { v4 as uuidv4 } from 'uuid'; // Para gerar IDs únicos
+import Switch from './Switch.js';
 
 const Formulario = ({ formData, setFormData }) => {
     const [birthDateEnabled, setBirthDateEnabled] = useState(false);
@@ -50,6 +52,32 @@ const Formulario = ({ formData, setFormData }) => {
     };
 
     const createCheckoutSession = async () => {
+        console.log("Iniciando a criação da sessão de checkout...");
+        console.log("Dados do formulário:", formData);
+        const petId = uuidv4();
+        const uniqueSlug = `${formData.name}-${petId.slice(0, 8)}`;
+    
+        try {
+            // Carregar as imagens no Firebase Storage e coletar as URLs
+            const imageUrls = await Promise.all(images.map(async (image) => {
+                const imageRef = ref(storage, `pets/${image.name}`);
+                await uploadBytes(imageRef, image);
+                return await getDownloadURL(imageRef);
+            }));
+    
+            // Agora salve os dados no Firestore com as URLs das imagens
+            await setDoc(doc(db, "pets", uniqueSlug), {
+                ...formData,
+                images: imageUrls, // Salve apenas as URLs das imagens
+                createdAt: new Date(),
+            });
+    
+            console.log("Dados salvos no Firebase com sucesso.");
+        } catch (error) {
+            console.error("Erro ao salvar no Firebase:", error);
+            return;
+        }
+    
         try {
             const response = await fetch('http://localhost:3000/api/create-checkout-session', {
                 method: 'POST',
@@ -59,7 +87,7 @@ const Formulario = ({ formData, setFormData }) => {
                 body: JSON.stringify({ nomePet: formData.name }),
             });
             const data = await response.json();
-
+            console.log("Resposta da sessão de checkout:", data);
             if (data.url) {
                 window.location.href = data.url;
             } else {
@@ -69,6 +97,7 @@ const Formulario = ({ formData, setFormData }) => {
             console.error('Erro na requisição:', error);
         }
     };
+    
 
     return (
         <div>
@@ -229,7 +258,10 @@ const Formulario = ({ formData, setFormData }) => {
                     onClick={(e) => {
                         e.preventDefault(); // Previne o recarregamento da página
                         if (isButtonEnabled) {
-                            createCheckoutSession(); // Chama a função para criar a sessão de checkout
+                            console.log("Botão habilitado, criando sessão de checkout...");
+                            createCheckoutSession();
+                        } else {
+                            console.log("Botão desabilitado.");
                         }
                     }}
                     disabled={!isButtonEnabled}

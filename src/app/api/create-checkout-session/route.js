@@ -1,4 +1,3 @@
-// src/app/api/create-checkout-session/route.js
 import { NextResponse } from 'next/server';
 import stripePackage from 'stripe';
 
