@@ -1,19 +1,25 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db, storage } from '../firebaseConfig'; // Isso deve funcionar agora
+import { firebaseConfigSelector } from '../config/firebaseConfigSelector'; // Selecionador do Firebase
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from 'firebase/firestore';
 import { loadStripe } from '@stripe/stripe-js';
 import { v4 as uuidv4 } from 'uuid'; // Para gerar IDs únicos
 import Switch from './Switch.js';
+import { useRouter } from 'next/navigation';
+
+// Inicializa o Firebase com a configuração correta
+const { db, storage } = firebaseConfigSelector();
 
 const Formulario = ({ formData, setFormData }) => {
+    const router = useRouter(); // Inicializa o useRouter
     const [birthDateEnabled, setBirthDateEnabled] = useState(false);
     const [adoptionDateEnabled, setAdoptionDateEnabled] = useState(false);
     const [nicknames, setNicknames] = useState([]);
     const [nickname, setNickname] = useState("");
     const [images, setImages] = useState([]);
     const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+    const [loading, setLoading] = useState(false); // Estado de loading
 
     // Valida se o botão deve ser habilitado
     useEffect(() => {
@@ -52,34 +58,39 @@ const Formulario = ({ formData, setFormData }) => {
     };
 
     const createCheckoutSession = async () => {
-        console.log("Iniciando a criação da sessão de checkout...");
-        console.log("Dados do formulário:", formData);
         const petId = uuidv4();
-        const uniqueSlug = `${formData.name}-${petId.slice(0, 8)}`;
-    
+        const uniqueSlug = `${formData.name.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
+
+        setLoading(true);
+
         try {
             // Carregar as imagens no Firebase Storage e coletar as URLs
-            const imageUrls = await Promise.all(images.map(async (image) => {
-                const imageRef = ref(storage, `pets/${image.name}`);
+            const imageUrls = await Promise.all(images.map(async (image, index) => {
+                const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
                 await uploadBytes(imageRef, image);
                 return await getDownloadURL(imageRef);
             }));
-    
+
             // Agora salve os dados no Firestore com as URLs das imagens
             await setDoc(doc(db, "pets", uniqueSlug), {
                 ...formData,
-                images: imageUrls, // Salve apenas as URLs das imagens
+                images: imageUrls,
                 createdAt: new Date(),
             });
-    
+
             console.log("Dados salvos no Firebase com sucesso.");
         } catch (error) {
             console.error("Erro ao salvar no Firebase:", error);
+            setLoading(false);
             return;
         }
-    
+
         try {
-            const response = await fetch('http://localhost:3000/api/create-checkout-session', {
+            const baseUrl = process.env.NODE_ENV === 'production'
+                ? 'https://seu-dominio.com'
+                : 'http://localhost:3000';
+
+            const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,15 +100,17 @@ const Formulario = ({ formData, setFormData }) => {
             const data = await response.json();
             console.log("Resposta da sessão de checkout:", data);
             if (data.url) {
-                window.location.href = data.url;
+                router.push(data.url); // Usa router para redirecionar
             } else {
                 console.error('Erro ao criar a sessão de checkout:', data);
             }
         } catch (error) {
             console.error('Erro na requisição:', error);
+        } finally {
+            setLoading(false); // Finaliza o loading
         }
     };
-    
+
 
     return (
         <div>

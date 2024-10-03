@@ -1,14 +1,18 @@
-"use client"; // Adicione esta linha no topo
+"use client";
 
 import React, { useState } from 'react';
-import Formulario from '../components/Formulario.js';
-import Preview from '../components/Preview.js';
+import Formulario from '../components/Formulario';
+import Preview from '../components/Preview';
 import "../styles/globals.css";
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
     name: '',
-    date: ''
+    birthDate: '',
+    adoptionDate: '',
+    message: '',
+    nicknames: [],
+    images: []
   });
 
   return (
