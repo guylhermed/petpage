@@ -76,6 +76,8 @@ const Formulario = ({ formData, setFormData }) => {
                 ...formData,
                 images: imageUrls,
                 createdAt: new Date(),
+                isPaid: false,  // Por padrão, o campo isPaid é false
+                userEmail: "",  // Por padrão, o campo userEmail é vazio
             });
 
             console.log("Dados salvos no Firebase com sucesso.");
@@ -95,12 +97,17 @@ const Formulario = ({ formData, setFormData }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nomePet: formData.name }),
+                body: JSON.stringify({
+                    nomePet: formData.name,  // Passa o nome do pet
+                    uniqueSlug: uniqueSlug   // Passa o uniqueSlug
+                }),
             });
+
             const data = await response.json();
             console.log("Resposta da sessão de checkout:", data);
+
             if (data.url) {
-                router.push(data.url); // Usa router para redirecionar
+                router.push(data.url); // Redireciona para a URL do checkout
             } else {
                 console.error('Erro ao criar a sessão de checkout:', data);
             }
@@ -110,6 +117,7 @@ const Formulario = ({ formData, setFormData }) => {
             setLoading(false); // Finaliza o loading
         }
     };
+
 
 
     return (
