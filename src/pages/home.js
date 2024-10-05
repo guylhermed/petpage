@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import Formulario from '../components/Formulario';
-import Preview from '../components/Preview';
-import "../styles/globals.css";
+import Formulario from '../app/components/Formulario';
+import Preview from '../app/components/Preview';
+import "../app/styles/globals.css";
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
