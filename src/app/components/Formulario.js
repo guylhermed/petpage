@@ -31,6 +31,19 @@ const Formulario = ({ formData, setFormData }) => {
         setIsButtonEnabled(isNameFilled && (isDateFilled || isMessageFilled) && isImageUploaded);
     }, [formData, birthDateEnabled, adoptionDateEnabled, images]);
 
+    useEffect(() => {
+        if (!birthDateEnabled) {
+            setFormData((prev) => ({ ...prev, birthDate: "" }));
+        }
+    }, [birthDateEnabled]);
+
+    useEffect(() => {
+        if (!adoptionDateEnabled) {
+            setFormData((prev) => ({ ...prev, adoptionDate: "" }));
+        }
+    }, [adoptionDateEnabled]);
+
+
     const handleAddNickname = () => {
         if (nickname.trim() !== "") {
             const newNicknames = [...nicknames, nickname];
