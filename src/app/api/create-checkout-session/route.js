@@ -28,7 +28,7 @@ export async function POST(req) {
       ],
       mode: 'payment',
       payment_method_types: ['card', 'boleto'], // Adicione boleto como forma de pagamento
-      success_url: `${req.headers.get('origin')}/success`,
+      success_url: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`,
       cancel_url: `${req.headers.get('origin')}/`,
       metadata: {
         uniqueSlug, // Adiciona o identificador do pet

@@ -19,6 +19,8 @@ export async function POST(req) {
 
         const event = stripe.webhooks.constructEvent(body, signature, secret);
 
+        console.log("🔹 Dados do evento:", JSON.stringify(event.data, null, 2));
+
         switch (event.type) {
             case "checkout.session.completed":
 
@@ -28,10 +30,12 @@ export async function POST(req) {
                     const uniqueSlug = event.data.object.metadata?.uniqueSlug;
                     const userEmail = event.data.object.customer_details?.email;
                     const petDocRef = doc(db, 'pets', uniqueSlug);
+                    const paymentMethod = 'card'
                     try {
                         await updateDoc(petDocRef, {
                             isPaid: true,
-                            userEmail: userEmail
+                            userEmail: userEmail,
+                            paymentMethod: paymentMethod
                         });
                         console.log(`Documento ${uniqueSlug} atualizado com sucesso para isPaid: true.`);
                     } catch (updateError) {
@@ -98,9 +102,14 @@ export async function POST(req) {
                 if (event.data.object.payment_status === "paid") {
                     const uniqueSlug = event.data.object.metadata?.uniqueSlug;
                     const petDocRef = doc(db, 'pets', uniqueSlug);
+                    const paymentMethod = 'boleto'
                     try {
-                        await updateDoc(petDocRef, { isPaid: true });
+                        await updateDoc(petDocRef, {
+                            isPaid: true,
+                            paymentMethod: paymentMethod
+                        });
                         console.log(`Documento ${uniqueSlug} atualizado com sucesso para isPaid: true.`);
+
                     } catch (updateError) {
                         console.error(`Erro ao atualizar o documento ${uniqueSlug}:`, updateError);
                     }
@@ -127,11 +136,22 @@ export async function POST(req) {
             case "customer.subscription.deleted":
                 console.log("Assinatura do cliente deletada");
                 break;
+
+            case "payment_intent.payment_failed":
+                const failureReason = event.data.object.last_payment_error;
+
+                console.error("Pagamento falhou:", failureReason);
+
+                if (failureReason?.code === "card_declined" && failureReason?.decline_code === "insufficient_funds") {
+                    console.log("O cartão foi recusado por fundos insuficientes.");
+                }
+                break;
+
         }
 
         return NextResponse.json({ result: event, ok: true });
     } catch (error) {
-        console.error("Erro no webhook:", error);
+        console.error("Erro no webhook-stripe:", error);
         return NextResponse.json(
             {
                 message: `Webhook error: ${error}`,

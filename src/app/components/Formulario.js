@@ -90,6 +90,7 @@ const Formulario = ({ formData, setFormData }) => {
                 images: imageUrls,
                 createdAt: new Date(),
                 isPaid: false,  // Por padrão, o campo isPaid é false
+                paymentMethod: "",  // Por padrão, o campo paymentMethod é vazio
                 userEmail: "",  // Por padrão, o campo userEmail é vazio
             });
 
@@ -105,6 +106,7 @@ const Formulario = ({ formData, setFormData }) => {
                 ? 'https://seu-dominio.com'
                 : 'http://localhost:3000';
 
+            // Faz a chamada para a API de criação de sessão de checkout
             const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
                 method: 'POST',
                 headers: {
@@ -116,9 +118,12 @@ const Formulario = ({ formData, setFormData }) => {
                 }),
             });
 
+            // Após a resposta da api, converte para JSON
+
             const data = await response.json();
             console.log("Resposta da sessão de checkout:", data);
 
+            // Se a resposta contém a URL, redireciona para a URL do checkout
             if (data.url) {
                 router.push(data.url); // Redireciona para a URL do checkout
             } else {
