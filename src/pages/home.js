@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import Formulario from '../app/components/Formulario';
 import Preview from '../app/components/Preview';
-import "../app/styles/globals.css";
+import '../app/styles/globals.css';
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ const HomePage = () => {
     adoptionDate: '',
     message: '',
     nicknames: [],
-    images: []
+    images: [],
   });
 
   return (
