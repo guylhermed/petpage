@@ -103,7 +103,7 @@ const Formulario = ({ formData, setFormData }) => {
     }
 
     try {
-      const baseUrl = process.env.NODE_ENV === 'production' ? 'https://seu-dominio.com' : 'http://localhost:3000';
+      const baseUrl = process.env.NODE_ENV === 'production' ? 'https://www.minhapetpage.com' : 'http://localhost:3000';
 
       // Faz a chamada para a API de criação de sessão de checkout
       const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
