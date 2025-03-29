@@ -39,7 +39,7 @@ const Preview = ({ formData }) => {
   const images = formData.images || [];
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center mb-8 md:mb-0 lg:mb-0">
       <div className="rounded-lg shadow-lg overflow-hidden w-80 md:w-96">
         {/* Simulação de Navegador */}
         <div className="bg-gray-800 text-white p-2 text-sm">

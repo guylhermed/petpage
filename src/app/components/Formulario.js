@@ -137,7 +137,7 @@ const Formulario = ({ formData, setFormData }) => {
 
   return (
     <div>
-      <form className="bg-gray-900 p-6 rounded shadow-md w-full">
+      <form className="bg-gray-900 p-6 rounded-lg shadow-lg w-full">
         {/* Campos do formulário */}
         <div className="mb-4">
           <label htmlFor="nome-pet" className="block text-sm font-medium leading-6 text-white">
@@ -154,13 +154,13 @@ const Formulario = ({ formData, setFormData }) => {
         </div>
 
         {/* Switches para Data de Nascimento e Data de Adoção */}
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between gap-6 md:gap-0">
           <div className="flex items-center">
-            <label className="block text-sm font-medium leading-6 text-white mr-4">Data de Nascimento</label>
+            <label className="block text-sm font-medium leading-6 text-white mr-0 md:mr-4">Data de Nascimento</label>
             <Switch enabled={birthDateEnabled} setEnabled={setBirthDateEnabled} />
           </div>
           <div className="flex items-center">
-            <label className="block text-sm font-medium leading-6 text-white mr-4">Data de Adoção</label>
+            <label className="block text-sm font-medium leading-6 text-white mr-0 md:mr-4">Data de Adoção</label>
             <Switch enabled={adoptionDateEnabled} setEnabled={setAdoptionDateEnabled} />
           </div>
         </div>
