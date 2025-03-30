@@ -43,7 +43,14 @@ export default function PetPage() {
   }, [petData]);
 
   if (!petData) {
-    return <div>Carregando...</div>; // Exibe uma mensagem enquanto os dados são carregados
+    return (
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-white mt-4">Carregando...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
