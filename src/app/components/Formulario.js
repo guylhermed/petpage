@@ -252,6 +252,9 @@ const Formulario = ({ formData, setFormData }) => {
             onChange={handleImageUpload}
             className="block w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600"
           />
+          {/*<p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">*/}
+          {/*  SVG, PNG, JPG or GIF (MAX. 800x400px).*/}
+          {/*</p>*/}
 
           {/* Pré-visualização das Imagens */}
           <div className="mt-4 flex flex-wrap">
