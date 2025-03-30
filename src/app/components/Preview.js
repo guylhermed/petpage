@@ -23,12 +23,12 @@ const Preview = ({ formData }) => {
       const adoptionDate = new Date(formData.adoptionDate);
       const now = new Date();
       const diff = now - adoptionDate;
-      return `${Math.floor(diff / (1000 * 60 * 60 * 24 * 365))} anos, ${Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
+      return `${Math.floor(diff / (1000 * 60 * 60 * 24 * 365))} anos e ${Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
     } else if (formData.birthDate) {
       const birthDate = new Date(formData.birthDate);
       const now = new Date();
       const diff = now - birthDate;
-      return `${Math.floor(diff / (1000 * 60 * 60 * 24 * 365))} anos, ${Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
+      return `${Math.floor(diff / (1000 * 60 * 60 * 24 * 365))} anos e ${Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
     }
     return '';
   };
@@ -58,10 +58,24 @@ const Preview = ({ formData }) => {
         </div>
         {/* Informações do Pet */}
         <div className="text-center text-white">
-          {formData.name ? <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(formData.name)}</h2> : ''}
-          {nicknameText && <p className="text-md mb-2">Também me chamam de: {capitalizeFirstLetter(nicknameText)}</p>}
-          {timeInFamily && <p className="text-md mb-2">Estou na família há {timeInFamily}</p>}
-          {formData.message ? <p className="text-md mb-2">{formData.message}</p> : ''}
+          {formData.name ? (
+            <h2 className="text-3xl text-primaryGreen font-bold mb-2 mt-2">{capitalizeFirstLetter(formData.name)}</h2>
+          ) : (
+            ''
+          )}
+          {nicknameText && (
+            <p className="text-sm mb-5 font-extralight">
+              Também sou chamado carinhosamente de{' '}
+              <span className="font-medium">{capitalizeFirstLetter(nicknameText)}</span>
+            </p>
+          )}
+          {timeInFamily && <p className="text-md mb-2 font-extralight">Estou na família há {timeInFamily}</p>}
+          {formData.message ? (
+            <p className="text-lg mb-4 italic font-extralight leading-tight">{formData.message}</p>
+          ) : (
+            ''
+          )}
+          <p>❤️</p>
         </div>
       </div>
     </div>
