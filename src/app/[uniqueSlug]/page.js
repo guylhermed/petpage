@@ -1,16 +1,18 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import { FaImage } from 'react-icons/fa';
 
 export default function PetPage() {
-  const router = useRouter();
-  const { uniqueSlug } = router.query;
+  const { uniqueSlug } = useParams(); // Pegando o uniqueSlug corretamente no App Router
   const [petData, setPetData] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { db } = firebaseConfigSelector();
 
+  // Carregamento dos dados do pet
   useEffect(() => {
     const fetchPetData = async () => {
       if (uniqueSlug) {
@@ -29,19 +31,19 @@ export default function PetPage() {
     fetchPetData();
   }, [uniqueSlug]);
 
-  // Alterna as imagens automaticamente
+  // Alternar imagens automaticamente
   useEffect(() => {
     if (petData?.images?.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex(prevIndex => (prevIndex + 1) % petData.images.length);
       }, 3000);
 
-      return () => clearInterval(interval); // Limpa o intervalo ao desmontar
+      return () => clearInterval(interval); // Limpar intervalo quando o componente for desmontado
     }
   }, [petData]);
 
   if (!petData) {
-    return <div>Carregando...</div>;
+    return <div>Carregando...</div>; // Exibe uma mensagem enquanto os dados são carregados
   }
 
   return (
@@ -51,9 +53,9 @@ export default function PetPage() {
         <div className="bg-gray-800 text-white p-2 text-sm">
           <p>{`petpage.com/${uniqueSlug}`}</p>
         </div>
-        {/* Retângulo representando a tela do celular */}
+        {/* Tela do celular */}
         <div className="h-160 flex flex-col p-4 overflow-y-auto">
-          {/* Área para a imagem do pet */}
+          {/* Imagem do Pet */}
           <div className="relative w-full h-100 bg-gray-200 border-4 border-green-500 mb-2 flex items-center justify-center rounded-lg">
             {petData.images && petData.images.length > 0 ? (
               <img

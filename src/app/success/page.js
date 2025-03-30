@@ -1,15 +1,13 @@
-import { useRouter } from 'next/router'; // Importando o useRouter do Next.js
-import Link from 'next/link';
-import '../app/globals.css'; // Importando o arquivo de estilos globais
+'use client'; // Garante que o componente é renderizado no cliente
+
+import { useSearchParams } from 'next/navigation';
 
 export default function SuccessPage() {
-  const router = useRouter(); // Hook para acessar a URL
-  const { uniqueSlug } = router.query; // Pegando o uniqueSlug da URL
-
-  console.log('Router Query:', router.query); // Verifica a query
+  const searchParams = useSearchParams();
+  const uniqueSlug = searchParams.get('uniqueSlug'); // Pega o parâmetro da URL
 
   if (!uniqueSlug) {
-    return <div>Carregando...</div>; // Exibe uma mensagem de carregamento até que o uniqueSlug seja obtido
+    return <div>Carregando...</div>; // Exibe um loading caso o slug não tenha sido carregado ainda
   }
 
   return (
@@ -25,16 +23,17 @@ export default function SuccessPage() {
 
         <div className="flex flex-col space-y-4">
           {/* Botão para acessar a Pet Page */}
-          <Link href={`/${uniqueSlug}`} passHref>
-            <button className="border border-white text-white hover:bg-white hover:text-black font-bold py-2 px-4 rounded transition-colors duration-300">
-              Acessar sua Pet Page
-            </button>
-          </Link>
+          <a
+            href={`/${uniqueSlug}`}
+            className="border border-white text-white hover:bg-white hover:text-black font-bold py-2 px-4 rounded transition-colors duration-300 text-center"
+          >
+            Acessar sua Pet Page
+          </a>
 
           {/* Botão para download do QR Code */}
           <button
             onClick={() => {
-              /* lógica para download do QR Code */
+              // lógica para download do QR Code
             }}
             className="border border-white text-white hover:bg-white hover:text-black font-bold py-2 px-4 rounded transition-colors duration-300"
           >
