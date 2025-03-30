@@ -40,11 +40,11 @@ const HomePage = () => {
           Crie uma página personalizada para o seu pet e eternize momentos especiais!
         </p>
         <div className="flex gap-4">
-          <button className="md:min-w-52 border border-primaryGreen text-primaryGreen px-12 py-3 rounded-full text-lg hover:bg-primaryGreen hover:text-gray-600 transition">
-            <Link to="last-section" smooth={true} duration={1000}>
+          <Link to="last-section" smooth={true} duration={1000}>
+            <button className="md:min-w-52 border border-primaryGreen text-primaryGreen px-12 py-3 rounded-full text-lg hover:bg-primaryGreen hover:text-gray-600 transition">
               Eternizar
-            </Link>
-          </button>
+            </button>
+          </Link>
           <button className="md:min-w-52 border border-primaryGreen text-primaryGreen px-12 py-3 rounded-full text-lg hover:bg-primaryGreen hover:text-gray-600 transition">
             Reviver
           </button>
