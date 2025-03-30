@@ -5,9 +5,10 @@ const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
   try {
-    const { nomePet, uniqueSlug } = await req.json();
+    const { nomePet, uniqueSlug, selectedPlan } = await req.json();
 
-    const price = process.env.STRIPE_PRICE_ID;
+    const priceId =
+      selectedPlan === 'basico' ? process.env.STRIPE_PRICE_ID_BASICO : process.env.STRIPE_PRICE_ID_VITALICIO;
 
     // Validação de nomePet
     if (!nomePet || typeof nomePet !== 'string' || nomePet.trim() === '') {
@@ -18,11 +19,14 @@ export async function POST(req) {
     if (!uniqueSlug || typeof uniqueSlug !== 'string' || uniqueSlug.trim() === '') {
       return NextResponse.json({ error: 'O uniqueSlug não pode estar vazio.' }, { status: 400 });
     }
+    if (!priceId) {
+      return NextResponse.json({ error: 'Plano inválido.' }, { status: 400 });
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price: price,
+          price: priceId,
           quantity: 1,
         },
       ],

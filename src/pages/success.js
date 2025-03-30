@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'; // Importando o useRouter do Next.js
 import Link from 'next/link';
-import '../app/styles/globals.css';
+import '../app/globals.css'; // Importando o arquivo de estilos globais
 
 export default function SuccessPage() {
   const router = useRouter(); // Hook para acessar a URL
