@@ -1,5 +1,5 @@
 // layout.js
-import './globals.css';
+import './styles/globals.css';
 import { Poppins } from 'next/font/google';
 
 const mainFontFamily = Poppins({
