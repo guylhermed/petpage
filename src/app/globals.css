@@ -5,7 +5,6 @@
 body {
   @apply px-4; /* Adiciona padding horizontal */
   background-color: #0a0a0a; /* Definindo o fundo escuro */
-  font-family: 'Inter', sans-serif;
   height: 100%; /* Garantir que o body ocupe toda a altura da tela */
   margin: 0; /* Remover margens */
   padding: 0; /* Remover padding */
