@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Formulario from '../app/components/Formulario';
 import Preview from '../app/components/Preview';
-import '../app/styles/globals.css';
+import '../app/globals.css';
+import { Link } from 'react-scroll';
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
@@ -13,22 +14,72 @@ const HomePage = () => {
     message: '',
     nicknames: [],
     images: [],
+    selectedPlan: '',
   });
 
+  // Criando a referência para a última seção
+  const lastSectionRef = useRef(null);
+
+  // Função para rolar até a última seção
+  const scrollToLastSection = () => {
+    if (lastSectionRef.current) {
+      lastSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center h-screen mt-8 mx-7">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 h-full items-center">
-        <div className="mx-auto col-span-1 flex flex-col justify-center">
-          <h1 className="text-5xl font-bold mb-4 text-primaryGreen">Pet Page</h1>
-          <p className="text-lg mb-4 text-primaryGreen">
-            Crie uma página personalizada para o seu pet e eternize momentos especiais!
+    <div className="flex flex-col items-center w-full">
+      {/* Primeira seção */}
+      <section className="flex flex-col items-center min-h-[50vh] text-center w-full md:pt-48 pt-28 md:mb-32">
+        <p className="text-lg text-gray-600 md:mb-8 mb-4">SOMOS A PETPAGE</p>
+        <h1 className="md:text-8xl text-3xl font-medium text-primaryGreen mb-4 md:mb-9 mx-1 md:mx-80">
+          Eternizando momentos
+          <br />e revivendo memórias!
+        </h1>
+        <p className="text-lg md:text-xl text-gray-600 mb-12 md:mb-14 mx-3">
+          Crie uma página personalizada para o seu pet e eternize momentos especiais!
+        </p>
+        <div className="flex gap-4">
+          <button className="md:min-w-52 border border-primaryGreen text-primaryGreen px-12 py-3 rounded-full text-lg hover:bg-primaryGreen hover:text-gray-600 transition">
+            <Link to="last-section" smooth={true} duration={1000}>
+              Eternizar
+            </Link>
+          </button>
+          <button className="md:min-w-52 border border-primaryGreen text-primaryGreen px-12 py-3 rounded-full text-lg hover:bg-primaryGreen hover:text-gray-600 transition">
+            Reviver
+          </button>
+        </div>
+      </section>
+
+      {/* Segunda seção */}
+      <section className="flex flex-col md:flex-row justify-center w-full mb-10 px-4 items-end">
+        <div className="w-full md:w-[47rem] flex flex-col mb-9 md:mb-0">
+          <p className="md:text-5xl text-3xl font-medium text-primaryGreen mb-5 text-center md:text-left">
+            Minha PetPage
+          </p>
+          <p className="text-sm text-gray-600 mb-5 font-light text-center md:text-left md:mr-5 mr-0">
+            Após o pagamento você será redirecionado para a página criada e receberá no seu email um qr code e o link
+            para compartilhar com quem você quiser as memórias criadas.
           </p>
           <Formulario formData={formData} setFormData={setFormData} />
         </div>
-        <div className="col-span-1 flex justify-center">
+        <div className="w-full md:w-96 flex">
           <Preview formData={formData} />
         </div>
-      </div>
+      </section>
+
+      <section id="last-section" className="flex flex-col items-center min-h-[50vh] text-center w-full md:pt-20 px-4">
+        <p className="md:text-5xl text-3xl font-medium text-primaryGreen mb-5">Quero Eternizar! Como faço?</p>
+        <p className="text-base text-gray-600 mb-1 ">
+          1 - Preencha os dados adicionando datas, mensagens e fotos marcantes.
+        </p>
+        <p className="text-base text-gray-600 mb-1 ">2 - Observe no preview como ficará a página do seu pet.</p>
+        <p className="text-base text-gray-600 mb-1 ">3 - Selecione o plano desejado.</p>
+        <p className="text-base text-gray-600 mb-14 ">4 - Crie a página para eternizar as memórias com seu pet.</p>
+        <p className="text-lg md:text-xl text-gray-600 mx-3">
+          Você receberá no seu email um qr code e o link para acessar e compartilhar com quem você quiser a sua página.
+        </p>
+      </section>
     </div>
   );
 };

@@ -27,8 +27,9 @@ const Formulario = ({ formData, setFormData }) => {
     const isDateFilled = (birthDateEnabled && formData.birthDate) || (adoptionDateEnabled && formData.adoptionDate);
     const isMessageFilled = formData.message && formData.message.trim() !== '';
     const isImageUploaded = images.length > 0;
+    const isPlanSelected = formData.selectedPlan !== '';
 
-    setIsButtonEnabled(isNameFilled && (isDateFilled || isMessageFilled) && isImageUploaded);
+    setIsButtonEnabled(isNameFilled && (isDateFilled || isMessageFilled) && isImageUploaded && isPlanSelected);
   }, [formData, birthDateEnabled, adoptionDateEnabled, images]);
 
   useEffect(() => {
@@ -93,6 +94,8 @@ const Formulario = ({ formData, setFormData }) => {
         isPaid: false, // Por padrão, o campo isPaid é false
         paymentMethod: '', // Por padrão, o campo paymentMethod é vazio
         userEmail: '', // Por padrão, o campo userEmail é vazio
+        petId: petId,
+        uniqueSlug: uniqueSlug,
       });
 
       console.log('Dados salvos no Firebase com sucesso.');
@@ -114,6 +117,7 @@ const Formulario = ({ formData, setFormData }) => {
         body: JSON.stringify({
           nomePet: formData.name, // Passa o nome do pet
           uniqueSlug: uniqueSlug, // Passa o uniqueSlug
+          selectedPlan: formData.selectedPlan, // Passa o plano selecionado
         }),
       });
 
@@ -137,7 +141,7 @@ const Formulario = ({ formData, setFormData }) => {
 
   return (
     <div>
-      <form className="bg-gray-900 p-6 rounded-lg shadow-lg w-full">
+      <form className="bg-gray-900 p-6 rounded-lg shadow-lg md:w-[45rem] h-full">
         {/* Campos do formulário */}
         <div className="mb-4">
           <label htmlFor="nome-pet" className="block text-sm font-medium leading-6 text-white">
@@ -290,21 +294,98 @@ const Formulario = ({ formData, setFormData }) => {
           />
         </div>
 
+        {/* Plano Desejado */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-white mb-1">Plano Desejado</label>
+          <div className="flex flex-col gap-2 md:flex-row justify-between">
+            {/* Plano Básico (30 dias) */}
+            <label className="md:w-1/2 relative group flex items-center gap-2 bg-gray-800 p-3 rounded-lg cursor-pointer border border-gray-700 hover:border-primaryGreen transition">
+              <input
+                type="radio"
+                name="plano"
+                value="basico"
+                className="hidden"
+                onChange={() => setFormData({ ...formData, selectedPlan: 'basico' })}
+                checked={formData.selectedPlan === 'basico'}
+              />
+              <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center">
+                {formData.selectedPlan === 'basico' && <div className="w-3 h-3 bg-primaryGreen rounded-full"></div>}
+              </div>
+              <span className="text-white text-sm">
+                30 Dias - <span className="line-through text-gray-400">de R$14,90</span> por R$9,90
+              </span>
+              {/* Tooltip ao passar o mouse sobre o label */}
+              <div className="absolute hidden group-hover:block bg-blue-800 text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
+                Sua página ficará no ar por 30 dias, após isso será deletada.
+              </div>
+            </label>
+
+            {/* Plano Vitalício */}
+            <label className="md:w-1/2 relative group flex items-center gap-2 bg-gray-800 p-3 rounded-lg cursor-pointer border border-gray-700 hover:border-primaryGreen transition">
+              <input
+                type="radio"
+                name="plano"
+                value="vitalicio"
+                className="hidden"
+                onChange={() => setFormData({ ...formData, selectedPlan: 'vitalicio' })}
+                checked={formData.selectedPlan === 'vitalicio'}
+              />
+              <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center">
+                {formData.selectedPlan === 'vitalicio' && <div className="w-3 h-3 bg-primaryGreen rounded-full"></div>}
+              </div>
+              <span className="text-white text-sm">
+                Vitalício - <span className="line-through text-gray-400">de R$39,90</span> por R$29,90
+              </span>
+
+              {/* Tooltip ao passar o mouse sobre o label */}
+              <div className="absolute hidden group-hover:block bg-blue-800 text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
+                Seu site permanecerá online para sempre.
+              </div>
+            </label>
+          </div>
+        </div>
+
         {/* Botão de Submissão */}
         <button
-          className={`bg-primaryGreen text-white px-6 py-3 rounded mt-4 w-full text-lg ${isButtonEnabled ? '' : 'opacity-50 cursor-not-allowed'}`}
+          className={`bg-primaryGreen text-white px-6 py-3 rounded mt-4 w-full text-lg flex items-center justify-center space-x-3 ${
+            isButtonEnabled && !loading ? '' : 'opacity-50 cursor-not-allowed'
+          }`}
           onClick={e => {
-            e.preventDefault(); // Previne o recarregamento da página
-            if (isButtonEnabled) {
+            e.preventDefault();
+            if (isButtonEnabled && !loading) {
+              setLoading(true); // Ativa o loading
               console.log('Botão habilitado, criando sessão de checkout...');
               createCheckoutSession();
             } else {
               console.log('Botão desabilitado.');
             }
           }}
-          disabled={!isButtonEnabled}
+          disabled={!isButtonEnabled || loading} // Desabilita se estiver carregando
         >
-          Criar Página
+          {loading ? (
+            <>
+              <svg
+                className="h-7 w-7 animate-spin"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.2" />
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 12a8 8 0 0116 0"
+                />
+              </svg>
+              <span>Criando sua PetPage...</span>
+            </>
+          ) : (
+            'Criar Página'
+          )}
         </button>
       </form>
     </div>

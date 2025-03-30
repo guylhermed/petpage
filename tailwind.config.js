@@ -3,6 +3,9 @@ module.exports = {
   content: ['./src/**/*.{html,js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-main)'],
+      },
       height: {
         90: '22.5rem', // 90
         100: '25rem', // 100
