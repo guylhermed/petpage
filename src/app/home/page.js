@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import Formulario from '../app/components/Formulario';
-import Preview from '../app/components/Preview';
-import '../app/globals.css';
+import Formulario from '../components/Formulario';
+import Preview from '../components/Preview';
 import { Link } from 'react-scroll';
 
 const HomePage = () => {
