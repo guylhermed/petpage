@@ -28,9 +28,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full px-2">
       {/* Primeira seção */}
-      <section className="flex flex-col items-center min-h-[50vh] text-center w-full md:pt-48 pt-28 md:mb-32">
+      <section className="flex flex-col items-center min-h-[50vh] text-center w-full md:pt-48 pt-28 md:mb-32 mb-14">
         <p className="text-lg text-gray-600 md:mb-8 mb-4">SOMOS A PETPAGE</p>
         <h1 className="md:text-8xl text-3xl font-medium text-primaryGreen mb-4 md:mb-9 mx-1 md:mx-80">
           Eternizando momentos
@@ -68,7 +68,10 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section id="last-section" className="flex flex-col items-center min-h-[50vh] text-center w-full md:pt-20 px-4">
+      <section
+        id="last-section"
+        className="flex flex-col items-center min-h-[50vh] text-center w-full md:pt-20 pt-4 px-4 mb-24"
+      >
         <p className="md:text-5xl text-3xl font-medium text-primaryGreen mb-5">Quero Eternizar! Como faço?</p>
         <p className="text-base text-gray-600 mb-1 ">
           1 - Preencha os dados adicionando datas, mensagens e fotos marcantes.
