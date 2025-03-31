@@ -5,31 +5,40 @@ import { useParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import { FaImage } from 'react-icons/fa';
+import { calculateTimeInFamily, capitalizeFirstLetter } from '@/app/utils/utils';
 
 export default function PetPage() {
   const { uniqueSlug } = useParams(); // Pegando o uniqueSlug corretamente no App Router
   const [petData, setPetData] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [timeInFamily, setTimeInFamily] = useState(null);
   const { db } = firebaseConfigSelector();
+  const slug = Array.isArray(uniqueSlug) ? uniqueSlug[0] : uniqueSlug; // Sempre será string
 
   // Carregamento dos dados do pet
   useEffect(() => {
-    const fetchPetData = async () => {
-      if (uniqueSlug) {
-        const petDocRef = doc(db, 'pets', uniqueSlug);
+    (async () => {
+      if (!slug) return;
+
+      try {
+        const petDocRef = doc(db, 'pets', slug);
         const petDoc = await getDoc(petDocRef);
 
         if (petDoc.exists()) {
-          setPetData(petDoc.data());
-          console.log('Dados do pet encontrados:', petDoc.data());
+          const petData = petDoc.data();
+          setPetData(petData);
+
+          const time = calculateTimeInFamily(petData);
+          setTimeInFamily(time);
+          console.log('Petdata setado:', petData);
         } else {
           console.log('Pet não encontrado!');
         }
+      } catch (error) {
+        console.error('Erro ao buscar os dados do pet:', error);
       }
-    };
-
-    fetchPetData();
-  }, [uniqueSlug]);
+    })();
+  }, [slug]);
 
   // Alternar imagens automaticamente
   useEffect(() => {
@@ -44,50 +53,26 @@ export default function PetPage() {
 
   if (!petData) {
     return (
-      <div className="flex justify-center items-center h-screen bg-black">
+      <div className="flex justify-center items-center h-screen bg-backgroundColor">
         <div className="flex flex-col items-center">
-          <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-white mt-4">Carregando...</p>
+          <div className="w-12 h-12 border-4 border-primaryPurple border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-primaryPurple mt-4">Carregando...</p>
         </div>
       </div>
     );
   }
 
-  const capitalizeFirstLetter = string => {
-    return string
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
-  };
-
-  const calculateTimeInFamily = () => {
-    if (petData.adoptionDate) {
-      const adoptionDate = new Date(petData.adoptionDate);
-      const now = new Date();
-      const diff = now - adoptionDate;
-      return `${Math.floor(diff / (1000 * 60 * 60 * 24 * 365))} anos e ${Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
-    } else if (petData.birthDate) {
-      const birthDate = new Date(petData.birthDate);
-      const now = new Date();
-      const diff = now - birthDate;
-      return `${Math.floor(diff / (1000 * 60 * 60 * 24 * 365))} anos e ${Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
-    }
-    return '';
-  };
-
-  const timeInFamily = calculateTimeInFamily();
-
   return (
-    <div className="flex justify-center items-center h-screen bg-black">
-      <div className="rounded-lg shadow-lg overflow-hidden w-80 md:w-96 bg-gray-900">
+    <div className="flex justify-center items-center h-screen bg-backgroundColor">
+      <div className="rounded-lg shadow-lg overflow-hidden w-80 md:w-96 bg-primaryPurple">
         {/* Simulação de Navegador */}
-        <div className="bg-gray-800 text-white p-2 text-sm">
+        <div className="bg-primaryBlue text-white p-2 text-sm">
           <p>{`petpage.com/${uniqueSlug}`}</p>
         </div>
         {/* Tela do celular */}
         <div className="h-160 flex flex-col p-4 overflow-y-auto">
           {/* Imagem do Pet */}
-          <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryPurple mb-2 flex items-center justify-center rounded-lg">
+          <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryBlue mb-2 flex items-center justify-center rounded-lg">
             {petData.images && petData.images.length > 0 ? (
               <img
                 src={petData.images[currentImageIndex]}
@@ -95,24 +80,31 @@ export default function PetPage() {
                 className="w-full h-full object-cover rounded-lg"
               />
             ) : (
-              <FaImage className="text-green-500 w-16 h-16" />
+              <FaImage className="text-primaryPurple w-16 h-16" />
             )}
           </div>
           {/* Informações do Pet */}
           <div className="text-center text-white">
             {petData.name ? (
-              <h2 className="text-3xl text-primaryPurple font-bold mb-2 mt-2">{capitalizeFirstLetter(petData.name)}</h2>
+              <h2 className="text-3xl text-primaryBlue font-bold mb-2 mt-2">{capitalizeFirstLetter(petData.name)}</h2>
             ) : (
               ''
             )}
             {petData.nicknames?.length > 0 && (
-              <p className="text-sm mb-5 font-extralight">
+              <p className="text-sm mb-3 font-extralight">
                 Também sou chamado carinhosamente de <span className="font-medium">{petData.nicknames.join(', ')}</span>
               </p>
             )}
-            {timeInFamily && <p className="text-md mb-2 font-extralight">Estou na família há {timeInFamily}</p>}
+            {timeInFamily && (
+              <p className="text-sm mb-4 font-extralight">
+                Estou na família há <br />
+                <span className="text-md font-bold">{timeInFamily}</span>
+              </p>
+            )}
             {petData.message ? (
-              <p className="text-lg mb-4 italic font-extralight leading-tight">{petData.message}</p>
+              <p className="text-lg mb-3 italic font-light leading-tight break-words overflow-hidden">
+                {petData.message}
+              </p>
             ) : (
               ''
             )}
