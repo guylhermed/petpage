@@ -1,25 +1,24 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { firebaseConfigSelector } from '../config/firebaseConfigSelector'; // Selecionador do Firebase
+import { firebaseConfigSelector } from '../config/firebaseConfigSelector';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
-import { loadStripe } from '@stripe/stripe-js';
-import { v4 as uuidv4 } from 'uuid'; // Para gerar IDs únicos
+import { v4 as uuidv4 } from 'uuid';
 import Switch from './Switch.js';
 import { useRouter } from 'next/navigation';
+import { baseUrl } from '@/app/utils/utils';
 
-// Inicializa o Firebase com a configuração correta
 const { db, storage } = firebaseConfigSelector();
 
 const Formulary = ({ formData, setFormData }) => {
-  const router = useRouter(); // Inicializa o useRouter
+  const router = useRouter();
   const [birthDateEnabled, setBirthDateEnabled] = useState(false);
   const [adoptionDateEnabled, setAdoptionDateEnabled] = useState(false);
   const [nicknames, setNicknames] = useState([]);
   const [nickname, setNickname] = useState('');
   const [images, setImages] = useState([]);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [loading, setLoading] = useState(false); // Estado de loading
+  const [loading, setLoading] = useState(false);
 
   // Valida se o botão deve ser habilitado
   useEffect(() => {
@@ -106,8 +105,6 @@ const Formulary = ({ formData, setFormData }) => {
     }
 
     try {
-      const baseUrl = process.env.NODE_ENV === 'production' ? 'https://www.minhapetpage.com' : 'http://localhost:3000';
-
       // Faz a chamada para a API de criação de sessão de checkout
       const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
         method: 'POST',
@@ -115,14 +112,13 @@ const Formulary = ({ formData, setFormData }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nomePet: formData.name, // Passa o nome do pet
-          uniqueSlug: uniqueSlug, // Passa o uniqueSlug
-          selectedPlan: formData.selectedPlan, // Passa o plano selecionado
+          nomePet: formData.name,
+          uniqueSlug: uniqueSlug,
+          selectedPlan: formData.selectedPlan,
         }),
       });
 
       // Após a resposta da api, converte para JSON
-
       const data = await response.json();
       console.log('Resposta da sessão de checkout:', data);
 
