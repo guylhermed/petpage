@@ -1,40 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaImage } from 'react-icons/fa';
+import { calculateTimeInFamily, capitalizeFirstLetter } from '@/app/utils/utils';
 
 const Preview = ({ formData }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   // Formata o nome do pet para o URL
   const petPageUrl = `petpage.com/${formData.name ? formData.name.toLowerCase().replace(/\s+/g, '-') : ''}`;
 
-  // Garante que nicknames seja um array, mesmo que não esteja definido
+  // Garante que apelidos seja um array, mesmo que não esteja definido
   const nicknames = formData.nicknames || [];
   const nicknameText = nicknames.length > 0 ? nicknames.join(', ') : '';
 
   // Garante que images seja um array, mesmo que não esteja definido
   const images = formData.images || [];
 
-  // Calcula a data de permanência na família
-  const calculateTimeInFamily = () => {
-    const now = new Date();
-    const adoptionDate = new Date(formData.adoptionDate);
-    const birthDate = new Date(formData.birthDate);
-    const diffAdopt = now - adoptionDate;
-    const diffBirth = now - birthDate;
-    if (formData.adoptionDate) {
-      return `${Math.floor(diffAdopt / (1000 * 60 * 60 * 24 * 365))} anos e ${Math.floor((diffAdopt % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
-    } else if (formData.birthDate) {
-      return `${Math.floor(diffBirth / (1000 * 60 * 60 * 24 * 365))} anos e ${Math.floor((diffBirth % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24))} dias`;
+  // Calcula o tempo que o pet está na família
+  const timeInFamily = calculateTimeInFamily(formData);
+
+  // Efeito para alternar as imagens automaticamente
+  useEffect(() => {
+    if (images.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
+      }, 3000); // Troca de imagem a cada 3 segundos
+
+      return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
     }
-    return '';
-  };
-
-  const timeInFamily = calculateTimeInFamily();
-
-  const capitalizeFirstLetter = string => {
-    return string
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
-  };
+  }, [images]);
 
   return (
     <div className="rounded-lg shadow-lg overflow-hidden h-full w-full md:w-96">
@@ -48,27 +41,38 @@ const Preview = ({ formData }) => {
         <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryBlue mb-2 flex items-center justify-center rounded-lg">
           {/* Exibe a imagem carregada no formulário, ajustando-a */}
           {images.length > 0 ? (
-            <img src={URL.createObjectURL(images[0])} alt="Imagem do Pet" className="w-full h-full object-cover" />
+            <img
+              src={URL.createObjectURL(images[currentImageIndex])}
+              alt="Imagem do Pet"
+              className="w-full h-full object-cover transition-opacity duration-500"
+            />
           ) : (
-            <FaImage className="text-primaryPurple w-16 h-16" /> // Ícone de imagem no centro
+            <FaImage className="text-primaryPurple w-16 h-16" />
           )}
         </div>
         {/* Informações do Pet */}
         <div className="text-center text-white">
           {formData.name ? (
-            <h2 className="text-3xl text-primaryPurple font-bold mb-2 mt-2">{capitalizeFirstLetter(formData.name)}</h2>
+            <h2 className="text-3xl text-primaryBlue font-bold mb-2 mt-2">{capitalizeFirstLetter(formData.name)}</h2>
           ) : (
             ''
           )}
           {nicknameText && (
-            <p className="text-sm mb-5 font-extralight">
+            <p className="text-sm mb-3 font-extralight">
               Também sou chamado carinhosamente de{' '}
               <span className="font-medium">{capitalizeFirstLetter(nicknameText)}</span>
             </p>
           )}
-          {timeInFamily && <p className="text-md mb-2 font-extralight">Estou na família há {timeInFamily}</p>}
+          {timeInFamily && (
+            <p className="text-sm mb-4 font-extralight">
+              Estou na família há <br />
+              <span className="text-md font-bold">{timeInFamily}</span>
+            </p>
+          )}
           {formData.message ? (
-            <p className="text-lg mb-4 italic font-extralight leading-tight">{formData.message}</p>
+            <p className="text-lg mb-3 italic font-light leading-tight break-words overflow-hidden">
+              {formData.message}
+            </p>
           ) : (
             ''
           )}
@@ -76,7 +80,6 @@ const Preview = ({ formData }) => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 
