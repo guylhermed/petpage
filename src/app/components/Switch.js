@@ -8,7 +8,7 @@ const Switch = ({ enabled, setEnabled }) => {
     <button
       onClick={handleClick}
       className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 ${
-        enabled ? 'bg-primaryGreen' : 'bg-gray-200'
+        enabled ? 'bg-primaryPurple' : 'bg-gray-200'
       }`}
     >
       <span
