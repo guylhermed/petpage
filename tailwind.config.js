@@ -7,12 +7,15 @@ module.exports = {
         sans: ['var(--font-main)'],
       },
       height: {
-        90: '22.5rem', // 90
-        100: '25rem', // 100
-        160: '40rem', // 160, por exemplo
+        90: '22.5rem',
+        100: '25rem',
+        160: '40rem',
       },
       colors: {
-        primaryGreen: '#72cb26', // Define a cor verde primário
+        primaryPurple: '#5c00c8',
+        primaryPurple50: '#a664ff',
+        primaryBlue: '#02b5aa',
+        primaryGray: '#989898',
       },
     },
   },

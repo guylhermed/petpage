@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 // Inicializa o Firebase com a configuração correta
 const { db, storage } = firebaseConfigSelector();
 
-const Formulario = ({ formData, setFormData }) => {
+const Formulary = ({ formData, setFormData }) => {
   const router = useRouter(); // Inicializa o useRouter
   const [birthDateEnabled, setBirthDateEnabled] = useState(false);
   const [adoptionDateEnabled, setAdoptionDateEnabled] = useState(false);
@@ -141,7 +141,7 @@ const Formulario = ({ formData, setFormData }) => {
 
   return (
     <div>
-      <form className="bg-gray-900 p-6 rounded-lg shadow-lg md:w-[45rem] h-full">
+      <form className="bg-primaryBlue p-6 rounded-lg shadow-lg md:w-[45rem] h-full">
         {/* Campos do formulário */}
         <div className="mb-4">
           <label htmlFor="nome-pet" className="block text-sm font-medium leading-6 text-white">
@@ -220,7 +220,7 @@ const Formulario = ({ formData, setFormData }) => {
           <button
             type="button"
             onClick={handleAddNickname}
-            className="bg-primaryGreen text-white px-4 py-2 rounded mt-2"
+            className="bg-primaryPurple text-white px-4 py-2 rounded mt-2"
           >
             Adicionar Apelido
           </button>
@@ -302,7 +302,7 @@ const Formulario = ({ formData, setFormData }) => {
           <label className="block text-sm font-medium text-white mb-1">Plano Desejado</label>
           <div className="flex flex-col gap-2 md:flex-row justify-between">
             {/* Plano Básico (30 dias) */}
-            <label className="md:w-1/2 relative group flex items-center gap-2 bg-gray-800 p-3 rounded-lg cursor-pointer border border-gray-700 hover:border-primaryGreen transition">
+            <label className="md:w-1/2 relative group flex items-center gap-2 bg-primaryPurple p-3 rounded-lg cursor-pointer border-2 border-primaryPurple hover:border-white transition">
               <input
                 type="radio"
                 name="plano"
@@ -311,20 +311,20 @@ const Formulario = ({ formData, setFormData }) => {
                 onChange={() => setFormData({ ...formData, selectedPlan: 'basico' })}
                 checked={formData.selectedPlan === 'basico'}
               />
-              <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center">
-                {formData.selectedPlan === 'basico' && <div className="w-3 h-3 bg-primaryGreen rounded-full"></div>}
+              <div className="w-5 h-5 border-2 border-primaryGray rounded-full flex items-center justify-center">
+                {formData.selectedPlan === 'basico' && <div className="w-3 h-3 bg-white rounded-full"></div>}
               </div>
               <span className="text-white text-sm">
                 30 Dias - <span className="line-through text-gray-400">de R$14,90</span> por R$9,90
               </span>
               {/* Tooltip ao passar o mouse sobre o label */}
-              <div className="absolute hidden group-hover:block bg-blue-800 text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
+              <div className="absolute hidden group-hover:block bg-primaryGray text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
                 Sua página ficará no ar por 30 dias, após isso será deletada.
               </div>
             </label>
 
             {/* Plano Vitalício */}
-            <label className="md:w-1/2 relative group flex items-center gap-2 bg-gray-800 p-3 rounded-lg cursor-pointer border border-gray-700 hover:border-primaryGreen transition">
+            <label className="md:w-1/2 relative group flex items-center gap-2 bg-primaryPurple p-3 rounded-lg cursor-pointer border-2 border-primaryPurple hover:border-white transition">
               <input
                 type="radio"
                 name="plano"
@@ -333,15 +333,15 @@ const Formulario = ({ formData, setFormData }) => {
                 onChange={() => setFormData({ ...formData, selectedPlan: 'vitalicio' })}
                 checked={formData.selectedPlan === 'vitalicio'}
               />
-              <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center">
-                {formData.selectedPlan === 'vitalicio' && <div className="w-3 h-3 bg-primaryGreen rounded-full"></div>}
+              <div className="w-5 h-5 border-2 border-primaryGray rounded-full flex items-center justify-center">
+                {formData.selectedPlan === 'vitalicio' && <div className="w-3 h-3 bg-white rounded-full"></div>}
               </div>
               <span className="text-white text-sm">
                 Vitalício - <span className="line-through text-gray-400">de R$39,90</span> por R$29,90
               </span>
 
               {/* Tooltip ao passar o mouse sobre o label */}
-              <div className="absolute hidden group-hover:block bg-blue-800 text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
+              <div className="absolute hidden group-hover:block bg-primaryGray text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
                 Seu site permanecerá online para sempre.
               </div>
             </label>
@@ -350,8 +350,8 @@ const Formulario = ({ formData, setFormData }) => {
 
         {/* Botão de Submissão */}
         <button
-          className={`bg-primaryGreen text-white px-6 py-3 rounded mt-4 w-full text-lg flex items-center justify-center space-x-3 ${
-            isButtonEnabled && !loading ? '' : 'opacity-50 cursor-not-allowed'
+          className={`bg-primaryPurple text-white px-6 py-3 rounded mt-4 w-full text-lg flex items-center justify-center space-x-3 ${
+            isButtonEnabled && !loading ? '' : 'opacity-30 cursor-not-allowed'
           }`}
           onClick={e => {
             e.preventDefault();
@@ -395,4 +395,4 @@ const Formulario = ({ formData, setFormData }) => {
   );
 };
 
-export default Formulario;
+export default Formulary;

@@ -87,7 +87,7 @@ export default function PetPage() {
         {/* Tela do celular */}
         <div className="h-160 flex flex-col p-4 overflow-y-auto">
           {/* Imagem do Pet */}
-          <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryGreen mb-2 flex items-center justify-center rounded-lg">
+          <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryPurple mb-2 flex items-center justify-center rounded-lg">
             {petData.images && petData.images.length > 0 ? (
               <img
                 src={petData.images[currentImageIndex]}
@@ -101,7 +101,7 @@ export default function PetPage() {
           {/* Informações do Pet */}
           <div className="text-center text-white">
             {petData.name ? (
-              <h2 className="text-3xl text-primaryGreen font-bold mb-2 mt-2">{capitalizeFirstLetter(petData.name)}</h2>
+              <h2 className="text-3xl text-primaryPurple font-bold mb-2 mt-2">{capitalizeFirstLetter(petData.name)}</h2>
             ) : (
               ''
             )}
