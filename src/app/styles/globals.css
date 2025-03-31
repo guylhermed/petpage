@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 body {
-  @apply px-4; /* Adiciona padding horizontal */
-  background-color: #0a0a0a; /* Definindo o fundo escuro */
-  height: 100%; /* Garantir que o body ocupe toda a altura da tela */
-  margin: 0; /* Remover margens */
-  padding: 0; /* Remover padding */
-  overflow-x: hidden; /* Evitar rolagem horizontal */
+  @apply px-4;
+  background-color: #ececec;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 html,
@@ -17,15 +17,13 @@ body {
 }
 
 :root {
-  --background: #ffffff; /* Cor de fundo padrão */
-  --foreground: #171717; /* Cor do texto padrão */
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a; /* Fundo escuro no modo escuro */
-    --foreground: #ededed; /* Texto claro no modo escuro */
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
 }
-
-/* Outros estilos globais aqui */
