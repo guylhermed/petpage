@@ -8,7 +8,6 @@ export const capitalizeFirstLetter = string => {
 };
 
 export const calculateTimeInFamily = formData => {
-  console.log('Este é o formData:', formData);
   if (formData.adoptionDate) {
     return formatTimeDifference(new Date(formData.adoptionDate));
   } else if (formData.birthDate) {
