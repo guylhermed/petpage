@@ -24,13 +24,14 @@ const firebaseConfigDev = {
 
 // Função para selecionar o config baseado no ambiente
 export function firebaseConfigSelector() {
-  const isDevEnv =
-    process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev' ||
-    process.env.NODE_ENV === 'development';
+  const envFirebase = process.env.NEXT_PUBLIC_FIREBASE_ENV;
+  const isDevEnv = envFirebase === 'dev' || process.env.NODE_ENV === 'development';
+
+  console.log('🧪 Firebase ENV:', envFirebase);
+  console.log('🧪 NODE_ENV:', process.env.NODE_ENV);
+  console.log('🔥 Firebase config selecionado:', isDevEnv ? 'DEV' : 'PROD');
 
   const firebaseConfig = isDevEnv ? firebaseConfigDev : firebaseConfigProd;
-
-  console.log('🔥 Firebase config selecionado:', isDevEnv ? 'DEV' : 'PROD');
 
   for (const key in firebaseConfig) {
     if (!firebaseConfig[key]) {
