@@ -13,9 +13,13 @@ export async function POST() {
         billing: {
           amount: 990,
           status: 'PAID',
-          metadata: {
-            uniqueSlug: 'teste3-3895ded1' // 🔁 Altere para um slug real existente no Firestore
-          },
+          products: [
+            {
+              externalId: 'teste3-3895ded1', // slug que será atualizado no Firestore
+              id: 'prod_simulado',
+              quantity: 1
+            }
+          ],
           customer: {
             metadata: {
               name: 'Teste Usuário',

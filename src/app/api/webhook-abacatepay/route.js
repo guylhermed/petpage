@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
-import { headers } from 'next/headers';
 
 const { db } = firebaseConfigSelector();
 
@@ -25,7 +24,7 @@ export async function POST(req) {
       return NextResponse.json({ ok: true });
     }
 
-    const slug = evento.data?.billing?.metadata?.uniqueSlug;
+    const slug = evento.data?.billing?.products?.[0]?.externalId;
 
     if (!slug) {
       console.warn('❌ Slug não encontrado no metadata da cobrança');

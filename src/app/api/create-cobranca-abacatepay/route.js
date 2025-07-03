@@ -30,7 +30,7 @@ export async function POST(req) {
       methods: ['PIX'],
       products: [
         {
-          externalId: planoSelecionado.externalId,
+          externalId: uniqueSlug,
           name: planoSelecionado.name,
           quantity: 1,
           price: planoSelecionado.price,
@@ -46,7 +46,9 @@ export async function POST(req) {
         taxId: '08881523965'
       },
       metadata: {
-        uniqueSlug
+        uniqueSlug,
+        returnUrl: `${req.headers.get('origin')}/`,
+        completionUrl: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`
       }
     };
 
