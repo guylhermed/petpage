@@ -49,7 +49,8 @@ export async function POST(req) {
         uniqueSlug,
         returnUrl: `${req.headers.get('origin')}/`,
         completionUrl: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`
-      }
+      },
+      allowCoupons: true,
     };
 
     const response = await fetch('https://api.abacatepay.com/v1/billing/create', {
