@@ -27,16 +27,17 @@ export function firebaseConfigSelector() {
   const isDevEnv =
     process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev' ||
     process.env.NODE_ENV === 'development';
+
   const firebaseConfig = isDevEnv ? firebaseConfigDev : firebaseConfigProd;
 
-  // Verifica se todas as variáveis de configuração estão definidas
+  console.log('🔥 Firebase config selecionado:', isDevEnv ? 'DEV' : 'PROD');
+
   for (const key in firebaseConfig) {
     if (!firebaseConfig[key]) {
       throw new Error(`Missing Firebase config variable: ${key}`);
     }
   }
 
-  // Inicializa o Firebase com a configuração correta
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const storage = getStorage(app);
