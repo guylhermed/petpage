@@ -23,21 +23,21 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Plano inválido.' }, { status: 400 });
     }
 
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      payment_method_types: ['card', 'boleto'], // Adicione boleto como forma de pagamento
-      success_url: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`,
-      cancel_url: `${req.headers.get('origin')}/`,
-      metadata: {
-        uniqueSlug, // Adiciona o identificador do pet
-      },
-    });
+    // const session = await stripe.checkout.sessions.create({
+    //   line_items: [
+    //     {
+    //       price: priceId,
+    //       quantity: 1,
+    //     },
+    //   ],
+    //   mode: 'payment',
+    //   payment_method_types: ['card', 'boleto'], // Adicione boleto como forma de pagamento
+    //   success_url: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`,
+    //   cancel_url: `${req.headers.get('origin')}/`,
+    //   metadata: {
+    //     uniqueSlug, // Adiciona o identificador do pet
+    //   },
+    // });
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
