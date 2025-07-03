@@ -30,7 +30,6 @@ export default function PetPage() {
 
           const time = calculateTimeInFamily(petData);
           setTimeInFamily(time);
-          console.log('Petdata setado:', petData);
         } else {
           console.log('Pet não encontrado!');
         }
