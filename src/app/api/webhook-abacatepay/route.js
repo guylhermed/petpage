@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
+import { abacatepayWebhookSecret } from '@/app/utils/utils';
 
 const { db } = firebaseConfigSelector();
 
@@ -9,9 +10,8 @@ export async function POST(req) {
 
   try {
     const secretRecebido = req.nextUrl.searchParams.get('webhookSecret');
-    const secretEsperado = process.env.ABACATEPAY_WEBHOOK_SECRET;
 
-    if (!secretRecebido || secretRecebido !== secretEsperado) {
+    if (!secretRecebido || secretRecebido !== abacatepayWebhookSecret) {
       console.warn('❌ Webhook com secret inválido ou ausente');
       return NextResponse.json({ error: 'Invalid webhook secret' }, { status: 401 });
     }
@@ -24,7 +24,7 @@ export async function POST(req) {
       return NextResponse.json({ ok: true });
     }
 
-    const slug = evento.data?.billing?.products?.[0]?.externalId;
+    const slug = evento.data?.billing?.metadata?.uniqueSlug; // ⚠️ volta a usar do metadata
 
     if (!slug) {
       console.warn('❌ Slug não encontrado no metadata da cobrança');
