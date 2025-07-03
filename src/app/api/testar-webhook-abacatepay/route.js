@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { abacatepayWebhookSecret, baseUrl } from '@/app/utils/utils';
 
 export async function POST() {
   try {
@@ -15,7 +16,7 @@ export async function POST() {
           status: 'PAID',
           products: [
             {
-              externalId: 'teste3-3895ded1', // slug que será atualizado no Firestore
+              externalId: 'teste3-3895ded1',
               id: 'prod_simulado',
               quantity: 1
             }
@@ -33,10 +34,7 @@ export async function POST() {
       devMode: true
     };
 
-    const secret = process.env.ABACATEPAY_WEBHOOK_SECRET;
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
-    const response = await fetch(`${baseUrl}/api/webhook-abacatepay?webhookSecret=${secret}`, {
+    const response = await fetch(`${baseUrl}/api/webhook-abacatepay?webhookSecret=${abacatepayWebhookSecret}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

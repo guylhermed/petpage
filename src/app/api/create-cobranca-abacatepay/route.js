@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
+import { abacatepayApiKey } from '@/app/utils/utils';
 
 export async function POST(req) {
   try {
     const { uniqueSlug, selectedPlan, emailCliente, nomePet } = await req.json();
 
-    // Definir valores base
     const planos = {
       basico: {
         externalId: 'pp30dias',
@@ -25,9 +25,12 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Plano inválido.' }, { status: 400 });
     }
 
+    const origin = req.headers.get('origin');
+
     const payload = {
       frequency: 'ONE_TIME',
       methods: ['PIX'],
+      allowCoupons: true,
       products: [
         {
           externalId: uniqueSlug,
@@ -37,8 +40,8 @@ export async function POST(req) {
           description: planoSelecionado.description
         }
       ],
-      returnUrl: `${req.headers.get('origin')}/`,
-      completionUrl: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`,
+      returnUrl: `${origin}/`,
+      completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`,
       customer: {
         email: emailCliente || 'email@cliente.com.br',
         name: nomePet || 'Cliente PetPage',
@@ -47,16 +50,15 @@ export async function POST(req) {
       },
       metadata: {
         uniqueSlug,
-        returnUrl: `${req.headers.get('origin')}/`,
-        completionUrl: `${req.headers.get('origin')}/success?uniqueSlug=${uniqueSlug}`
-      },
-      allowCoupons: true,
+        returnUrl: `${origin}/`,
+        completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`
+      }
     };
 
     const response = await fetch('https://api.abacatepay.com/v1/billing/create', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.ABACATEPAY_API_KEY}`,
+        Authorization: `Bearer ${abacatepayApiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)

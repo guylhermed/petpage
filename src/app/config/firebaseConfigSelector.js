@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Configurações do Firebase para PROD e DEV
 const firebaseConfigProd = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -22,20 +21,17 @@ const firebaseConfigDev = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_DEV_APP_ID,
 };
 
-// Função para selecionar o config baseado no ambiente
+// 🔥 Log para debug (somente em build)
+console.log('🧪 Firebase ENV:', process.env.NEXT_PUBLIC_FIREBASE_ENV);
+console.log('🧪 NODE_ENV:', process.env.NODE_ENV);
+
 export function firebaseConfigSelector() {
-  const envFirebase = process.env.NEXT_PUBLIC_FIREBASE_ENV;
-  const isDevEnv = envFirebase === 'dev' || process.env.NODE_ENV === 'development';
-
-  console.log('🧪 Firebase ENV:', envFirebase);
-  console.log('🧪 NODE_ENV:', process.env.NODE_ENV);
-  console.log('🔥 Firebase config selecionado:', isDevEnv ? 'DEV' : 'PROD');
-
+  const isDevEnv = process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev';
   const firebaseConfig = isDevEnv ? firebaseConfigDev : firebaseConfigProd;
 
   for (const key in firebaseConfig) {
     if (!firebaseConfig[key]) {
-      throw new Error(`Missing Firebase config variable: ${key}`);
+      throw new Error(`❌ Missing Firebase config variable: ${key}`);
     }
   }
 
