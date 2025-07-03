@@ -65,15 +65,13 @@ export default function PetPage() {
   return (
     <div className="fixed inset-0 bg-backgroundColor flex justify-center items-center">
       <div className="w-full h-full md:w-[24rem] md:rounded-xl md:h-[42rem] shadow-lg bg-primaryPurple flex flex-col">
-
         {/* Simulação de navegador */}
         <div className="bg-primaryBlue text-white p-2 text-sm md:rounded-t-xl">
           <p className="truncate">{`petpage.com/${uniqueSlug}`}</p>
         </div>
 
         {/* Tela do celular simulada */}
-        <div className="flex-1 flex flex-col justify-between p-4 overflow-hidden">
-
+        <div className="flex-1 flex flex-col p-4 gap-3 overflow-hidden">
           {/* Imagem */}
           <div className="w-full aspect-square bg-gray-200 border-4 border-primaryBlue mb-2 flex items-center justify-center rounded-lg">
             {petData.images && petData.images.length > 0 ? (
@@ -88,9 +86,9 @@ export default function PetPage() {
           </div>
 
           {/* Infos */}
-          <div className="text-center text-white flex-1 flex flex-col justify-center">
+          <div className="text-center text-white">
             {petData.name && (
-              <h2 className="text-2xl font-bold text-primaryBlue mb-2">{capitalizeFirstLetter(petData.name)}</h2>
+              <h2 className="text-3xl font-bold text-primaryBlue mb-2">{capitalizeFirstLetter(petData.name)}</h2>
             )}
 
             {petData.nicknames?.length > 0 && (
@@ -101,14 +99,13 @@ export default function PetPage() {
 
             {timeInFamily && (
               <p className="text-sm font-light mb-1">
-                Estou na família há<br />
+                Estou na família há
+                <br />
                 <span className="font-semibold">{timeInFamily}</span>
               </p>
             )}
 
-            {petData.message && (
-              <p className="text-base italic font-light mb-2 break-words">{petData.message}</p>
-            )}
+            {petData.message && <p className="text-base italic font-light mb-2 break-words">{petData.message}</p>}
           </div>
 
           {/* Coração */}
@@ -116,6 +113,5 @@ export default function PetPage() {
         </div>
       </div>
     </div>
-
   );
 }
