@@ -71,7 +71,8 @@ const Formulary = ({ formData, setFormData }) => {
 
   const criarCobrancaAbacatepay = async () => {
     const petId = uuidv4();
-    const uniqueSlug = `${formData.name.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
+    const nomePet = formData.name || 'Pet Sem Nome';
+    const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
     const email = formData.email || 'teste@teste.com'; // Email padrão caso não seja fornecido
 
     setLoading(true);
@@ -108,6 +109,7 @@ const Formulary = ({ formData, setFormData }) => {
           uniqueSlug,
           selectedPlan: formData.selectedPlan,
           emailCliente: email,
+          nomePet,
         }),
       });
 
