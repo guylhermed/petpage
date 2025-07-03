@@ -24,8 +24,10 @@ const firebaseConfigDev = {
 
 // Função para selecionar o config baseado no ambiente
 export function firebaseConfigSelector() {
-  const isLocal = process.env.NODE_ENV === 'development'; // Local é "development"
-  const firebaseConfig = isLocal ? firebaseConfigDev : firebaseConfigProd;
+  const isDevEnv =
+    process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev' ||
+    process.env.NODE_ENV === 'development';
+  const firebaseConfig = isDevEnv ? firebaseConfigDev : firebaseConfigProd;
 
   // Verifica se todas as variáveis de configuração estão definidas
   for (const key in firebaseConfig) {
