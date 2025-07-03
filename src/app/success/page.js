@@ -35,11 +35,13 @@ function SuccessContent() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-backgroundColor mx-10">
       <div className="text-center max-w-lg">
-        <img src={'/logo.png'} alt={'Logo da Minha PetPage'} className="md:w-44 w-28 object-cover mx-auto mb-2" />
+        <a href={baseUrl} target="_blank" rel="noopener noreferrer">
+          <img src={'/logo.png'} alt={'Logo da Minha PetPage'} className="md:w-44 w-28 object-cover mx-auto mb-2" />
+        </a>
 
-        <h1 className="text-4xl font-black mb-5 text-primaryBlue">Pet Page criada com sucesso!</h1>
+        <h1 className="text-4xl font-black mb-5 text-primaryBlue">PetPage criada com sucesso!</h1>
         <p className="text-base mb-6 leading-snug text-primaryGray font-medium">
-          Acesse sua Pet Page clicando no link abaixo ou escaneando o QR Code.
+          Acesse sua PetPage clicando no link abaixo ou escaneando o QR Code.
         </p>
 
         {/* Gerando o QR Code dinamicamente */}
@@ -59,7 +61,7 @@ function SuccessContent() {
             href={`/${uniqueSlug}`}
             className="md:min-w-52 border border-primaryPurple text-primaryPurple px-12 py-3 rounded-full text-lg hover:bg-primaryPurple hover:text-white transition"
           >
-            Acessar sua Pet Page
+            Acessar sua PetPage
           </a>
 
           {/* Botão para download do QR Code */}

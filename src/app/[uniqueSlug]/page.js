@@ -63,16 +63,19 @@ export default function PetPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-backgroundColor">
-      <div className="rounded-lg shadow-lg overflow-hidden w-80 md:w-96 bg-primaryPurple">
-        {/* Simulação de Navegador */}
-        <div className="bg-primaryBlue text-white p-2 text-sm">
-          <p>{`petpage.com/${uniqueSlug}`}</p>
+    <div className="fixed inset-0 bg-backgroundColor flex justify-center items-center">
+      <div className="w-full h-full md:w-[24rem] md:rounded-xl md:h-[42rem] shadow-lg bg-primaryPurple flex flex-col">
+
+        {/* Simulação de navegador */}
+        <div className="bg-primaryBlue text-white p-2 text-sm md:rounded-t-xl">
+          <p className="truncate">{`petpage.com/${uniqueSlug}`}</p>
         </div>
-        {/* Tela do celular */}
-        <div className="h-160 flex flex-col p-4 overflow-y-auto">
-          {/* Imagem do Pet */}
-          <div className="relative w-full h-100 bg-gray-200 border-4 border-primaryBlue mb-2 flex items-center justify-center rounded-lg">
+
+        {/* Tela do celular simulada */}
+        <div className="flex-1 flex flex-col justify-between p-4 overflow-hidden">
+
+          {/* Imagem */}
+          <div className="w-full aspect-square bg-gray-200 border-4 border-primaryBlue mb-2 flex items-center justify-center rounded-lg">
             {petData.images && petData.images.length > 0 ? (
               <img
                 src={petData.images[currentImageIndex]}
@@ -83,35 +86,36 @@ export default function PetPage() {
               <FaImage className="text-primaryPurple w-16 h-16" />
             )}
           </div>
-          {/* Informações do Pet */}
-          <div className="text-center text-white">
-            {petData.name ? (
-              <h2 className="text-3xl text-primaryBlue font-bold mb-2 mt-2">{capitalizeFirstLetter(petData.name)}</h2>
-            ) : (
-              ''
+
+          {/* Infos */}
+          <div className="text-center text-white flex-1 flex flex-col justify-center">
+            {petData.name && (
+              <h2 className="text-2xl font-bold text-primaryBlue mb-2">{capitalizeFirstLetter(petData.name)}</h2>
             )}
+
             {petData.nicknames?.length > 0 && (
-              <p className="text-sm mb-3 font-extralight">
+              <p className="text-sm font-light mb-1">
                 Também sou chamado carinhosamente de <span className="font-medium">{petData.nicknames.join(', ')}</span>
               </p>
             )}
+
             {timeInFamily && (
-              <p className="text-sm mb-4 font-extralight">
-                Estou na família há <br />
-                <span className="text-md font-bold">{timeInFamily}</span>
+              <p className="text-sm font-light mb-1">
+                Estou na família há<br />
+                <span className="font-semibold">{timeInFamily}</span>
               </p>
             )}
-            {petData.message ? (
-              <p className="text-lg mb-3 italic font-light leading-tight break-words overflow-hidden">
-                {petData.message}
-              </p>
-            ) : (
-              ''
+
+            {petData.message && (
+              <p className="text-base italic font-light mb-2 break-words">{petData.message}</p>
             )}
-            <p>❤️</p>
           </div>
+
+          {/* Coração */}
+          <div className="text-center mt-2 text-xl">❤️</div>
         </div>
       </div>
     </div>
+
   );
 }
