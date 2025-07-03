@@ -69,14 +69,15 @@ const Formulary = ({ formData, setFormData }) => {
     setFormData({ ...formData, images: newImages });
   };
 
-  const createCheckoutSession = async () => {
+  const criarCobrancaAbacatepay = async () => {
     const petId = uuidv4();
     const uniqueSlug = `${formData.name.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
+    const email = formData.email || 'teste@teste.com'; // Email padrão caso não seja fornecido
 
     setLoading(true);
 
     try {
-      // Carregar as imagens no Firebase Storage e coletar as URLs
+      // Upload das imagens no Firebase
       const imageUrls = await Promise.all(
         images.map(async (image, index) => {
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
@@ -85,53 +86,43 @@ const Formulary = ({ formData, setFormData }) => {
         })
       );
 
-      // Agora salve os dados no Firestore com as URLs das imagens
+      // Salvando dados no Firestore com isPaid: false
       await setDoc(doc(db, 'pets', uniqueSlug), {
         ...formData,
         images: imageUrls,
         createdAt: new Date(),
-        isPaid: false, // Por padrão, o campo isPaid é false
-        paymentMethod: '', // Por padrão, o campo paymentMethod é vazio
-        userEmail: '', // Por padrão, o campo userEmail é vazio
-        petId: petId,
-        uniqueSlug: uniqueSlug,
+        isPaid: false,
+        paymentMethod: '',
+        userEmail: '',
+        petId,
+        uniqueSlug,
       });
 
-      console.log('Dados salvos no Firebase com sucesso.');
-    } catch (error) {
-      console.error('Erro ao salvar no Firebase:', error);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Faz a chamada para a API de criação de sessão de checkout
-      const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
+      // Chamada para AbacatePay
+      const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nomePet: formData.name,
-          uniqueSlug: uniqueSlug,
+          uniqueSlug,
           selectedPlan: formData.selectedPlan,
+          emailCliente: email,
         }),
       });
 
-      // Após a resposta da api, converte para JSON
       const data = await response.json();
-      console.log('Resposta da sessão de checkout:', data);
+      console.log('Resposta da Cobrança AbacatePay:', data);
 
-      // Se a resposta contém a URL, redireciona para a URL do checkout
       if (data.url) {
-        router.push(data.url); // Redireciona para a URL do checkout
+        router.push(data.url); // Redireciona para a URL de pagamento do AbacatePay
       } else {
-        console.error('Erro ao criar a sessão de checkout:', data);
+        console.error('Erro ao criar cobrança AbacatePay:', data);
       }
     } catch (error) {
-      console.error('Erro na requisição:', error);
+      console.error('Erro na cobrança:', error);
     } finally {
-      setLoading(false); // Finaliza o loading
+      setLoading(false);
     }
   };
 
@@ -354,7 +345,7 @@ const Formulary = ({ formData, setFormData }) => {
             if (isButtonEnabled && !loading) {
               setLoading(true); // Ativa o loading
               console.log('Botão habilitado, criando sessão de checkout...');
-              createCheckoutSession();
+              criarCobrancaAbacatepay();
             } else {
               console.log('Botão desabilitado.');
             }
