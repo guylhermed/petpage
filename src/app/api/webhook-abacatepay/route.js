@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import { abacatepayWebhookSecret } from '@/app/utils/utils';
+// import { enviarEmailConfirmacao } from '@/app/utils/emailSender';
 
 const { db } = firebaseConfigSelector();
 
@@ -46,6 +47,10 @@ export async function POST(req) {
       paidAmount: billing.paidAmount || 0,
       couponsUsed: billing.couponsUsed?.[0] || '',
     });
+
+    // Enviar e-mail
+    // const linkPetPage = `https://www.minhapetpage.com/${slug}`;
+    // await enviarEmailConfirmacao({ nome: evento.data.billing?.customer?.metadata?.name || 'Cliente', email: metadata.email || 'minhapetpage@gmail.com', linkPetPage });
 
     console.log(`✅ PetPage atualizada como paga: ${slug}`);
     return NextResponse.json({ ok: true });
