@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Switch from './Switch.js';
 import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/app/utils/utils';
+import ModalDadosObrigatorios from '@/app/components/ModalDadosObrigatorios';
 
 const { db, storage } = firebaseConfigSelector();
 
@@ -19,6 +20,7 @@ const Formulary = ({ formData, setFormData }) => {
   const [images, setImages] = useState([]);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   // Valida se o botão deve ser habilitado
   useEffect(() => {
@@ -69,11 +71,11 @@ const Formulary = ({ formData, setFormData }) => {
     setFormData({ ...formData, images: newImages });
   };
 
-  const criarCobrancaAbacatepay = async () => {
+  const criarCobrancaAbacatepay = async (cliente) => {
     const petId = uuidv4();
     const nomePet = formData.name || 'Pet Sem Nome';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
-    const email = formData.email || 'teste@teste.com'; // Email padrão caso não seja fornecido
+    const email = cliente.email || 'teste@teste.com';
 
     setLoading(true);
 
@@ -94,9 +96,12 @@ const Formulary = ({ formData, setFormData }) => {
         createdAt: new Date(),
         isPaid: false,
         paymentMethod: '',
-        userEmail: '',
+        userEmail: email || '',
         petId,
         uniqueSlug,
+        cellphone: cliente.telefone || '',
+        taxId: cliente.cpfCnpj || '',
+        name: cliente.nome || '',
       });
 
       // Chamada para AbacatePay
@@ -109,7 +114,9 @@ const Formulary = ({ formData, setFormData }) => {
           uniqueSlug,
           selectedPlan: formData.selectedPlan,
           emailCliente: email,
-          nomePet,
+          nomeCliente: cliente.nome,
+          cellCliente: cliente.telefone,
+          cpfCnpjCliente: cliente.cpfCnpj,
         }),
       });
 
@@ -127,6 +134,12 @@ const Formulary = ({ formData, setFormData }) => {
       setLoading(false);
     }
   };
+
+  async function aoConfirmarModal(dadosCliente) {
+    setLoading(true);
+    await criarCobrancaAbacatepay(dadosCliente);
+    setLoading(false);
+  }
 
   return (
     <div>
@@ -345,11 +358,7 @@ const Formulary = ({ formData, setFormData }) => {
           onClick={e => {
             e.preventDefault();
             if (isButtonEnabled && !loading) {
-              setLoading(true); // Ativa o loading
-              console.log('Botão habilitado, criando sessão de checkout...');
-              criarCobrancaAbacatepay();
-            } else {
-              console.log('Botão desabilitado.');
+              setMostrarModal(true); // Abre o modal para dados obrigatórios
             }
           }}
           disabled={!isButtonEnabled || loading} // Desabilita se estiver carregando
@@ -379,6 +388,13 @@ const Formulary = ({ formData, setFormData }) => {
             'Criar Página'
           )}
         </button>
+
+        <ModalDadosObrigatorios
+          aberto={mostrarModal}
+          aoFechar={() => setMostrarModal(false)}
+          aoConfirmar={aoConfirmarModal}
+        />
+
       </form>
     </div>
   );
