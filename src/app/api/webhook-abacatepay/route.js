@@ -24,23 +24,27 @@ export async function POST(req) {
       return NextResponse.json({ ok: true });
     }
 
-    const slug =
-      evento.data?.billing?.metadata?.uniqueSlug ||
-      evento.data?.billing?.products?.[0]?.externalId;
+    const billing = evento.data?.billing || {};
+    const payment = evento.data?.payment || {};
+    const metadata = billing.customer?.metadata || {};
+    const slug = billing.metadata?.uniqueSlug || billing.products?.[0]?.externalId;
 
     if (!slug) {
       console.warn('❌ Slug não encontrado no metadata da cobrança');
       return NextResponse.json({ error: 'Missing uniqueSlug' }, { status: 400 });
     }
 
-    const userEmail = evento.data.billing?.customer?.metadata?.email || '';
-    const metodoPagamento = evento.data.payment?.method || 'PIX';
-
     const petRef = doc(db, 'pets', slug);
     await updateDoc(petRef, {
       isPaid: true,
-      paymentMethod: metodoPagamento,
-      userEmail
+      paymentMethod: payment.method || 'PIX',
+      userEmail: metadata.email || '',
+      cellphone: metadata.cellphone || '',
+      taxId: metadata.taxId || '',
+      name: metadata.name || 'Cliente PetPage',
+      amount: billing.amount || 0,
+      paidAmount: billing.paidAmount || 0,
+      couponsUsed: billing.couponsUsed?.[0] || '',
     });
 
     console.log(`✅ PetPage atualizada como paga: ${slug}`);
