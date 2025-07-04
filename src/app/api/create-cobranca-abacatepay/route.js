@@ -3,7 +3,7 @@ import { abacatepayApiKey } from '@/app/utils/utils';
 
 export async function POST(req) {
   try {
-    const { uniqueSlug, selectedPlan, emailCliente, nomePet } = await req.json();
+    const { uniqueSlug, selectedPlan, emailCliente, nomeCliente, cellCliente, cpfCnpjCliente } = await req.json();
 
     const planos = {
       basico: {
@@ -44,9 +44,9 @@ export async function POST(req) {
       completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`,
       customer: {
         email: emailCliente || 'email@cliente.com.br',
-        name: nomePet || 'Cliente PetPage',
-        cellphone: '48999999999',
-        taxId: '08881523965'
+        name: nomeCliente || 'Cliente PetPage',
+        cellphone: cellCliente || '48999999999',
+        taxId: cpfCnpjCliente || '00000000000'
       },
       metadata: {
         uniqueSlug,
