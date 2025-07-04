@@ -8,7 +8,7 @@ export async function enviarEmailConfirmacaoPagamento({ nome, email, linkPetPage
     const { data, error } = await resend.emails.send({
       from: 'PetPage <contato@minhapetpage.com>',
       to: email,
-      subject: '🐾 Sua PetPage está no ar!',
+      subject: 'Sua PetPage está no ar!',
       react: EmailTemplateConfirmacaoPagamento({ nome, linkPetPage }), // usando JSX aqui!
     });
 
