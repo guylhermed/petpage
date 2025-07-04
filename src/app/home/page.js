@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Formulary from '../components/Formulary';
-import Preview from '../components/Preview';
+import Formulary from '../../components/Formulary';
+import Preview from '../../components/Preview';
 import { Link } from 'react-scroll';
 
 const HomePage = () => {
