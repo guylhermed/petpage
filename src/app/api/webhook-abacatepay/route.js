@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import { abacatepayWebhookSecret } from '@/app/utils/utils';
+import { enviarEmailConfirmacaoPagamento } from '@/app/services/email/enviarEmailConfirmacaoPagamento';
 
 const { db } = firebaseConfigSelector();
 
@@ -48,6 +49,15 @@ export async function POST(req) {
     });
 
     console.log(`✅ PetPage atualizada como paga: ${slug}`);
+
+    const linkPetPage = `https://www.minhapetpage.com/${slug}`;
+
+    await enviarEmailConfirmacaoPagamento({
+      nome: metadata.name || 'Cliente PetPage',
+      email: metadata.email || 'email@cliente.com',
+      linkPetPage,
+    });
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('❌ Erro no webhook AbacatePay:', error);
