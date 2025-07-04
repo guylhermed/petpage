@@ -24,7 +24,9 @@ export async function POST(req) {
       return NextResponse.json({ ok: true });
     }
 
-    const slug = evento.data?.billing?.metadata?.uniqueSlug; // ⚠️ volta a usar do metadata
+    const slug =
+      evento.data?.billing?.metadata?.uniqueSlug ||
+      evento.data?.billing?.products?.[0]?.externalId;
 
     if (!slug) {
       console.warn('❌ Slug não encontrado no metadata da cobrança');

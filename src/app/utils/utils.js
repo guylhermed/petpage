@@ -1,17 +1,16 @@
-export const isAmbienteDev = process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev';
+export const isAmbienteDev = () => process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev';
 
-export const baseUrl =
-  typeof window !== 'undefined'
-    ? window.location.origin
-    : isAmbienteDev
-      ? 'http://localhost:3000'
-      : 'https://www.minhapetpage.com';
+export const baseUrl = typeof window !== 'undefined'
+  ? window.location.origin
+  : isAmbienteDev()
+    ? 'http://localhost:3000'
+    : 'https://www.minhapetpage.com';
 
-export const abacatepayApiKey = isAmbienteDev
+export const abacatepayApiKey = isAmbienteDev()
   ? process.env.ABACATEPAY_DEV_API_KEY
   : process.env.ABACATEPAY_PROD_API_KEY;
 
-export const abacatepayWebhookSecret = isAmbienteDev
+export const abacatepayWebhookSecret = isAmbienteDev()
   ? process.env.ABACATEPAY_DEV_WEBHOOK_SECRET
   : process.env.ABACATEPAY_PROD_WEBHOOK_SECRET;
 
