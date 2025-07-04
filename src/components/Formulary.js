@@ -1,13 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { firebaseConfigSelector } from '../config/firebaseConfigSelector';
+import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import Switch from './Switch.js';
 import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/app/utils/utils';
-import ModalDadosObrigatorios from '@/app/components/ModalDadosObrigatorios';
+import ModalDadosObrigatorios from '@/components/ModalDadosObrigatorios';
 
 const { db, storage } = firebaseConfigSelector();
 
