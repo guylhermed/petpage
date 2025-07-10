@@ -15,6 +15,10 @@ module.exports = {
   			'160': '40rem'
   		},
   		colors: {
+				petPurple: '#6C2BD9',
+				petBlue: '#007FFF',
+				petLight: '#F3F4F6',
+				petGray: '#7C7C7C',
   			primaryPurple: '#5c00c8',
   			primaryPurple50: '#a664ff',
   			primaryBlue: '#02b5aa',

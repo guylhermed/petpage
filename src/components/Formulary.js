@@ -4,10 +4,16 @@ import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
-import Switch from './Switch.js';
 import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/app/utils/utils';
 import ModalDadosObrigatorios from '@/components/ModalDadosObrigatorios';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Check, Heart, Upload, X } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 
 const { db, storage } = firebaseConfigSelector();
 
@@ -21,17 +27,22 @@ const Formulary = ({ formData, setFormData }) => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [apelidoString, setApelidoString] = useState('');
 
   // Valida se o botão deve ser habilitado
   useEffect(() => {
     const isNameFilled = formData.name.trim() !== '';
     const isDateFilled = (birthDateEnabled && formData.birthDate) || (adoptionDateEnabled && formData.adoptionDate);
     const isMessageFilled = formData.message && formData.message.trim() !== '';
-    const isImageUploaded = images.length > 0;
+    const isProfilePhotoUploaded = !!formData.photo;
+    const isGalleryUploaded = formData.galleryPhotos.length > 0;
     const isPlanSelected = formData.selectedPlan !== '';
 
-    setIsButtonEnabled(isNameFilled && (isDateFilled || isMessageFilled) && isImageUploaded && isPlanSelected);
-  }, [formData, birthDateEnabled, adoptionDateEnabled, images]);
+    setIsButtonEnabled(
+      isNameFilled && (isDateFilled || isMessageFilled) && isProfilePhotoUploaded && isGalleryUploaded && isPlanSelected
+    );
+  }, [formData, birthDateEnabled, adoptionDateEnabled]);
 
   useEffect(() => {
     if (!birthDateEnabled) {
@@ -71,7 +82,7 @@ const Formulary = ({ formData, setFormData }) => {
     setFormData({ ...formData, images: newImages });
   };
 
-  const criarCobrancaAbacatepay = async (cliente) => {
+  const criarCobrancaAbacatepay = async cliente => {
     const petId = uuidv4();
     const nomePet = formData.name || 'Pet Sem Nome';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
@@ -141,262 +152,325 @@ const Formulary = ({ formData, setFormData }) => {
     setLoading(false);
   }
 
+  const handlePhotoUpload = event => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const photoUrl = e.target?.result;
+        setFormData(prev => ({ ...prev, photo: photoUrl }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeProfilePhoto = () => {
+    setFormData(prev => ({ ...prev, photo: null }));
+  };
+
+  const handleGalleryUpload = event => {
+    const files = event.target.files;
+    if (files) {
+      const newPhotos = [];
+      let processedCount = 0;
+
+      Array.from(files)
+        .slice(0, 5 - formData.galleryPhotos.length)
+        .forEach(file => {
+          const reader = new FileReader();
+          reader.onload = e => {
+            const photoUrl = e.target?.result;
+            newPhotos.push(photoUrl);
+            processedCount++;
+
+            if (processedCount === Math.min(files.length, 5 - formData.galleryPhotos.length)) {
+              setFormData(prev => ({
+                ...prev,
+                galleryPhotos: [...prev.galleryPhotos, ...newPhotos],
+              }));
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+    }
+  };
+
+  const handleInputChange = (campo, valor) => {
+    setFormData(prev => ({
+      ...prev,
+      [campo]: valor,
+    }));
+  };
+
+  const removeGalleryPhoto = index => {
+    setFormData(prev => {
+      const novasFotos = prev.galleryPhotos.filter((_, i) => i !== index);
+      return { ...prev, galleryPhotos: novasFotos };
+    });
+  };
+
   return (
-    <div>
-      <form className="bg-primaryBlue p-6 rounded-lg shadow-lg md:w-[45rem] h-full">
-        {/* Campos do formulário */}
-        <div className="mb-4">
-          <label htmlFor="nome-pet" className="block text-sm font-medium leading-6 text-white">
+    <Card className="w-full max-w-lg shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+      <CardHeader className="bg-gradient-to-r from-petPurple to-petBlue text-white rounded-t-lg">
+        <CardTitle className="flex items-center gap-2 text-xl">
+          <Heart className="w-5 h-5 animate-bounce-gentle" />
+          Preencha o formulário e visualize no preview
+        </CardTitle>
+      </CardHeader>
+
+      <CardContent className="p-6 space-y-6">
+        {/* Nome do Pet */}
+        <div className="space-y-2">
+          <Label htmlFor="nome-pet" className="text-petPurple font-medium">
             Nome do Pet
-          </label>
-          <input
+          </Label>
+          <Input
             id="nome-pet"
-            type="text"
-            placeholder="Ex: Stark"
-            className="block w-full rounded-md border-0 bg-white py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             value={formData.name}
-            onChange={e => setFormData({ ...formData, name: e.target.value })}
+            onChange={e => handleInputChange('name', e.target.value)}
+            placeholder="Ex: Thor"
           />
         </div>
 
-        {/* Switches para Data de Nascimento e Data de Adoção */}
-        <div className="mb-4 flex items-center justify-between gap-6 md:gap-0">
-          <div className="flex items-center">
-            <label className="block text-sm font-medium leading-6 text-white mr-0 md:mr-4">Data de Nascimento</label>
-            <Switch enabled={birthDateEnabled} setEnabled={setBirthDateEnabled} />
+        {/* Datas - switches e inputs */}
+        <div className="space-y-3">
+          {/* Nascimento */}
+          <div className="flex items-center justify-between p-3 bg-petLight rounded-xl">
+            <div>
+              <Label className="text-petPurple font-medium">Incluir Data de Nascimento</Label>
+              <p className="text-sm text-petGray">Aparecerá na página</p>
+            </div>
+            <Switch checked={birthDateEnabled} onCheckedChange={setBirthDateEnabled} />
           </div>
-          <div className="flex items-center">
-            <label className="block text-sm font-medium leading-6 text-white mr-0 md:mr-4">Data de Adoção</label>
-            <Switch enabled={adoptionDateEnabled} setEnabled={setAdoptionDateEnabled} />
-          </div>
-        </div>
-
-        {/* Inputs para Data de Nascimento e Data de Adoção */}
-        {birthDateEnabled && (
-          <div className="mb-4">
-            <label className="block text-sm font-medium leading-6 text-white mb-1">Nascimento</label>
-            <input
+          {birthDateEnabled && (
+            <Input
               type="date"
-              className={`block w-full rounded-md border-0 bg-white py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
               value={formData.birthDate}
-              onChange={e =>
-                setFormData({
-                  ...formData,
-                  birthDate: e.target.value,
-                })
-              }
+              onChange={e => handleInputChange('birthDate', e.target.value)}
             />
-          </div>
-        )}
+          )}
 
-        {adoptionDateEnabled && (
-          <div className="mb-4">
-            <label className="block text-sm font-medium leading-6 text-white mb-1">Adoção</label>
-            <input
+          {/* Adoção */}
+          <div className="flex items-center justify-between p-3 bg-petLight rounded-xl">
+            <div>
+              <Label className="text-petPurple font-medium">Incluir Data de Adoção</Label>
+              <p className="text-sm text-petGray">Quando o pet chegou até você</p>
+            </div>
+            <Switch checked={adoptionDateEnabled} onCheckedChange={setAdoptionDateEnabled} />
+          </div>
+          {adoptionDateEnabled && (
+            <Input
               type="date"
-              className={`block w-full rounded-md border-0 bg-white py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
               value={formData.adoptionDate}
-              onChange={e =>
-                setFormData({
-                  ...formData,
-                  adoptionDate: e.target.value,
-                })
-              }
+              onChange={e => handleInputChange('adoptionDate', e.target.value)}
             />
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Campo Apelidos */}
-        <div className="mb-4">
-          <label htmlFor="apelidos" className="block text-sm font-medium leading-6 text-white">
+        {/*/!* Apelidos *!/*/}
+        {/*<div className="space-y-2">*/}
+        {/*  <Label htmlFor="apelido" className="text-petPurple font-medium">*/}
+        {/*    Apelidos*/}
+        {/*  </Label>*/}
+        {/*  <div className="flex gap-2">*/}
+        {/*    <Input*/}
+        {/*      id="apelido"*/}
+        {/*      value={nickname}*/}
+        {/*      onChange={e => setNickname(e.target.value)}*/}
+        {/*      placeholder="Ex: fofucho"*/}
+        {/*    />*/}
+        {/*    <Button type="button" onClick={handleAddNickname}>*/}
+        {/*      Adicionar*/}
+        {/*    </Button>*/}
+        {/*  </div>*/}
+        {/*  {nicknames.length > 0 && (*/}
+        {/*    <div className="flex flex-wrap gap-2 mt-2">*/}
+        {/*      {nicknames.map((nick, idx) => (*/}
+        {/*        <span key={idx} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">*/}
+        {/*          {nick}*/}
+        {/*        </span>*/}
+        {/*      ))}*/}
+        {/*    </div>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+
+        {/* Apelidos separados por vírgula */}
+        <div className="space-y-2">
+          <Label htmlFor="apelidos" className="text-petPurple font-medium">
             Apelidos
-          </label>
-          <input
+          </Label>
+          <p className="text-xs text-petGray">Separe os apelidos com vírgulas (,)</p>
+          <Input
             id="apelidos"
-            type="text"
-            placeholder="Ex: Lindinho"
-            className="block w-full rounded-md border-0 bg-white py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            value={nickname}
-            onChange={e => setNickname(e.target.value)}
+            value={apelidoString}
+            onChange={e => {
+              const valor = e.target.value;
+              setApelidoString(valor);
+              const lista = valor
+                .split(',')
+                .map(ap => ap.trim())
+                .filter(Boolean);
+              setFormData(prev => ({ ...prev, nicknames: lista }));
+            }}
+            placeholder="Fofucho, Thorzinho, Bebê"
           />
-          <button
-            type="button"
-            onClick={handleAddNickname}
-            className="bg-primaryPurple text-white px-4 py-2 rounded mt-2"
-          >
-            Adicionar Apelido
-          </button>
-
-          {/* Tags de Apelidos com botão de remoção */}
-          <div className="mt-4 flex flex-wrap">
-            {nicknames.map((nick, index) => (
-              <div key={index} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-                <span>{nick}</span>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveNickname(index)}
-                  className="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Upload de Imagens */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium leading-6 text-white">Adicionar Fotos</label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageUpload}
-            className="block w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-          />
-          {/*<p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">*/}
-          {/*  SVG, PNG, JPG or GIF (MAX. 800x400px).*/}
-          {/*</p>*/}
-
-          {/* Pré-visualização das Imagens */}
-          <div className="mt-4 flex flex-wrap">
-            {images.map((image, index) => (
-              <div key={index} className="relative mr-2 mb-2">
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Imagem ${index + 1}`}
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute top-0 right-0 text-red-500 hover:text-red-700 focus:outline-none text-xl"
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Campo Mensagem */}
-        <div className="mb-4">
-          <label htmlFor="mensagem" className="block text-sm font-medium leading-6 text-white">
-            Mensagem
-          </label>
-          <textarea
-            id="mensagem"
-            rows="4"
-            placeholder="Escreva algo especial sobre o seu pet ou sobre a sua relação com ele."
-            className="block w-full rounded-md border-0 bg-white py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        {/* Mensagem */}
+        <div className="space-y-2">
+          <Label htmlFor="message" className="text-petPurple font-medium">
+            Mensagem Especial
+          </Label>
+          <Textarea
+            id="message"
             value={formData.message}
-            onChange={e =>
-              setFormData({
-                ...formData,
-                message: e.target.value,
-              })
-            }
+            onChange={e => handleInputChange('message', e.target.value)}
+            placeholder="Escreva algo especial sobre o seu pet..."
           />
         </div>
 
-        {/* Plano Desejado */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-white mb-1">Plano Desejado</label>
-          <div className="flex flex-col gap-2 md:flex-row justify-between">
-            {/* Plano Básico (30 dias) */}
-            <label className="md:w-1/2 relative group flex items-center gap-2 bg-primaryPurple p-3 rounded-lg cursor-pointer border-2 border-primaryPurple hover:border-white transition">
-              <input
-                type="radio"
-                name="plano"
-                value="basico"
-                className="hidden"
-                onChange={() => setFormData({ ...formData, selectedPlan: 'basico' })}
-                checked={formData.selectedPlan === 'basico'}
-              />
-              <div className="w-5 h-5 border-2 border-primaryGray rounded-full flex items-center justify-center">
-                {formData.selectedPlan === 'basico' && <div className="w-3 h-3 bg-white rounded-full"></div>}
-              </div>
-              <span className="text-white text-sm">
-                30 Dias - <span className="line-through text-gray-400">de R$14,90</span> por R$9,90
-              </span>
-              {/* Tooltip ao passar o mouse sobre o label */}
-              <div className="absolute hidden group-hover:block bg-primaryGray text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
-                Sua página ficará no ar por 30 dias, após isso será deletada.
-              </div>
-            </label>
-
-            {/* Plano Vitalício */}
-            <label className="md:w-1/2 relative group flex items-center gap-2 bg-primaryPurple p-3 rounded-lg cursor-pointer border-2 border-primaryPurple hover:border-white transition">
-              <input
-                type="radio"
-                name="plano"
-                value="vitalicio"
-                className="hidden"
-                onChange={() => setFormData({ ...formData, selectedPlan: 'vitalicio' })}
-                checked={formData.selectedPlan === 'vitalicio'}
-              />
-              <div className="w-5 h-5 border-2 border-primaryGray rounded-full flex items-center justify-center">
-                {formData.selectedPlan === 'vitalicio' && <div className="w-3 h-3 bg-white rounded-full"></div>}
-              </div>
-              <span className="text-white text-sm">
-                Vitalício - <span className="line-through text-gray-400">de R$39,90</span> por R$29,90
-              </span>
-
-              {/* Tooltip ao passar o mouse sobre o label */}
-              <div className="absolute hidden group-hover:block bg-primaryGray text-white text-xs rounded-md px-2 py-1 w-48 bottom-full mb-1 shadow-lg left-1/2 transform -translate-x-1/2">
-                Seu site permanecerá online para sempre.
-              </div>
+        {/* Imagem de perfil */}
+        <div className="space-y-2">
+          <Label className="text-petPurple font-medium">Foto de Perfil</Label>
+          {formData.photo && (
+            <div className="relative inline-block mb-3">
+              <img src={formData.photo} alt="Foto de perfil" className="w-20 h-20 object-cover rounded-lg" />
+              <button
+                onClick={removeProfilePhoto}
+                className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          )}
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:border-petBlue">
+            <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" id="upload-foto" />
+            <label htmlFor="upload-foto" className="cursor-pointer text-sm text-petBlue">
+              {formData.photo ? 'Trocar foto' : 'Enviar foto'}
             </label>
           </div>
         </div>
 
-        {/* Botão de Submissão */}
-        <button
-          className={`bg-primaryPurple text-white px-6 py-3 rounded mt-4 w-full text-lg flex items-center justify-center space-x-3 ${
-            isButtonEnabled && !loading ? '' : 'opacity-30 cursor-not-allowed'
-          }`}
-          onClick={e => {
-            e.preventDefault();
-            if (isButtonEnabled && !loading) {
-              setMostrarModal(true); // Abre o modal para dados obrigatórios
-            }
-          }}
-          disabled={!isButtonEnabled || loading} // Desabilita se estiver carregando
-        >
-          {loading ? (
-            <>
-              <svg
-                className="h-7 w-7 animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.2" />
-                <path
+        {/* Galeria */}
+        <div className="space-y-2">
+          <Label className="text-petPurple font-medium">Fotos da Galeria (até 5)</Label>
+          {formData.galleryPhotos.length > 0 && (
+            <div className="grid grid-cols-3 gap-2">
+              {formData.galleryPhotos.map((photo, idx) => (
+                <div key={idx} className="relative group">
+                  <img src={photo} className="w-full h-20 object-cover rounded" />
+                  <button
+                    onClick={() => removeGalleryPhoto(idx)}
+                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          {formData.galleryPhotos.length < 5 && (
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:border-petBlue">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleGalleryUpload}
+                className="hidden"
+                id="upload-galeria"
+              />
+              <label htmlFor="upload-galeria" className="cursor-pointer text-sm text-petBlue">
+                Adicionar imagens ({5 - formData.galleryPhotos.length} restantes)
+              </label>
+            </div>
+          )}
+        </div>
+
+        {/* Planos */}
+        <div className="space-y-3">
+          <Label className="text-petPurple font-medium">Escolha o Plano</Label>
+          {[
+            { tipo: 'basico', texto: '30 dias', preco: 'R$9,90' },
+            { tipo: 'vitalicio', texto: 'Vitalício', preco: 'R$29,90' },
+          ].map(({ tipo, texto, preco }) => (
+            <div
+              key={tipo}
+              className={`border-2 rounded-xl p-4 cursor-pointer ${
+                formData.selectedPlan === tipo
+                  ? 'border-petBlue bg-petBlue/5'
+                  : 'border-gray-200 hover:border-petBlue/50'
+              }`}
+              onClick={() => handleInputChange('selectedPlan', tipo)}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-gray-800">{texto}</p>
+                  <p className="text-sm text-petGray">{tipo === 'basico' ? 'Plano temporário' : 'Para sempre'}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-petPurple font-bold">{preco}</span>
+                  {formData.selectedPlan === tipo && (
+                    <div className="w-6 h-6 bg-petBlue rounded-full flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Botão Criar Página */}
+        <div className="pt-4">
+          <Button
+            className={`w-full bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 text-white rounded-xl py-3 font-medium transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 ${
+              isButtonEnabled && !loading ? '' : 'opacity-30 cursor-not-allowed'
+            }`}
+            onClick={e => {
+              e.preventDefault();
+              if (isButtonEnabled && !loading) {
+                setMostrarModal(true);
+              }
+            }}
+            disabled={!isButtonEnabled || loading}
+          >
+            {loading ? (
+              <>
+                <svg
+                  className="h-7 w-7 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 12a8 8 0 0116 0"
-                />
-              </svg>
-              <span>Criando sua PetPage...</span>
-            </>
-          ) : (
-            'Criar Página'
-          )}
-        </button>
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.2" />
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 12a8 8 0 0116 0"
+                  />
+                </svg>
+                <span>Criando sua PetPage...</span>
+              </>
+            ) : (
+              <>
+                <Heart className="w-4 h-4" />
+                <span>Criar Página</span>
+              </>
+            )}
+          </Button>
 
-        <ModalDadosObrigatorios
-          aberto={mostrarModal}
-          aoFechar={() => setMostrarModal(false)}
-          aoConfirmar={aoConfirmarModal}
-        />
-
-      </form>
-    </div>
+          <ModalDadosObrigatorios
+            aberto={mostrarModal}
+            aoFechar={() => setMostrarModal(false)}
+            aoConfirmar={aoConfirmarModal}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
