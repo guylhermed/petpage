@@ -12,7 +12,9 @@ const HomePage = () => {
     adoptionDate: '',
     message: '',
     nicknames: [],
-    images: [],
+    photo: null,
+    galleryPhotos: [],
+    // images: [],
     selectedPlan: '',
   });
 
