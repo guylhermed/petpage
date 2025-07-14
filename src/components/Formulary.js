@@ -19,8 +19,8 @@ const { db, storage } = firebaseConfigSelector();
 
 const Formulary = ({ formData, setFormData }) => {
   const router = useRouter();
-  const [birthDateEnabled, setBirthDateEnabled] = useState(false);
-  const [adoptionDateEnabled, setAdoptionDateEnabled] = useState(false);
+  const [birthDateEnabled, setBirthDateEnabled] = useState(formData.mostrarDataNascimento);
+  const [adoptionDateEnabled, setAdoptionDateEnabled] = useState(formData.mostrarDataAdocao);
   const [nicknames, setNicknames] = useState([]);
   const [nickname, setNickname] = useState('');
   const [images, setImages] = useState([]);
@@ -55,6 +55,16 @@ const Formulary = ({ formData, setFormData }) => {
       setFormData(prev => ({ ...prev, adoptionDate: '' }));
     }
   }, [adoptionDateEnabled]);
+
+
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, mostrarDataNascimento: birthDateEnabled }));
+  }, [birthDateEnabled]);
+
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
+  }, [adoptionDateEnabled]);
+
 
   const handleAddNickname = () => {
     if (nickname.trim() !== '') {

@@ -14,8 +14,9 @@ const HomePage = () => {
     nicknames: [],
     photo: null,
     galleryPhotos: [],
-    // images: [],
     selectedPlan: '',
+    mostrarDataNascimento: false,
+    mostrarDataAdocao: false,
   });
 
   return (
