@@ -10,14 +10,14 @@ export async function POST(req) {
         externalId: 'pp30dias',
         name: 'PetPage 30 Dias',
         price: 990,
-        description: 'Página PetPage personalizada com expiração em 30 dias.'
+        description: 'Página PetPage personalizada com expiração em 30 dias.',
       },
       vitalicio: {
         externalId: 'ppvitalicio',
         name: 'PetPage Vitalício',
         price: 2990,
-        description: 'Página PetPage personalizada com acesso vitalício.'
-      }
+        description: 'Página PetPage personalizada com acesso vitalício.',
+      },
     };
 
     const planoSelecionado = planos[selectedPlan];
@@ -37,8 +37,8 @@ export async function POST(req) {
           name: planoSelecionado.name,
           quantity: 1,
           price: planoSelecionado.price,
-          description: planoSelecionado.description
-        }
+          description: planoSelecionado.description,
+        },
       ],
       returnUrl: `${origin}/`,
       completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`,
@@ -46,22 +46,22 @@ export async function POST(req) {
         email: emailCliente || 'email@cliente.com.br',
         name: nomeCliente || 'Cliente PetPage',
         cellphone: cellCliente || '48999999999',
-        taxId: cpfCnpjCliente || '00000000000'
+        taxId: cpfCnpjCliente || '00000000000',
       },
       metadata: {
         uniqueSlug,
         returnUrl: `${origin}/`,
-        completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`
-      }
+        completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`,
+      },
     };
 
     const response = await fetch('https://api.abacatepay.com/v1/billing/create', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${abacatepayApiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     const result = await response.json();

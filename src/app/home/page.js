@@ -14,8 +14,9 @@ const HomePage = () => {
     nicknames: [],
     photo: null,
     galleryPhotos: [],
-    // images: [],
     selectedPlan: '',
+    mostrarDataNascimento: false,
+    mostrarDataAdocao: false,
   });
 
   return (
@@ -43,8 +44,9 @@ const HomePage = () => {
       </section>
 
       {/* Segunda seção */}
-      <section className="flex flex-col md:flex-row justify-center w-full mb-10 px-4 items-end">
-        <div className="w-full md:w-[47rem] flex flex-col mb-9 md:mb-0">
+      <section className="flex flex-col md:flex-row justify-center w-full px-4 gap-8 mb-10">
+        {/* Formulário */}
+        <div className="w-full md:w-[47rem] flex flex-col">
           <p className="md:text-5xl text-3xl font-bold text-primaryPurple mb-5 text-center md:text-left">
             Minha PetPage
           </p>
@@ -54,7 +56,16 @@ const HomePage = () => {
           </p>
           <Formulary formData={formData} setFormData={setFormData} />
         </div>
-        <div className="w-full md:w-96 flex">
+
+        {/* Desktop - sticky */}
+        <div className="hidden md:block md:w-[24rem]">
+          <div className="sticky top-28">
+            <Preview formData={formData} />
+          </div>
+        </div>
+
+        {/* Mobile - aparece abaixo do formulário */}
+        <div className="block md:hidden mt-10 w-full">
           <Preview formData={formData} />
         </div>
       </section>
