@@ -56,7 +56,6 @@ const Formulary = ({ formData, setFormData }) => {
     }
   }, [adoptionDateEnabled]);
 
-
   useEffect(() => {
     setFormData(prev => ({ ...prev, mostrarDataNascimento: birthDateEnabled }));
   }, [birthDateEnabled]);
@@ -64,7 +63,6 @@ const Formulary = ({ formData, setFormData }) => {
   useEffect(() => {
     setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
   }, [adoptionDateEnabled]);
-
 
   const handleAddNickname = () => {
     if (nickname.trim() !== '') {

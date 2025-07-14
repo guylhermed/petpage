@@ -44,6 +44,7 @@ const HomePage = () => {
       </section>
 
       {/* Segunda seção */}
+      {/*min-h-[80vh]*/}
       <section className="flex flex-col md:flex-row justify-center w-full mb-10 px-4 items-end">
         <div className="w-full md:w-[47rem] flex flex-col mb-9 md:mb-0">
           <p className="md:text-5xl text-3xl font-bold text-primaryPurple mb-5 text-center md:text-left">
@@ -58,6 +59,11 @@ const HomePage = () => {
         <div className="w-full md:w-96 flex">
           <Preview formData={formData} />
         </div>
+        {/*<div className="w-full md:w-96 flex md:justify-center">*/}
+        {/*  <div className="sticky top-28">*/}
+        {/*    <Preview formData={formData} />*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </section>
 
       {/* Terceira seção */}

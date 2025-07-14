@@ -1,10 +1,11 @@
 export const isAmbienteDev = () => process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev';
 
-export const baseUrl = typeof window !== 'undefined'
-  ? window.location.origin
-  : isAmbienteDev()
-    ? 'http://localhost:3000'
-    : 'https://www.minhapetpage.com';
+export const baseUrl =
+  typeof window !== 'undefined'
+    ? window.location.origin
+    : isAmbienteDev()
+      ? 'http://localhost:3000'
+      : 'https://www.minhapetpage.com';
 
 export const abacatepayApiKey = isAmbienteDev()
   ? process.env.ABACATEPAY_DEV_API_KEY
@@ -25,9 +26,9 @@ export const calculateTimeInFamily = formData => {
   if (!formData) return '';
 
   let dataParaUsar = '';
-  if (formData.adoptionDate && formData.includeAdoptionDate) {
+  if (formData.mostrarDataAdocao && formData.adoptionDate) {
     dataParaUsar = formData.adoptionDate;
-  } else if (formData.birthDate && formData.includeBirthDate) {
+  } else if (formData.mostrarDataNascimento && formData.birthDate) {
     dataParaUsar = formData.birthDate;
   }
 
@@ -35,20 +36,14 @@ export const calculateTimeInFamily = formData => {
 
   const dataInicial = new Date(dataParaUsar);
   const agora = new Date();
-  const diffTime = Math.abs(agora.getTime() - dataInicial.getTime());
-  const diffDias = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffTime = Math.abs(agora - dataInicial);
+  const diffDias = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDias < 30) {
-    return `${diffDias} dia(s)`;
-  } else if (diffDias < 365) {
-    const meses = Math.floor(diffDias / 30);
-    return `${meses} mês${meses !== 1 ? 'es' : ''}`;
-  } else {
-    const anos = Math.floor(diffDias / 365);
-    const mesesRestantes = Math.floor((diffDias % 365) / 30);
-    if (mesesRestantes === 0) {
-      return `${anos} ano${anos !== 1 ? 's' : ''}`;
-    }
-    return `${anos} ano${anos !== 1 ? 's' : ''} e ${mesesRestantes} mês${mesesRestantes !== 1 ? 'es' : ''}`;
-  }
+  if (diffDias < 30) return `${diffDias} dia(s)`;
+  if (diffDias < 365) return `${Math.floor(diffDias / 30)} mês(es)`;
+
+  const anos = Math.floor(diffDias / 365);
+  const mesesRestantes = Math.floor((diffDias % 365) / 30);
+
+  return mesesRestantes > 0 ? `${anos} ano(s) e ${mesesRestantes} mês(es)` : `${anos} ano(s)`;
 };
