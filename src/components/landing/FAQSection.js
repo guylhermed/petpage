@@ -12,12 +12,12 @@ const duvidas = [
   {
     question: 'Posso editar a página depois de criada?',
     answer:
-      'Sim! Você pode editar as informações, atualizar as fotos e modificar o conteúdo a qualquer momento de forma simples.',
+      'Atualmente ainda não é possível editar a página após criada, mas já estamos desenvolvendo essa funcionalidade e ela estará disponível em breve para quem adquirir o plano vitalício. Avisaremos sobre essa e outras novidades por e-mail e nas redes sociais!',
   },
   {
     question: 'Qual a diferença entre o plano básico e o plano vitalício?',
     answer:
-      'O plano básico mantém a página no ar por 1 ano. Já o plano vitalício garante que a página estará sempre disponível como uma lembrança permanente.',
+      'O plano básico mantém a página no ar por 30 dias. Já o plano vitalício garante que a página estará sempre disponível como uma lembrança permanente.',
   },
   {
     question: 'Quantas fotos posso enviar?',
@@ -27,21 +27,16 @@ const duvidas = [
   {
     question: 'Posso compartilhar a página do meu pet nas redes sociais?',
     answer:
-      'Com certeza! Cada página tem botões de compartilhamento para WhatsApp, Instagram, Facebook, além de um QR Code exclusivo.',
+      'Com certeza! Você pode copiar o link da página e compartilhar onde quiser. Também oferecemos botões que facilitam o envio do link por WhatsApp, Instagram, Facebook e até um QR Code exclusivo para isso.',
   },
   {
     question: 'As informações do meu pet estão seguras?',
     answer:
-      'Sim, levamos a privacidade a sério. Você controla quem pode acessar a página, e todos os dados são armazenados com segurança.',
+      'Sim! As páginas são públicas, mas só quem tiver o link poderá acessá-las. Você escolhe com quem deseja compartilhar. Todos os dados são armazenados com segurança.',
   },
   {
     question: 'Posso criar páginas para mais de um pet?',
     answer: 'Sim! Você pode criar uma página diferente para cada pet, com fotos e informações únicas.',
-  },
-  {
-    question: 'Vocês oferecem reembolso?',
-    answer:
-      'Sim! Oferecemos garantia de 7 dias. Se não ficar satisfeito, é só entrar em contato dentro desse prazo que devolvemos seu dinheiro.',
   },
 ];
 
