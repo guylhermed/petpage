@@ -60,9 +60,9 @@ const ShowcaseSection = () => {
 
         <div className="max-w-5xl mx-auto">
           <Carousel className="w-full">
-            <CarouselContent className="-ml-2 md:-ml-4">
+            <CarouselContent className="-ml-2 md:-ml-4 md:px-2">
               {exemplosPets.map((pet, index) => (
-                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 md:py-8">
                   <Card className="border-0 bg-white/60 dark:bg-white/10 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 overflow-hidden">
                     <CardContent className="p-0">
                       {/* Imagem do Pet */}
