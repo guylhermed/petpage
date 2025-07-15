@@ -14,15 +14,15 @@ const HeroSection = () => {
           <div className="inline-flex items-center gap-2 bg-white/60 dark:bg-white/10 backdrop-blur-sm border border-gray-200/50 dark:border-white/20 rounded-full px-4 py-2 mb-8">
             <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
             <span className="text-sm font-medium text-petGray dark:text-gray-300">
-              Confiado por milhares de pais de pets
+              Eternizando momentos e revivendo memórias
             </span>
           </div>
 
           {/* Título principal */}
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 dark:text-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-6 leading-tight">
             Crie páginas lindas para seu
-            <span className="bg-gradient-to-r from-petPurple to-petBlue bg-clip-text text-transparent">
-              {' '}
+            <br />
+            <span className="bg-gradient-to-r from-petPurple to-petBlue bg-clip-text text-transparent font-black md:text-7xl">
               Pet Querido
             </span>
           </h1>
@@ -30,7 +30,7 @@ const HeroSection = () => {
           {/* Subtítulo */}
           <p className="text-xl text-petGray dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
             Compartilhe a história, as fotos e os momentos especiais do seu pet com uma página personalizada que celebra
-            seu companheiro de quatro patas.
+            seu companheiro.
           </p>
 
           {/* Botões de ação */}

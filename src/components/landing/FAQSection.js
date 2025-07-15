@@ -7,7 +7,7 @@ const duvidas = [
   {
     question: 'Quanto tempo leva para criar a página do meu pet?',
     answer:
-      'Leva apenas alguns minutos! Basta preencher o formulário com as informações do seu pet, enviar as fotos e sua página estará pronta na hora.',
+      'Leva apenas alguns minutos! Basta preencher o formulário com as informações do seu pet, enviar as fotos, fazer o pagamento e sua página estará pronta na hora.',
   },
   {
     question: 'Posso editar a página depois de criada?',
