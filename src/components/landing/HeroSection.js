@@ -49,13 +49,15 @@ const HeroSection = () => {
               </Link>
             </Button>
 
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-xl px-8 py-3 text-lg border-2 border-petPurple text-petPurple hover:bg-petPurple hover:text-white transition-all duration-200"
-            >
-              Ver Exemplos
-            </Button>
+            <Link href="#exemplos">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-xl px-8 py-3 text-lg border-2 border-petPurple text-petPurple hover:bg-petPurple hover:text-white transition-all duration-200"
+              >
+                Ver Exemplos
+              </Button>
+            </Link>
           </div>
 
           {/* Imagem de destaque / prévia */}
