@@ -94,6 +94,8 @@ const Formulary = ({ formData, setFormData }) => {
   };
 
   const criarCobrancaAbacatepay = async cliente => {
+    alert('🚀 Iniciando criação da cobrança...');
+
     const petId = uuidv4();
     const nomePet = formData.name || 'Pet Sem Nome';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
@@ -143,12 +145,13 @@ const Formulary = ({ formData, setFormData }) => {
       });
 
       const data = await response.json();
-      console.log('Resposta da Cobrança AbacatePay:', data);
+      alert('🔁 Resposta da AbacatePay recebida!');
 
-      if (data.url) {
-        router.push(data.url); // Redireciona para a URL de pagamento do AbacatePay
+      if (data?.url) {
+        alert(`✅ Redirecionando para: ${data.url}`);
+        router.push(data.url);
       } else {
-        console.error('Erro ao criar cobrança AbacatePay:', data);
+        alert(`❌ Nenhuma URL recebida.\nResposta: ${JSON.stringify(data)}`);
       }
     } catch (error) {
       console.error('Erro na cobrança:', error);
