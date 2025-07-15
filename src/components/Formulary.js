@@ -141,25 +141,42 @@ const Formulary = ({ formData, setFormData }) => {
         name: cliente.nome || '',
       });
 
-      // Chamada para AbacatePay
       alert('📡 Enviando dados para AbacatePay...');
-      const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uniqueSlug,
-          selectedPlan: formData.selectedPlan,
-          emailCliente: email,
-          nomeCliente: cliente.nome,
-          cellCliente: cliente.telefone,
-          cpfCnpjCliente: cliente.cpfCnpj,
-        }),
-      });
 
-      alert('✅ Resposta recebida. Lendo JSON...');
-      const data = await response.json();
+      let response;
+      try {
+        response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            uniqueSlug,
+            selectedPlan: formData.selectedPlan,
+            emailCliente: email,
+            nomeCliente: cliente.nome,
+            cellCliente: cliente.telefone,
+            cpfCnpjCliente: cliente.cpfCnpj,
+          }),
+        });
+      } catch (erroFetch) {
+        alert(`❌ Erro ao chamar API: ${erroFetch.message}`);
+        setLoading(false);
+        return;
+      }
+
+      alert(`✅ Status da resposta: ${response.status}`);
+
+      let data;
+      try {
+        data = await response.json();
+        alert('📦 JSON lido com sucesso: ' + JSON.stringify(data));
+      } catch (erroJson) {
+        alert(`❌ Erro ao ler JSON: ${erroJson.message}`);
+        setLoading(false);
+        return;
+      }
+
       alert('📦 JSON lido: ' + JSON.stringify(data));
 
       if (data?.url) {
