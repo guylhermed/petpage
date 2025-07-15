@@ -30,11 +30,11 @@ const etapas = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="py-20 px-4 bg-white/50">
+    <section id="how-it-works" className="py-20 px-4 bg-background text-foreground">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Como Funciona</h2>
-          <p className="text-xl text-petGray max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">Como Funciona</h2>
+          <p className="text-xl text-petGray dark:text-gray-300 max-w-2xl mx-auto">
             Criar uma página linda para seu pet é simples e leva apenas alguns minutos.
           </p>
         </div>
@@ -42,7 +42,7 @@ const HowItWorksSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {etapas.map((etapa, index) => (
             <div key={index} className="relative">
-              <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-lg h-full">
+              <Card className="border-0 bg-white/80 dark:bg-white/10 backdrop-blur-sm shadow-lg h-full">
                 <CardContent className="p-8 text-center">
                   <div className="text-6xl font-bold text-petPurple/20 mb-4">{etapa.number}</div>
 
@@ -50,9 +50,9 @@ const HowItWorksSection = () => {
                     <etapa.icon className="w-8 h-8 text-white" />
                   </div>
 
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">{etapa.title}</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">{etapa.title}</h3>
 
-                  <p className="text-petGray leading-relaxed">{etapa.description}</p>
+                  <p className="text-petGray dark:text-gray-300 leading-relaxed">{etapa.description}</p>
                 </CardContent>
               </Card>
 

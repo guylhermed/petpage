@@ -45,11 +45,13 @@ const planos = [
 
 const PricingSection = () => {
   return (
-    <section id="pricing" className="py-20 px-4 bg-white/50">
+    <section id="pricing" className="py-20 px-4 bg-background text-foreground">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Preços Simples e Transparentes</h2>
-          <p className="text-xl text-petGray max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+            Preços Simples e Transparentes
+          </h2>
+          <p className="text-xl text-petGray dark:text-gray-300 max-w-2xl mx-auto">
             Escolha o plano que melhor se encaixa para você. Sem mensalidades, sem taxas escondidas.
           </p>
         </div>
@@ -61,7 +63,7 @@ const PricingSection = () => {
               className={`relative border-0 shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden ${
                 plano.popular
                   ? 'bg-gradient-to-br from-petPurple/5 to-petBlue/5 ring-2 ring-petPurple/20'
-                  : 'bg-white/80 backdrop-blur-sm'
+                  : 'bg-white/80 dark:bg-white/10 backdrop-blur-sm'
               }`}
             >
               {plano.popular && (
@@ -75,12 +77,12 @@ const PricingSection = () => {
               )}
 
               <CardHeader className={`text-center ${plano.popular ? 'pt-12' : 'pt-8'}`}>
-                <CardTitle className="text-2xl font-bold text-gray-800 mb-2">{plano.nome}</CardTitle>
+                <CardTitle className="text-2xl font-bold text-gray-800 dark:text-white mb-2">{plano.nome}</CardTitle>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-petPurple">{plano.preco}</span>
-                  <span className="text-petGray ml-2">{plano.validade}</span>
+                  <span className="text-petGray dark:text-gray-300 ml-2">{plano.validade}</span>
                 </div>
-                <p className="text-petGray">{plano.descricao}</p>
+                <p className="text-petGray dark:text-gray-300">{plano.descricao}</p>
               </CardHeader>
 
               <CardContent className="px-8 pb-8">
@@ -88,7 +90,7 @@ const PricingSection = () => {
                   {plano.recursos.map((recurso, recursoIndex) => (
                     <li key={recursoIndex} className="flex items-center gap-3">
                       <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-petGray">{recurso}</span>
+                      <span className="text-petGray dark:text-gray-300">{recurso}</span>
                     </li>
                   ))}
                 </ul>
@@ -113,7 +115,7 @@ const PricingSection = () => {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-petGray">
+          <p className="text-petGray dark:text-gray-300">
             Todos os planos têm garantia de reembolso de 7 dias. Dúvidas?{' '}
             <a href="#faq" className="text-petPurple hover:underline">
               Veja nosso FAQ

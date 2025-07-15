@@ -7,17 +7,19 @@ import { Heart, ArrowRight, Star } from 'lucide-react';
 
 const HeroSection = () => {
   return (
-    <section className="pt-20 pb-16 px-4">
+    <section className="pt-20 pb-16 px-4 bg-background text-foreground">
       <div className="container mx-auto text-center">
         <div className="max-w-4xl mx-auto">
           {/* Selo de confiança */}
-          <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-full px-4 py-2 mb-8">
+          <div className="inline-flex items-center gap-2 bg-white/60 dark:bg-white/10 backdrop-blur-sm border border-gray-200/50 dark:border-white/20 rounded-full px-4 py-2 mb-8">
             <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-            <span className="text-sm font-medium text-petGray">Confiado por milhares de pais de pets</span>
+            <span className="text-sm font-medium text-petGray dark:text-gray-300">
+              Confiado por milhares de pais de pets
+            </span>
           </div>
 
           {/* Título principal */}
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 dark:text-white mb-6 leading-tight">
             Crie páginas lindas para seu
             <span className="bg-gradient-to-r from-petPurple to-petBlue bg-clip-text text-transparent">
               {' '}
@@ -26,7 +28,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtítulo */}
-          <p className="text-xl text-petGray mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-petGray dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
             Compartilhe a história, as fotos e os momentos especiais do seu pet com uma página personalizada que celebra
             seu companheiro de quatro patas.
           </p>
@@ -58,11 +60,11 @@ const HeroSection = () => {
 
           {/* Imagem de destaque / prévia */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-8 shadow-2xl">
+            <div className="bg-white/60 dark:bg-white/10 backdrop-blur-sm border border-gray-200/50 dark:border-white/20 rounded-2xl p-8 shadow-2xl">
               <div className="aspect-video bg-gradient-to-br from-petPurple/10 to-petBlue/10 rounded-xl flex items-center justify-center">
                 <div className="text-center">
                   <Heart className="w-16 h-16 text-petPurple/60 mx-auto mb-4" />
-                  <p className="text-petGray font-medium">Prévia da página linda do seu pet</p>
+                  <p className="text-petGray dark:text-gray-300 font-medium">Prévia da página linda do seu pet</p>
                 </div>
               </div>
             </div>

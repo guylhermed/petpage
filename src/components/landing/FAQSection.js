@@ -47,11 +47,11 @@ const duvidas = [
 
 const FAQSection = () => {
   return (
-    <section id="faq" className="py-20 px-4">
+    <section id="faq" className="py-20 px-4 bg-background text-foreground">
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Dúvidas Frequentes</h2>
-          <p className="text-xl text-petGray">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">Dúvidas Frequentes</h2>
+          <p className="text-xl text-petGray dark:text-gray-300">
             Tudo o que você precisa saber sobre como criar uma página linda para seu pet
           </p>
         </div>
@@ -61,12 +61,14 @@ const FAQSection = () => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-xl px-6 shadow-sm"
+              className="bg-white/60 dark:bg-white/10 backdrop-blur-sm border border-gray-200/50 dark:border-white/20 rounded-xl px-6 shadow-sm"
             >
-              <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-petPurple transition-colors">
+              <AccordionTrigger className="text-left font-semibold text-gray-800 dark:text-white hover:text-petPurple transition-colors">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-petGray leading-relaxed pt-2">{faq.answer}</AccordionContent>
+              <AccordionContent className="text-petGray dark:text-gray-300 leading-relaxed pt-2">
+                {faq.answer}
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

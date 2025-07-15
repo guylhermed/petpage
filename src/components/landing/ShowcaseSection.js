@@ -47,11 +47,13 @@ const exemplosPets = [
 
 const ShowcaseSection = () => {
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4 bg-background text-foreground">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Veja o que Outros Donos de Pets Criaram</h2>
-          <p className="text-xl text-petGray max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+            Veja o que Outros Donos de Pets Criaram
+          </h2>
+          <p className="text-xl text-petGray dark:text-gray-300 max-w-2xl mx-auto">
             Junte-se a milhares de famílias que já criaram páginas lindas para seus pets amados.
           </p>
         </div>
@@ -61,7 +63,7 @@ const ShowcaseSection = () => {
             <CarouselContent className="-ml-2 md:-ml-4">
               {exemplosPets.map((pet, index) => (
                 <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Card className="border-0 bg-white/60 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+                  <Card className="border-0 bg-white/60 dark:bg-white/10 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 overflow-hidden">
                     <CardContent className="p-0">
                       {/* Imagem do Pet */}
                       <div className="aspect-square bg-gradient-to-br from-petPurple/10 to-petBlue/10 flex items-center justify-center">
@@ -71,23 +73,27 @@ const ShowcaseSection = () => {
                       {/* Info do Pet */}
                       <div className="p-6">
                         <div className="text-center mb-4">
-                          <h3 className="text-xl font-bold text-gray-800 mb-1">{pet.name}</h3>
-                          <p className="text-petGray text-sm font-medium">{pet.type}</p>
+                          <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-1">{pet.name}</h3>
+                          <p className="text-petGray dark:text-gray-300 text-sm font-medium">{pet.type}</p>
                         </div>
 
                         <div className="bg-gradient-to-r from-petPurple/10 to-petBlue/10 rounded-xl p-3 mb-4 text-center">
                           <p className="text-petPurple font-semibold">{pet.timeWithFamily}</p>
-                          <p className="text-petGray text-xs">com a família</p>
+                          <p className="text-petGray dark:text-gray-300 text-xs">com a família</p>
                         </div>
 
-                        <p className="text-petGray text-sm text-center italic mb-4">"{pet.description}"</p>
+                        <p className="text-petGray dark:text-gray-300 text-sm text-center italic mb-4">
+                          "{pet.description}"
+                        </p>
 
                         <div className="flex justify-center">
                           <div className="flex gap-1">
                             {[...Array(5)].map((_, i) => (
                               <Heart
                                 key={i}
-                                className={`w-3 h-3 ${i < 4 ? 'text-red-400 fill-red-400' : 'text-gray-300'}`}
+                                className={`w-3 h-3 ${
+                                  i < 4 ? 'text-red-400 fill-red-400' : 'text-gray-300 dark:text-gray-600'
+                                }`}
                               />
                             ))}
                           </div>
