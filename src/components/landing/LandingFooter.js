@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Heart, Mail, MapPin, Phone } from 'lucide-react';
+import { Heart, Mail, MapPin, Phone, Instagram } from 'lucide-react';
 
 const LandingFooter = () => {
   return (
@@ -100,6 +100,17 @@ const LandingFooter = () => {
               {/*    Petlândia - BR*/}
               {/*  </span>*/}
               {/*</li>*/}
+              <li className="flex items-center gap-2 text-gray-300">
+                <Instagram className="w-4 h-4" />
+                <a
+                  href="https://www.instagram.com/minhapetpage/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  @minhapetpage
+                </a>
+              </li>
             </ul>
           </div>
         </div>
