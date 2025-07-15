@@ -88,25 +88,25 @@ const LandingFooter = () => {
                 <Mail className="w-4 h-4" />
                 <span>contato@petpage.com.br</span>
               </li>
-              <li className="flex items-center gap-2 text-gray-300">
-                <Phone className="w-4 h-4" />
-                <span>(47) 99999-0000</span>
-              </li>
-              <li className="flex items-start gap-2 text-gray-300">
-                <MapPin className="w-4 h-4 mt-1" />
-                <span>
-                  Rua dos Pets, 123
-                  <br />
-                  Petlândia - BR
-                </span>
-              </li>
+              {/*<li className="flex items-center gap-2 text-gray-300">*/}
+              {/*  <Phone className="w-4 h-4" />*/}
+              {/*  <span>(47) 99999-0000</span>*/}
+              {/*</li>*/}
+              {/*<li className="flex items-start gap-2 text-gray-300">*/}
+              {/*  <MapPin className="w-4 h-4 mt-1" />*/}
+              {/*  <span>*/}
+              {/*    Rua dos Pets, 123*/}
+              {/*    <br />*/}
+              {/*    Petlândia - BR*/}
+              {/*  </span>*/}
+              {/*</li>*/}
             </ul>
           </div>
         </div>
 
         {/* Rodapé final */}
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 PetPage. Todos os direitos reservados. Criando memórias lindas, um pet por vez.</p>
+          <p>&copy; 2023 PetPage. Todos os direitos reservados. Criando memórias lindas, um pet por vez.</p>
         </div>
       </div>
     </footer>

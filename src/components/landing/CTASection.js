@@ -12,7 +12,7 @@ const CTASection = () => {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Pronto para Criar a Página do Seu Pet?</h2>
           <p className="text-xl mb-8 opacity-90">
-            Junte-se a milhares de tutores que já eternizaram os momentos com seus companheiros. Comece a criar agora
+            Junte-se a tutores que já eternizaram os momentos com seus companheiros. Comece a criar agora
             mesmo!
           </p>
 
@@ -41,7 +41,7 @@ const CTASection = () => {
             </Button>
           </div>
 
-          <p className="mt-6 text-sm opacity-75">Sem mensalidade • Garantia de 7 dias • Página pronta em minutos</p>
+          <p className="mt-6 text-sm opacity-75">Sem mensalidade • Página pronta em minutos</p>
         </div>
       </div>
     </section>
