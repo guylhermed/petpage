@@ -141,9 +141,8 @@ const Formulary = ({ formData, setFormData }) => {
         name: cliente.nome || '',
       });
 
-      alert('📡 Enviando dados para AbacatePay...');
-
       let response;
+      alert('📡 Enviando dados para AbacatePay...');
       try {
         response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
           method: 'POST',
@@ -167,6 +166,12 @@ const Formulary = ({ formData, setFormData }) => {
 
       alert(`✅ Status da resposta: ${response.status}`);
 
+      if (!response.ok) {
+        alert(`❌ Erro na resposta da API (status ${response.status})`);
+        setLoading(false);
+        return;
+      }
+
       let data;
       try {
         data = await response.json();
@@ -176,8 +181,6 @@ const Formulary = ({ formData, setFormData }) => {
         setLoading(false);
         return;
       }
-
-      alert('📦 JSON lido: ' + JSON.stringify(data));
 
       if (data?.url) {
         alert(`🔗 Redirecionando para: ${data.url}`);
