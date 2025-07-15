@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
@@ -17,12 +17,18 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
-import { Heart, Settings, Moon, Sun } from 'lucide-react';
+import { Heart, Settings, Moon } from 'lucide-react';
 
 const LandingHeader = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [isDark, setIsDark] = useState(false);
 
-  const handleToggleTheme = checked => {
+  useEffect(() => {
+    setIsDark(resolvedTheme === 'dark');
+  }, [resolvedTheme]);
+
+  const handleToggle = checked => {
+    setIsDark(checked);
     setTheme(checked ? 'dark' : 'light');
   };
 
@@ -63,7 +69,6 @@ const LandingHeader = () => {
 
           {/* Ações */}
           <div className="flex items-center gap-3">
-            {/* Botão flutuante (futuro) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -79,9 +84,8 @@ const LandingHeader = () => {
                     <Moon className="w-4 h-4" />
                     Tema Escuro
                   </span>
-                  <Switch checked={theme === 'dark'} onCheckedChange={handleToggleTheme} />
+                  <Switch checked={isDark} onCheckedChange={handleToggle} />
                 </DropdownMenuItem>
-                {/* Outros ajustes futuros aqui */}
               </DropdownMenuContent>
             </DropdownMenu>
 
