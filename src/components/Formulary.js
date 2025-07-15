@@ -105,13 +105,26 @@ const Formulary = ({ formData, setFormData }) => {
 
     try {
       // Upload das imagens no Firebase
-      const imageUrls = await Promise.all(
-        images.map(async (image, index) => {
-          const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
-          await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
-        })
-      );
+      let imageUrls = [];
+      try {
+        alert('⏫ Enviando imagens...');
+        imageUrls = await Promise.all(
+          images.map(async (image, index) => {
+            const imageRef = ref(
+              storage,
+              `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`
+            );
+            await uploadBytes(imageRef, image);
+            const url = await getDownloadURL(imageRef);
+            return url;
+          })
+        );
+        alert('✅ Imagens enviadas com sucesso!');
+      } catch (erroUpload) {
+        alert(`❌ Erro no upload das imagens: ${erroUpload.message || erroUpload}`);
+        setLoading(false);
+        return;
+      }
 
       // Salvando dados no Firestore com isPaid: false
       await setDoc(doc(db, 'pets', uniqueSlug), {
