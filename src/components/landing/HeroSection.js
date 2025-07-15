@@ -61,11 +61,12 @@ const HeroSection = () => {
           {/* Imagem de destaque / prévia */}
           <div className="relative max-w-4xl mx-auto">
             <div className="bg-white/60 dark:bg-white/10 backdrop-blur-sm border border-gray-200/50 dark:border-white/20 rounded-2xl p-8 shadow-2xl">
-              <div className="aspect-video bg-gradient-to-br from-petPurple/10 to-petBlue/10 rounded-xl flex items-center justify-center">
-                <div className="text-center">
-                  <Heart className="w-16 h-16 text-petPurple/60 mx-auto mb-4" />
-                  <p className="text-petGray dark:text-gray-300 font-medium">Prévia da página linda do seu pet</p>
-                </div>
+              <div className="aspect-video rounded-xl overflow-hidden shadow-xl">
+                <img
+                  src="/capa-petpage.png"
+                  alt="Prévia da página linda do seu pet"
+                  className="w-full h-full object-cover [object-position:center_20%]"
+                />
               </div>
             </div>
 
