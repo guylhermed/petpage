@@ -1,0 +1,116 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { Heart, Mail, MapPin, Phone } from 'lucide-react';
+
+const LandingFooter = () => {
+  return (
+    <footer className="bg-gray-800 text-white py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Marca */}
+          <div className="md:col-span-1">
+            <Link href="/" className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-petPurple to-petBlue rounded-full flex items-center justify-center">
+                <Heart className="w-4 h-4 text-white" />
+              </div>
+              <h3 className="text-xl font-bold">PetPage</h3>
+            </Link>
+            <p className="text-gray-300 mb-4">
+              Criando memórias lindas e duradouras para famílias com pets em todo o Brasil.
+            </p>
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <Heart className="w-4 h-4 text-petPurple" />
+              <span>Feito com amor para os pets</span>
+            </div>
+          </div>
+
+          {/* Produto */}
+          <div>
+            <h4 className="font-semibold mb-4">Produto</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/criar" className="text-gray-300 hover:text-white transition-colors">
+                  Criar Página
+                </Link>
+              </li>
+              <li>
+                <a href="#features" className="text-gray-300 hover:text-white transition-colors">
+                  Recursos
+                </a>
+              </li>
+              <li>
+                <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">
+                  Planos
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="text-gray-300 hover:text-white transition-colors">
+                  Dúvidas
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Suporte */}
+          <div>
+            <h4 className="font-semibold mb-4">Suporte</h4>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                  Central de Ajuda
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                  Fale Conosco
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                  Política de Privacidade
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                  Termos de Uso
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contato */}
+          <div>
+            <h4 className="font-semibold mb-4">Contato</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-gray-300">
+                <Mail className="w-4 h-4" />
+                <span>contato@petpage.com.br</span>
+              </li>
+              <li className="flex items-center gap-2 text-gray-300">
+                <Phone className="w-4 h-4" />
+                <span>(47) 99999-0000</span>
+              </li>
+              <li className="flex items-start gap-2 text-gray-300">
+                <MapPin className="w-4 h-4 mt-1" />
+                <span>
+                  Rua dos Pets, 123
+                  <br />
+                  Petlândia - BR
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Rodapé final */}
+        <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+          <p>&copy; 2024 PetPage. Todos os direitos reservados. Criando memórias lindas, um pet por vez.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default LandingFooter;
