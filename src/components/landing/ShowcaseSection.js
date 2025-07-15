@@ -9,65 +9,65 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 const exemplosPets = [
   {
-    name: 'Luna',
-    type: 'Golden Retriever',
-    timeWithFamily: '2 anos',
-    description: 'A companheira mais doce que traz alegria todos os dias.',
-    image: '/placeholder.svg',
-  },
-  {
-    name: 'Milo',
-    type: 'Gato Laranja (Tabby)',
-    timeWithFamily: '6 meses',
-    description: 'Um explorador curioso com energia infinita e muitos ronrons.',
-    image: '/placeholder.svg',
+    name: 'Lôro',
+    type: 'Papagaio Verde',
+    timeWithFamily: '18 anos',
+    description: 'Esperto e falastrão, adora imitar todos a sua volta.',
+    image: '/loro.png',
   },
   {
     name: 'Bella',
     type: 'Bulldog Francês',
     timeWithFamily: '3 anos',
     description: 'Nossa princesinha que ama carinho na barriga e petiscos.',
-    image: '/placeholder.svg',
-  },
-  {
-    name: 'Charlie',
-    type: 'Maine Coon',
-    timeWithFamily: '1 ano',
-    description: 'Um gigante gentil com o pelo mais macio e o coração maior ainda.',
-    image: '/placeholder.svg',
+    image: '/bella.png',
   },
   {
     name: 'Max',
     type: 'Border Collie',
     timeWithFamily: '4 anos',
     description: 'Um amigo inteligente que adora frisbee e longas caminhadas.',
-    image: '/placeholder.svg',
+    image: '/max.png',
+  },
+  {
+    name: 'Luna',
+    type: 'Golden Retriever',
+    timeWithFamily: '2 anos',
+    description: 'A companheira mais doce que traz alegria todos os dias.',
+    image: '/luna.png',
+  },
+  {
+    name: 'Charlie',
+    type: 'Maine Coon',
+    timeWithFamily: '1 ano',
+    description: 'Um gigante gentil com o pelo mais macio e o coração maior ainda.',
+    image: '/charlie.png',
   },
 ];
 
 const ShowcaseSection = () => {
   return (
-    <section className="py-20 px-4 bg-background text-foreground">
+    <section id="exemplos" className="py-20 px-4 bg-background text-foreground">
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
             Veja o que Outros Donos de Pets Criaram
           </h2>
           <p className="text-xl text-petGray dark:text-gray-300 max-w-2xl mx-auto">
-            Junte-se a milhares de famílias que já criaram páginas lindas para seus pets amados.
+            Junte-se a famílias que já criaram páginas lindas para seus pets amados.
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto">
           <Carousel className="w-full">
-            <CarouselContent className="-ml-2 md:-ml-4">
+            <CarouselContent className="-ml-2 md:-ml-4 md:px-2">
               {exemplosPets.map((pet, index) => (
-                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 md:py-8">
                   <Card className="border-0 bg-white/60 dark:bg-white/10 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 overflow-hidden">
                     <CardContent className="p-0">
                       {/* Imagem do Pet */}
-                      <div className="aspect-square bg-gradient-to-br from-petPurple/10 to-petBlue/10 flex items-center justify-center">
-                        <Heart className="w-16 h-16 text-petPurple/60" />
+                      <div className="aspect-square bg-gradient-to-br from-petPurple/10 to-petBlue/10">
+                        <img src={pet.image} alt={`Foto de ${pet.name}`} className="object-cover w-full h-full" />
                       </div>
 
                       {/* Info do Pet */}

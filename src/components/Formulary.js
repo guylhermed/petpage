@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { useTheme } from 'next-themes';
 
 const { db, storage } = firebaseConfigSelector();
 
@@ -29,6 +30,8 @@ const Formulary = ({ formData, setFormData }) => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [apelidoString, setApelidoString] = useState('');
+
+  const { resolvedTheme } = useTheme();
 
   // Valida se o botão deve ser habilitado
   useEffect(() => {
@@ -218,7 +221,11 @@ const Formulary = ({ formData, setFormData }) => {
   };
 
   return (
-    <Card className="w-full max-w-lg shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+    <Card
+      className={`w-full max-w-lg shadow-lg border-0 backdrop-blur-sm ${
+        resolvedTheme === 'dark' ? 'bg-gray-900' : 'bg-white/80'
+      }`}
+    >
       <CardHeader className="bg-gradient-to-r from-petPurple to-petBlue text-white rounded-t-lg">
         <CardTitle className="flex items-center gap-2 text-xl">
           <Heart className="w-5 h-5 animate-bounce-gentle" />
@@ -229,7 +236,7 @@ const Formulary = ({ formData, setFormData }) => {
       <CardContent className="p-6 space-y-6">
         {/* Nome do Pet */}
         <div className="space-y-2">
-          <Label htmlFor="nome-pet" className="text-petPurple font-medium">
+          <Label htmlFor="nome-pet" className="font-medium text-foreground">
             Nome do Pet
           </Label>
           <Input
@@ -240,13 +247,16 @@ const Formulary = ({ formData, setFormData }) => {
           />
         </div>
 
-        {/* Datas - switches e inputs */}
+        {/* Datas */}
         <div className="space-y-3">
-          {/* Nascimento */}
-          <div className="flex items-center justify-between p-3 bg-petLight rounded-xl">
+          <div
+            className={`flex items-center justify-between p-3 rounded-xl ${
+              resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'
+            }`}
+          >
             <div>
-              <Label className="text-petPurple font-medium">Incluir Data de Nascimento</Label>
-              <p className="text-sm text-petGray">Aparecerá na página</p>
+              <Label className="font-medium text-foreground">Incluir Data de Nascimento</Label>
+              <p className="text-sm text-muted-foreground">Aparecerá na página</p>
             </div>
             <Switch checked={birthDateEnabled} onCheckedChange={setBirthDateEnabled} />
           </div>
@@ -258,11 +268,14 @@ const Formulary = ({ formData, setFormData }) => {
             />
           )}
 
-          {/* Adoção */}
-          <div className="flex items-center justify-between p-3 bg-petLight rounded-xl">
+          <div
+            className={`flex items-center justify-between p-3 rounded-xl ${
+              resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'
+            }`}
+          >
             <div>
-              <Label className="text-petPurple font-medium">Incluir Data de Adoção</Label>
-              <p className="text-sm text-petGray">Quando o pet chegou até você</p>
+              <Label className="font-medium text-foreground">Incluir Data de Adoção</Label>
+              <p className="text-sm text-muted-foreground">Quando o pet chegou até você</p>
             </div>
             <Switch checked={adoptionDateEnabled} onCheckedChange={setAdoptionDateEnabled} />
           </div>
@@ -275,39 +288,12 @@ const Formulary = ({ formData, setFormData }) => {
           )}
         </div>
 
-        {/*/!* Apelidos *!/*/}
-        {/*<div className="space-y-2">*/}
-        {/*  <Label htmlFor="apelido" className="text-petPurple font-medium">*/}
-        {/*    Apelidos*/}
-        {/*  </Label>*/}
-        {/*  <div className="flex gap-2">*/}
-        {/*    <Input*/}
-        {/*      id="apelido"*/}
-        {/*      value={nickname}*/}
-        {/*      onChange={e => setNickname(e.target.value)}*/}
-        {/*      placeholder="Ex: fofucho"*/}
-        {/*    />*/}
-        {/*    <Button type="button" onClick={handleAddNickname}>*/}
-        {/*      Adicionar*/}
-        {/*    </Button>*/}
-        {/*  </div>*/}
-        {/*  {nicknames.length > 0 && (*/}
-        {/*    <div className="flex flex-wrap gap-2 mt-2">*/}
-        {/*      {nicknames.map((nick, idx) => (*/}
-        {/*        <span key={idx} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">*/}
-        {/*          {nick}*/}
-        {/*        </span>*/}
-        {/*      ))}*/}
-        {/*    </div>*/}
-        {/*  )}*/}
-        {/*</div>*/}
-
-        {/* Apelidos separados por vírgula */}
+        {/* Apelidos */}
         <div className="space-y-2">
-          <Label htmlFor="apelidos" className="text-petPurple font-medium">
+          <Label htmlFor="apelidos" className="font-medium text-foreground">
             Apelidos
           </Label>
-          <p className="text-xs text-petGray">Separe os apelidos com vírgulas (,)</p>
+          <p className="text-xs text-muted-foreground">Separe os apelidos com vírgulas (,)</p>
           <Input
             id="apelidos"
             value={apelidoString}
@@ -412,8 +398,10 @@ const Formulary = ({ formData, setFormData }) => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-gray-800">{texto}</p>
-                  <p className="text-sm text-petGray">{tipo === 'basico' ? 'Plano temporário' : 'Para sempre'}</p>
+                  <p className="font-semibold text-foreground">{texto}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {tipo === 'basico' ? 'Plano temporário' : 'Para sempre'}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-petPurple font-bold">{preco}</span>
