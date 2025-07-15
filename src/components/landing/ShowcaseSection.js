@@ -40,7 +40,7 @@ const exemplosPets = [
     name: 'Charlie',
     type: 'Maine Coon',
     timeWithFamily: '1 ano',
-    description: 'Um gigante gentil com o pelo mais macio e o coração maior ainda.',
+    description: 'Um gigante gentil com o coração maior ainda.',
     image: '/charlie.png',
   },
 ];
@@ -58,11 +58,11 @@ const ShowcaseSection = () => {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto">
+        <div className="relative w-full">
           <Carousel className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4 md:px-2">
               {exemplosPets.map((pet, index) => (
-                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 md:py-8">
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 md:py-8 py-8">
                   <Card className="border-0 bg-white/60 dark:bg-white/10 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 overflow-hidden">
                     <CardContent className="p-0">
                       {/* Imagem do Pet */}
@@ -104,18 +104,18 @@ const ShowcaseSection = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 bg-white dark:bg-gray-800 rounded-full shadow-md border md:left-0" />
+            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 bg-white dark:bg-gray-800 rounded-full shadow-md border md:right-0" />
           </Carousel>
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 px-4">
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 text-white rounded-xl px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200"
+            className="w-full max-w-sm mx-auto bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 text-white rounded-xl py-3 text-lg shadow-lg hover:shadow-xl"
           >
-            <Link href="/criar" className="flex items-center gap-2">
+            <Link href="/criar" className="flex items-center justify-center gap-2">
               <Heart className="w-5 h-5" />
               Criar Página do Seu Pet Agora
               <ArrowRight className="w-5 h-5" />
