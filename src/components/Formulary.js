@@ -142,6 +142,7 @@ const Formulary = ({ formData, setFormData }) => {
       });
 
       // Chamada para AbacatePay
+      alert('📡 Enviando dados para AbacatePay...');
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: {
@@ -157,11 +158,12 @@ const Formulary = ({ formData, setFormData }) => {
         }),
       });
 
+      alert('✅ Resposta recebida. Lendo JSON...');
       const data = await response.json();
-      alert('🔁 Resposta da AbacatePay recebida!');
+      alert('📦 JSON lido: ' + JSON.stringify(data));
 
       if (data?.url) {
-        alert(`✅ Redirecionando para: ${data.url}`);
+        alert(`🔗 Redirecionando para: ${data.url}`);
         router.push(data.url);
       } else {
         alert(`❌ Nenhuma URL recebida.\nResposta: ${JSON.stringify(data)}`);
