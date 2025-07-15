@@ -2,18 +2,32 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
-import { Heart } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
+import { Heart, Settings, Moon, Sun } from 'lucide-react';
 
 const LandingHeader = () => {
+  const { theme, setTheme } = useTheme();
+
+  const handleToggleTheme = checked => {
+    setTheme(checked ? 'dark' : 'light');
+  };
+
   return (
-    <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-50">
+    <header className="bg-background text-foreground border-b border-gray-200/50 dark:border-gray-800 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -29,43 +43,48 @@ const LandingHeader = () => {
           {/* Navegação */}
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
-                  href="#features"
-                >
-                  Recursos
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
-                  href="#how-it-works"
-                >
-                  Como Funciona
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
-                  href="#pricing"
-                >
-                  Planos
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
-                  href="#faq"
-                >
-                  Dúvidas
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+              {[
+                { href: '#features', label: 'Recursos' },
+                { href: '#how-it-works', label: 'Como Funciona' },
+                { href: '#pricing', label: 'Planos' },
+                { href: '#faq', label: 'Dúvidas' },
+              ].map(({ href, label }) => (
+                <NavigationMenuItem key={href}>
+                  <NavigationMenuLink
+                    className="px-4 py-2 text-petGray dark:text-gray-300 hover:text-petPurple transition-colors"
+                    href={href}
+                  >
+                    {label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
             </NavigationMenuList>
           </NavigationMenu>
 
-          {/* Botões de ação */}
+          {/* Ações */}
           <div className="flex items-center gap-3">
+            {/* Botão flutuante (futuro) */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  aria-label="Abrir configurações"
+                >
+                  <Settings className="w-5 h-5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-60">
+                <DropdownMenuItem className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <Moon className="w-4 h-4" />
+                    Tema Escuro
+                  </span>
+                  <Switch checked={theme === 'dark'} onCheckedChange={handleToggleTheme} />
+                </DropdownMenuItem>
+                {/* Outros ajustes futuros aqui */}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button variant="outline" className="hidden sm:flex rounded-xl">
               Ver Minha Página
             </Button>

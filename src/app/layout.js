@@ -1,6 +1,7 @@
 import './styles/globals.css';
 import { Poppins } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider } from 'next-themes';
 
 const mainFontFamily = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -15,7 +16,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" className={mainFontFamily.variable}>
+    <html lang="pt-BR" className={mainFontFamily.variable} suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -26,8 +27,10 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        {children}
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
