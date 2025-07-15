@@ -251,7 +251,7 @@ const Formulary = ({ formData, setFormData }) => {
         <div className="space-y-3">
           <div
             className={`flex items-center justify-between p-3 rounded-xl ${
-              resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-800'
+              resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'
             }`}
           >
             <div>
@@ -270,7 +270,7 @@ const Formulary = ({ formData, setFormData }) => {
 
           <div
             className={`flex items-center justify-between p-3 rounded-xl ${
-              resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-800'
+              resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'
             }`}
           >
             <div>

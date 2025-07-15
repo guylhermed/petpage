@@ -4,11 +4,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, X, Share } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useTheme } from 'next-themes';
 
 const Preview = ({ formData }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeView, setActiveView] = useState('message');
   const [enlargedPhoto, setEnlargedPhoto] = useState(null);
+
+  const { resolvedTheme } = useTheme();
 
   // Formata o nome do pet para o URL
   const petPageUrl = `petpage.com/${formData.name ? formData.name.toLowerCase().replace(/\s+/g, '-') : ''}`;
@@ -68,7 +71,9 @@ const Preview = ({ formData }) => {
 
   return (
     <>
-      <Card className="w-full max-w-lg shadow-2xl border-0 bg-white/90 backdrop-blur-sm overflow-hidden">
+      <Card
+        className={`w-full max-w-lg shadow-2xl border-0 overflow-hidden backdrop-blur-sm ${resolvedTheme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white/90 text-gray-800'}`}
+      >
         <div className="h-32 bg-gradient-to-br from-petPurple via-petBlue to-purple-600 relative">
           <div className="absolute inset-0 bg-black/10" />
           <div className="absolute top-4 right-4">
@@ -95,7 +100,7 @@ const Preview = ({ formData }) => {
           </div>
 
           <div className="text-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-1">{formData.name || 'Nome do Pet'}</h1>
+            <h1 className="text-2xl font-bold mb-1">{formData.name || 'Nome do Pet'}</h1>
             {formatNicknames() && <p className="text-petGray text-sm font-medium">{formatNicknames()}</p>}
           </div>
 
@@ -128,24 +133,22 @@ const Preview = ({ formData }) => {
             <>
               {formData.message && (
                 <div className="bg-petLight rounded-xl p-4 mb-4">
-                  <p className="text-gray-700 text-center italic leading-relaxed">"{formData.message}"</p>
+                  <p className="text-gray-700 dark:text-gray-300 text-center italic leading-relaxed">
+                    "{formData.message}"
+                  </p>
                 </div>
               )}
-
               {dataTexto && (
                 <div className="text-center text-sm text-petGray mb-4">
                   <p>{dataTexto}</p>
                 </div>
               )}
-
               <div className="flex justify-center">
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Heart
                       key={i}
-                      className={`w-4 h-4 ${
-                        i < 3 ? 'text-red-400 fill-red-400' : 'text-gray-300'
-                      } transition-all duration-200 hover:scale-110`}
+                      className={`w-4 h-4 ${i < 3 ? 'text-red-400 fill-red-400' : 'text-gray-300'} transition-all duration-200 hover:scale-110`}
                     />
                   ))}
                 </div>
@@ -195,16 +198,15 @@ const Preview = ({ formData }) => {
 
               <div className="space-y-2">
                 <p className="text-sm font-medium text-petPurple text-center mb-3">Compartilhar</p>
-
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { platform: 'whatsapp', label: 'WhatsApp', color: 'green-500', text: 'green-600' },
-                    { platform: 'facebook', label: 'Facebook', color: 'blue-600', text: 'blue-600' },
-                    { platform: 'instagram', label: 'Instagram', color: 'pink-500', text: 'pink-500' },
-                    { platform: 'twitter', label: 'Twitter', color: 'blue-400', text: 'blue-400' },
-                  ].map(({ platform, label, color, text }) => (
+                    { label: 'WhatsApp', color: 'bg-green-500', text: 'text-green-600' },
+                    { label: 'Facebook', color: 'bg-blue-600', text: 'text-blue-600' },
+                    { label: 'Instagram', color: 'bg-pink-500', text: 'text-pink-500' },
+                    { label: 'Twitter', color: 'bg-blue-400', text: 'text-blue-400' },
+                  ].map(({ label, color, text }) => (
                     <Button
-                      key={platform}
+                      key={label}
                       variant="outline"
                       size="sm"
                       onClick={() =>
@@ -213,7 +215,7 @@ const Preview = ({ formData }) => {
                           description: 'Após criar sua PetPage, os botões estarão ativos para compartilhar.',
                         })
                       }
-                      className={`rounded-xl border-${color} text-${text} hover:bg-${color}/10`}
+                      className={`rounded-xl ${text} hover:${color}/10`}
                     >
                       <Share className="w-4 h-4 mr-2" />
                       {label}
