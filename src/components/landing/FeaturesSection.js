@@ -46,7 +46,7 @@ const FeaturesSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Tudo que Você Precisa para Celebrar seu Pet
           </h2>
-          <p className="text-xl text-pet-gray max-w-2xl mx-auto">
+          <p className="text-xl text-petGray max-w-2xl mx-auto">
             Nossa plataforma oferece todas as ferramentas para criar uma homenagem bonita e duradoura ao seu pet
             querido.
           </p>
@@ -59,13 +59,13 @@ const FeaturesSection = () => {
               className="border-0 bg-white/60 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
             >
               <CardHeader className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-pet-purple to-pet-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-petPurple to-petBlue rounded-full flex items-center justify-center mx-auto mb-4">
                   <recurso.icon className="w-6 h-6 text-white" />
                 </div>
                 <CardTitle className="text-xl font-semibold text-gray-800">{recurso.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-pet-gray text-center leading-relaxed">{recurso.description}</p>
+                <p className="text-petGray text-center leading-relaxed">{recurso.description}</p>
               </CardContent>
             </Card>
           ))}

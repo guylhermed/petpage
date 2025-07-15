@@ -18,10 +18,10 @@ const LandingHeader = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-pet-purple to-pet-blue rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-r from-petPurple to-petBlue rounded-full flex items-center justify-center">
               <Heart className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-pet-purple to-pet-blue bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-petPurple to-petBlue bg-clip-text text-transparent">
               PetPage
             </h1>
           </Link>
@@ -31,7 +31,7 @@ const LandingHeader = () => {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuLink
-                  className="px-4 py-2 text-pet-gray hover:text-pet-purple transition-colors"
+                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
                   href="#features"
                 >
                   Recursos
@@ -39,7 +39,7 @@ const LandingHeader = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink
-                  className="px-4 py-2 text-pet-gray hover:text-pet-purple transition-colors"
+                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
                   href="#how-it-works"
                 >
                   Como Funciona
@@ -47,7 +47,7 @@ const LandingHeader = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink
-                  className="px-4 py-2 text-pet-gray hover:text-pet-purple transition-colors"
+                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
                   href="#pricing"
                 >
                   Planos
@@ -55,7 +55,7 @@ const LandingHeader = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink
-                  className="px-4 py-2 text-pet-gray hover:text-pet-purple transition-colors"
+                  className="px-4 py-2 text-petGray hover:text-petPurple transition-colors"
                   href="#faq"
                 >
                   Dúvidas
@@ -71,7 +71,7 @@ const LandingHeader = () => {
             </Button>
             <Button
               asChild
-              className="bg-gradient-to-r from-pet-purple to-pet-blue hover:from-pet-purple/90 hover:to-pet-blue/90 rounded-xl"
+              className="bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 rounded-xl"
             >
               <Link href="/criar">Criar Página</Link>
             </Button>

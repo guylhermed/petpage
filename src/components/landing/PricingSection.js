@@ -49,7 +49,7 @@ const PricingSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Preços Simples e Transparentes</h2>
-          <p className="text-xl text-pet-gray max-w-2xl mx-auto">
+          <p className="text-xl text-petGray max-w-2xl mx-auto">
             Escolha o plano que melhor se encaixa para você. Sem mensalidades, sem taxas escondidas.
           </p>
         </div>
@@ -60,12 +60,12 @@ const PricingSection = () => {
               key={index}
               className={`relative border-0 shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden ${
                 plano.popular
-                  ? 'bg-gradient-to-br from-pet-purple/5 to-pet-blue/5 ring-2 ring-pet-purple/20'
+                  ? 'bg-gradient-to-br from-petPurple/5 to-petBlue/5 ring-2 ring-petPurple/20'
                   : 'bg-white/80 backdrop-blur-sm'
               }`}
             >
               {plano.popular && (
-                <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-pet-purple to-pet-blue text-white text-center py-2">
+                <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-petPurple to-petBlue text-white text-center py-2">
                   <div className="flex items-center justify-center gap-1">
                     <Star className="w-4 h-4 fill-current" />
                     <span className="text-sm font-semibold">Mais Popular</span>
@@ -77,10 +77,10 @@ const PricingSection = () => {
               <CardHeader className={`text-center ${plano.popular ? 'pt-12' : 'pt-8'}`}>
                 <CardTitle className="text-2xl font-bold text-gray-800 mb-2">{plano.nome}</CardTitle>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-pet-purple">{plano.preco}</span>
-                  <span className="text-pet-gray ml-2">{plano.validade}</span>
+                  <span className="text-4xl font-bold text-petPurple">{plano.preco}</span>
+                  <span className="text-petGray ml-2">{plano.validade}</span>
                 </div>
-                <p className="text-pet-gray">{plano.descricao}</p>
+                <p className="text-petGray">{plano.descricao}</p>
               </CardHeader>
 
               <CardContent className="px-8 pb-8">
@@ -88,7 +88,7 @@ const PricingSection = () => {
                   {plano.recursos.map((recurso, recursoIndex) => (
                     <li key={recursoIndex} className="flex items-center gap-3">
                       <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-pet-gray">{recurso}</span>
+                      <span className="text-petGray">{recurso}</span>
                     </li>
                   ))}
                 </ul>
@@ -97,8 +97,8 @@ const PricingSection = () => {
                   asChild
                   className={`w-full rounded-xl py-3 text-lg transition-all duration-200 ${
                     plano.popular
-                      ? 'bg-gradient-to-r from-pet-purple to-pet-blue hover:from-pet-purple/90 hover:to-pet-blue/90 text-white shadow-lg hover:shadow-xl'
-                      : 'border-2 border-pet-purple text-pet-purple hover:bg-pet-purple hover:text-white'
+                      ? 'bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 text-white shadow-lg hover:shadow-xl'
+                      : 'border-2 border-petPurple text-petPurple hover:bg-petPurple hover:text-white'
                   }`}
                   variant={plano.popular ? 'default' : 'outline'}
                 >
@@ -113,9 +113,9 @@ const PricingSection = () => {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-pet-gray">
+          <p className="text-petGray">
             Todos os planos têm garantia de reembolso de 7 dias. Dúvidas?{' '}
-            <a href="#faq" className="text-pet-purple hover:underline">
+            <a href="#faq" className="text-petPurple hover:underline">
               Veja nosso FAQ
             </a>
           </p>

@@ -51,7 +51,7 @@ const ShowcaseSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Veja o que Outros Donos de Pets Criaram</h2>
-          <p className="text-xl text-pet-gray max-w-2xl mx-auto">
+          <p className="text-xl text-petGray max-w-2xl mx-auto">
             Junte-se a milhares de famílias que já criaram páginas lindas para seus pets amados.
           </p>
         </div>
@@ -64,23 +64,23 @@ const ShowcaseSection = () => {
                   <Card className="border-0 bg-white/60 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 overflow-hidden">
                     <CardContent className="p-0">
                       {/* Imagem do Pet */}
-                      <div className="aspect-square bg-gradient-to-br from-pet-purple/10 to-pet-blue/10 flex items-center justify-center">
-                        <Heart className="w-16 h-16 text-pet-purple/60" />
+                      <div className="aspect-square bg-gradient-to-br from-petPurple/10 to-petBlue/10 flex items-center justify-center">
+                        <Heart className="w-16 h-16 text-petPurple/60" />
                       </div>
 
                       {/* Info do Pet */}
                       <div className="p-6">
                         <div className="text-center mb-4">
                           <h3 className="text-xl font-bold text-gray-800 mb-1">{pet.name}</h3>
-                          <p className="text-pet-gray text-sm font-medium">{pet.type}</p>
+                          <p className="text-petGray text-sm font-medium">{pet.type}</p>
                         </div>
 
-                        <div className="bg-gradient-to-r from-pet-purple/10 to-pet-blue/10 rounded-xl p-3 mb-4 text-center">
-                          <p className="text-pet-purple font-semibold">{pet.timeWithFamily}</p>
-                          <p className="text-pet-gray text-xs">com a família</p>
+                        <div className="bg-gradient-to-r from-petPurple/10 to-petBlue/10 rounded-xl p-3 mb-4 text-center">
+                          <p className="text-petPurple font-semibold">{pet.timeWithFamily}</p>
+                          <p className="text-petGray text-xs">com a família</p>
                         </div>
 
-                        <p className="text-pet-gray text-sm text-center italic mb-4">"{pet.description}"</p>
+                        <p className="text-petGray text-sm text-center italic mb-4">"{pet.description}"</p>
 
                         <div className="flex justify-center">
                           <div className="flex gap-1">
@@ -107,7 +107,7 @@ const ShowcaseSection = () => {
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-pet-purple to-pet-blue hover:from-pet-purple/90 hover:to-pet-blue/90 text-white rounded-xl px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200"
+            className="bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 text-white rounded-xl px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200"
           >
             <Link href="/criar" className="flex items-center gap-2">
               <Heart className="w-5 h-5" />

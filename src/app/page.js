@@ -15,7 +15,7 @@ import LandingFooter from '@/components/landing/LandingFooter';
 
 export default function PaginaInicial() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pet-light via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-petLight via-white to-purple-50">
       <LandingHeader />
 
       <main>

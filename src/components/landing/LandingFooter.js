@@ -12,7 +12,7 @@ const LandingFooter = () => {
           {/* Marca */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-pet-purple to-pet-blue rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-petPurple to-petBlue rounded-full flex items-center justify-center">
                 <Heart className="w-4 h-4 text-white" />
               </div>
               <h3 className="text-xl font-bold">PetPage</h3>
@@ -21,7 +21,7 @@ const LandingFooter = () => {
               Criando memórias lindas e duradouras para famílias com pets em todo o Brasil.
             </p>
             <div className="flex items-center gap-2 text-sm text-gray-400">
-              <Heart className="w-4 h-4 text-pet-purple" />
+              <Heart className="w-4 h-4 text-petPurple" />
               <span>Feito com amor para os pets</span>
             </div>
           </div>

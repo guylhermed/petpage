@@ -34,7 +34,7 @@ const HowItWorksSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Como Funciona</h2>
-          <p className="text-xl text-pet-gray max-w-2xl mx-auto">
+          <p className="text-xl text-petGray max-w-2xl mx-auto">
             Criar uma página linda para seu pet é simples e leva apenas alguns minutos.
           </p>
         </div>
@@ -44,20 +44,20 @@ const HowItWorksSection = () => {
             <div key={index} className="relative">
               <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-lg h-full">
                 <CardContent className="p-8 text-center">
-                  <div className="text-6xl font-bold text-pet-purple/20 mb-4">{etapa.number}</div>
+                  <div className="text-6xl font-bold text-petPurple/20 mb-4">{etapa.number}</div>
 
-                  <div className="w-16 h-16 bg-gradient-to-r from-pet-purple to-pet-blue rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-petPurple to-petBlue rounded-full flex items-center justify-center mx-auto mb-6">
                     <etapa.icon className="w-8 h-8 text-white" />
                   </div>
 
                   <h3 className="text-xl font-semibold text-gray-800 mb-4">{etapa.title}</h3>
 
-                  <p className="text-pet-gray leading-relaxed">{etapa.description}</p>
+                  <p className="text-petGray leading-relaxed">{etapa.description}</p>
                 </CardContent>
               </Card>
 
               {index < etapas.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-pet-purple/30">
+                <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-petPurple/30">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M7 17L17 7M17 7H7M17 7V17"

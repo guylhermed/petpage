@@ -7,7 +7,7 @@ import { Heart, ArrowRight } from 'lucide-react';
 
 const CTASection = () => {
   return (
-    <section className="py-20 px-4 bg-gradient-to-r from-pet-purple to-pet-blue text-white">
+    <section className="py-20 px-4 bg-gradient-to-r from-petPurple to-petBlue text-white">
       <div className="container mx-auto text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Pronto para Criar a Página do Seu Pet?</h2>
@@ -21,7 +21,7 @@ const CTASection = () => {
               asChild
               size="lg"
               variant="secondary"
-              className="bg-white text-pet-purple hover:bg-gray-50 rounded-xl px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-white text-petPurple hover:bg-gray-50 rounded-xl px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <Link href="/criar" className="flex items-center gap-2">
                 <Heart className="w-5 h-5" />
