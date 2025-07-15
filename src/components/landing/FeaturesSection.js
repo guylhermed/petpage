@@ -23,13 +23,13 @@ const recursos = [
   },
   {
     icon: Shield,
-    title: 'Privacidade Segura',
-    description: 'Defina quem pode ver a página do seu pet com opções de privacidade e hospedagem segura.',
+    title: 'Memória Eterna',
+    description: 'Guarde com carinho a história do seu pet e celebre para sempre os momentos vividos juntos.',
   },
   {
     icon: Palette,
     title: 'Design Encantador',
-    description: 'Modelos profissionais que deixam qualquer pet incrível — sem precisar entender de design.',
+    description: 'Você só preenche… a mágica do design a gente já deixou pronta!',
   },
   {
     icon: Globe,
@@ -44,7 +44,7 @@ const FeaturesSection = () => {
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
-            Tudo que Você Precisa para Celebrar seu Pet
+            Tudo que Você Precisa para Eternizar seu Pet
           </h2>
           <p className="text-xl text-petGray dark:text-gray-300 max-w-2xl mx-auto">
             Nossa plataforma oferece todas as ferramentas para criar uma homenagem bonita e duradoura ao seu pet

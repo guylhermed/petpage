@@ -10,10 +10,10 @@ const planos = [
   {
     nome: 'Plano Básico',
     preco: 'R$9,99',
-    validade: 'por 1 ano',
+    validade: '30 dias',
     descricao: 'Ideal para quem quer começar com uma linda homenagem.',
     recursos: [
-      'Página personalizada válida por 1 ano',
+      'Página personalizada válida por 30 dias',
       'Até 3 fotos na galeria',
       'Perfil com nome, datas e mensagem',
       'Compartilhamento via QR Code',
@@ -30,13 +30,14 @@ const planos = [
     descricao: 'A memória do seu pet para sempre com você.',
     recursos: [
       'Página permanente (vitalícia)',
-      'Até 10 fotos e 1 vídeo',
+      'Até 10 fotos na galeria',
       'Perfil com nome, datas e mensagem',
       'Compartilhamento via QR Code',
       'Integração com redes sociais',
       'Layout adaptado para celular',
       'Suporte prioritário',
       'Mais opções de personalização',
+      'Acesso antecipado a novos recursos',
     ],
     popular: true,
     textoBotao: 'Escolher Plano Vitalício',
@@ -116,7 +117,7 @@ const PricingSection = () => {
 
         <div className="text-center mt-12">
           <p className="text-petGray dark:text-gray-300">
-            Todos os planos têm garantia de reembolso de 7 dias. Dúvidas?{' '}
+            Dúvidas?{' '}
             <a href="#faq" className="text-petPurple hover:underline">
               Veja nosso FAQ
             </a>

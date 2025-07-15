@@ -59,12 +59,14 @@ export default function ModalDadosObrigatorios({ aberto, aoFechar, aoConfirmar }
   return (
     <>
       <Dialog open={aberto} onOpenChange={aoFechar}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-xl border border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Bora gerar seu Pix? Só preencher aqui:</DialogTitle>
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-petPurple to-petBlue bg-clip-text text-transparent text-center">
+              Bora gerar seu Pix?
+            </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="space-y-4 mt-4">
             <Input placeholder="Nome completo" value={nome} onChange={e => setNome(e.target.value)} />
             <Input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)} />
             <Input
@@ -78,21 +80,26 @@ export default function ModalDadosObrigatorios({ aberto, aoFechar, aoConfirmar }
               onChange={e => setTelefone(formatarTelefone(e.target.value))}
             />
 
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={aoFechar}>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="ghost" onClick={aoFechar}>
                 Cancelar
               </Button>
-              <Button onClick={handleConfirmar}>Ir para pagamento</Button>
+              <Button
+                onClick={handleConfirmar}
+                className="bg-gradient-to-r from-petPurple to-petBlue text-white hover:from-petPurple/90 hover:to-petBlue/90"
+              >
+                Ir para pagamento
+              </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={alertaAberto} onOpenChange={setAlertaAberto}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
           <AlertDialogHeader>
-            <AlertDialogTitle>⚠️ Campos obrigatórios</AlertDialogTitle>
-            <p>Por favor, preencha todos os campos antes de continuar.</p>
+            <AlertDialogTitle className="text-red-600 dark:text-red-400">⚠️ Campos obrigatórios</AlertDialogTitle>
+            <p className="text-gray-600 dark:text-gray-300">Por favor, preencha todos os campos antes de continuar.</p>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => setAlertaAberto(false)}>Fechar</AlertDialogAction>
