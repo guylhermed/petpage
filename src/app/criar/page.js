@@ -184,7 +184,7 @@ export default function CriarPagina() {
 
           {/* Preview */}
           <div className="order-1 lg:order-2 animate-fade-in">
-            <div className="mb-6">
+            <div className="mb-11">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Visualização em tempo real</h3>
               <p className="text-petGray dark:text-gray-300">
                 Veja como sua página ficará antes de finalizar a criação.
@@ -196,9 +196,9 @@ export default function CriarPagina() {
           </div>
         </div>
         {/* Botão fora do Formulary — redirecionamento 100% compatível */}
-        <div className="max-w-6xl mx-auto pr-9 mt-10">
+        <div className="max-w-6xl mx-auto xl:pr-9 mt-10">
           <Button
-            className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-3 font-medium"
+            className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-9 text-xl font-bold"
             onClick={async () => {
               if (!isButtonEnabled || loading) return;
 
