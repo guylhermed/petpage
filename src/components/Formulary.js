@@ -104,7 +104,7 @@ const Formulary = ({ formData, setFormData }) => {
     setLoading(true);
 
     try {
-      // Upload das imagens no Firebase
+      // Upload das imagens
       let imageUrls = [];
       try {
         alert('⏫ Enviando imagens...');
@@ -126,14 +126,14 @@ const Formulary = ({ formData, setFormData }) => {
         return;
       }
 
-      // Salvando dados no Firestore com isPaid: false
+      // Salvar dados no Firestore
       await setDoc(doc(db, 'pets', uniqueSlug), {
         ...formData,
         images: imageUrls,
         createdAt: new Date(),
         isPaid: false,
         paymentMethod: '',
-        userEmail: email || '',
+        userEmail: email,
         petId,
         uniqueSlug,
         cellphone: cliente.telefone || '',
@@ -141,50 +141,41 @@ const Formulary = ({ formData, setFormData }) => {
         name: cliente.nome || '',
       });
 
-      let response;
       alert('📡 Enviando dados para AbacatePay...');
-      try {
-        response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            uniqueSlug,
-            selectedPlan: formData.selectedPlan,
-            emailCliente: email,
-            nomeCliente: cliente.nome,
-            cellCliente: cliente.telefone,
-            cpfCnpjCliente: cliente.cpfCnpj,
-          }),
-        });
-      } catch (erroFetch) {
-        alert(`❌ Erro ao chamar API: ${erroFetch.message}`);
-        setLoading(false);
-        return;
-      }
+      const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          uniqueSlug,
+          selectedPlan: formData.selectedPlan,
+          emailCliente: email,
+          nomeCliente: cliente.nome,
+          cellCliente: cliente.telefone,
+          cpfCnpjCliente: cliente.cpfCnpj,
+        }),
+      });
 
       alert(`✅ Status da resposta: ${response.status}`);
-
       if (!response.ok) {
         alert(`❌ Erro na resposta da API (status ${response.status})`);
         setLoading(false);
         return;
       }
 
-      let data;
-      try {
-        data = await response.json();
-        alert('📦 JSON lido com sucesso: ' + JSON.stringify(data));
-      } catch (erroJson) {
-        alert(`❌ Erro ao ler JSON: ${erroJson.message}`);
-        setLoading(false);
-        return;
-      }
+      const data = await response.json();
+      alert('📦 JSON lido com sucesso: ' + JSON.stringify(data));
 
       if (data?.url) {
         alert(`🔗 Redirecionando para: ${data.url}`);
-        router.push(data.url);
+
+        // Fecha o modal antes de redirecionar
+        setMostrarModal(false);
+
+        // Espera o modal fechar e redireciona
+        setTimeout(() => {
+          // router.push(data.url); // Se continuar falhando no iOS, troque por:
+          window.location.href = data.url;
+        }, 300);
       } else {
         alert(`❌ Nenhuma URL recebida.\nResposta: ${JSON.stringify(data)}`);
       }
@@ -198,7 +189,7 @@ const Formulary = ({ formData, setFormData }) => {
   async function aoConfirmarModal(dadosCliente) {
     setLoading(true);
     await criarCobrancaAbacatepay(dadosCliente);
-    setLoading(false);
+    // Removido setLoading(false), já está no finally
   }
 
   const handlePhotoUpload = event => {
