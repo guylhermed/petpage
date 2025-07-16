@@ -54,7 +54,7 @@ const Formulary = ({
       let processedCount = 0;
 
       Array.from(files)
-        .slice(0, 5 - formData.galleryPhotos.length)
+        .slice(0, limiteFotosGaleria - formData.galleryPhotos.length)
         .forEach(file => {
           const reader = new FileReader();
           reader.onload = e => {
@@ -87,6 +87,8 @@ const Formulary = ({
       return { ...prev, galleryPhotos: novasFotos };
     });
   };
+
+  const limiteFotosGaleria = formData.selectedPlan === 'vitalicio' ? 10 : 3;
 
   return (
     <>
@@ -234,8 +236,7 @@ const Formulary = ({
 
           {/* Galeria */}
           <div className="space-y-2">
-            <Label className="text-petPurple font-medium">Fotos da Galeria (até 5)</Label>
-
+            <Label className="text-petPurple font-medium">Fotos da Galeria (até {limiteFotosGaleria})</Label>
             {formData.galleryPhotos.length > 0 && (
               <div className="grid grid-cols-3 gap-2">
                 {formData.galleryPhotos.map((photo, idx) => (
@@ -271,7 +272,7 @@ const Formulary = ({
                     <polyline points="7 9 12 4 17 9" />
                     <line x1="12" y1="4" x2="12" y2="16" />
                   </svg>
-                  Adicionar imagens ({5 - formData.galleryPhotos.length} restantes)
+                  Adicionar imagens ({limiteFotosGaleria - formData.galleryPhotos.length} restantes)
                 </label>
               </div>
             )}
@@ -311,6 +312,13 @@ const Formulary = ({
                 </div>
               </div>
             ))}
+            {/* Mensagem para plano vitalício */}
+            {formData.selectedPlan === 'vitalicio' && (
+              <p className="text-sm text-petPurple mt-1 px-2">
+                Com o plano <strong>vitalício</strong>, você pode enviar até <strong>10 fotos</strong> na galeria — 7 a
+                mais que o plano de 30 dias.
+              </p>
+            )}
           </div>
 
           {mostrarSecaoPagamento && (
