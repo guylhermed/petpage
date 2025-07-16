@@ -54,22 +54,16 @@ const Formulary = ({ formData, setFormData }) => {
   }, [formData, birthDateEnabled, adoptionDateEnabled]);
 
   useEffect(() => {
-    if (!birthDateEnabled) setFormData(prev => ({ ...prev, birthDate: '' }));
-  }, [birthDateEnabled]);
+    setFormData(prev => ({
+      ...prev,
+      mostrarDataNascimento: birthDateEnabled,
+      birthDate: birthDateEnabled ? prev.birthDate : '',
+      mostrarDataAdocao: adoptionDateEnabled,
+      adoptionDate: adoptionDateEnabled ? prev.adoptionDate : '',
+    }));
+  }, [birthDateEnabled, adoptionDateEnabled]);
 
-  useEffect(() => {
-    if (!adoptionDateEnabled) setFormData(prev => ({ ...prev, adoptionDate: '' }));
-  }, [adoptionDateEnabled]);
-
-  useEffect(() => {
-    setFormData(prev => ({ ...prev, mostrarDataNascimento: birthDateEnabled }));
-  }, [birthDateEnabled]);
-
-  useEffect(() => {
-    setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
-  }, [adoptionDateEnabled]);
-
-  const criarCobrancaAbacate = async cliente => {
+  const gerarCobrancaAbacate = async cliente => {
     const petId = uuidv4();
     const nomePet = formData.name || 'Pet Sem Nome';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
@@ -126,6 +120,10 @@ const Formulary = ({ formData, setFormData }) => {
       console.error('Erro na cobrança:', error);
       return null;
     }
+  };
+
+  const validarDadosPagamento = dados => {
+    return dados.nome && dados.cpfCnpj && dados.telefone && dados.email;
   };
 
   const handlePhotoUpload = event => {
@@ -443,15 +441,13 @@ const Formulary = ({ formData, setFormData }) => {
               setLoading(true);
 
               try {
-                const { nome, cpfCnpj, telefone, email } = dadosPagamento;
-
-                if (!nome || !cpfCnpj || !telefone || !email) {
+                if (!validarDadosPagamento(dadosPagamento)) {
                   setAlertaAberto(true);
                   setLoading(false);
                   return;
                 }
 
-                const url = await criarCobrancaAbacate(dadosPagamento);
+                const url = await gerarCobrancaAbacate(dadosPagamento);
 
                 if (url) {
                   setTimeout(() => {
