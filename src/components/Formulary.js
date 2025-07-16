@@ -34,7 +34,6 @@ const Formulary = ({ formData, setFormData }) => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apelidoString, setApelidoString] = useState('');
-  const [urlParaRedirecionar, setUrlParaRedirecionar] = useState('');
   const [mostrarSecaoPagamento, setMostrarSecaoPagamento] = useState(false);
   const [dadosPagamento, setDadosPagamento] = useState({ nome: '', cpfCnpj: '', telefone: '', email: '' });
   const [alertaAberto, setAlertaAberto] = useState(false);
@@ -69,14 +68,6 @@ const Formulary = ({ formData, setFormData }) => {
   useEffect(() => {
     setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
   }, [adoptionDateEnabled]);
-
-  useEffect(() => {
-    if (urlParaRedirecionar) {
-      setTimeout(() => {
-        window.location.href = urlParaRedirecionar;
-      }, 300);
-    }
-  }, [urlParaRedirecionar]);
 
   const criarCobrancaAbacatepay = async cliente => {
     const petId = uuidv4();
@@ -123,7 +114,9 @@ const Formulary = ({ formData, setFormData }) => {
 
       if (!response.ok) return;
       const data = await response.json();
-      if (data?.url) setUrlParaRedirecionar(data.url);
+      if (data?.url) {
+        window.location.href = data.url;
+      }
     } catch (error) {
       console.error('Erro na cobrança:', error);
     } finally {
@@ -131,7 +124,7 @@ const Formulary = ({ formData, setFormData }) => {
     }
   };
 
-  const handleSubmitPagamento = () => {
+  const handleSubmitPagamento = async () => {
     const { nome, cpfCnpj, telefone, email } = dadosPagamento;
 
     if (!nome || !cpfCnpj || !telefone || !email) {
@@ -139,7 +132,7 @@ const Formulary = ({ formData, setFormData }) => {
       return;
     }
 
-    criarCobrancaAbacatepay(dadosPagamento);
+    await criarCobrancaAbacatepay(dadosPagamento);
   };
 
   const handlePhotoUpload = event => {
@@ -458,13 +451,20 @@ const Formulary = ({ formData, setFormData }) => {
       </Card>
 
       <AlertDialog open={alertaAberto} onOpenChange={setAlertaAberto}>
-        <AlertDialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+        <AlertDialogContent className="bg-white dark:bg-gray-950 border border-petPurple/20">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-600 dark:text-red-400">⚠️ Campos obrigatórios</AlertDialogTitle>
-            <p className="text-gray-600 dark:text-gray-300">Por favor, preencha todos os campos antes de continuar.</p>
+            <AlertDialogTitle className="text-petPurple text-base font-semibold">
+              ⚠️ Campos obrigatórios
+            </AlertDialogTitle>
+            <p className="text-sm text-muted-foreground">Por favor, preencha todos os campos antes de continuar.</p>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setAlertaAberto(false)}>Fechar</AlertDialogAction>
+            <AlertDialogAction
+              onClick={() => setAlertaAberto(false)}
+              className="bg-petPurple hover:bg-petBlue text-white"
+            >
+              Fechar
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
