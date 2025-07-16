@@ -1,132 +1,35 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
-import { useRouter } from 'next/navigation';
-import { baseUrl } from '@/app/utils/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Heart, X } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from 'next-themes';
 import { formatarCpfCnpj, formatarTelefone } from '@/app/utils/formatadores';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 
-const { db, storage } = firebaseConfigSelector();
-
-const Formulary = ({ formData, setFormData }) => {
-  const router = useRouter();
+const Formulary = ({
+  formData,
+  setFormData,
+  dadosPagamento,
+  setDadosPagamento,
+  mostrarSecaoPagamento,
+  setMostrarSecaoPagamento,
+}) => {
   const [birthDateEnabled, setBirthDateEnabled] = useState(formData.mostrarDataNascimento);
   const [adoptionDateEnabled, setAdoptionDateEnabled] = useState(formData.mostrarDataAdocao);
-  const [images, setImages] = useState([]);
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [apelidoString, setApelidoString] = useState('');
-  const [mostrarSecaoPagamento, setMostrarSecaoPagamento] = useState(false);
-  const [dadosPagamento, setDadosPagamento] = useState({ nome: '', cpfCnpj: '', telefone: '', email: '' });
-  const [alertaAberto, setAlertaAberto] = useState(false);
 
   const { resolvedTheme } = useTheme();
 
-  // Valida se o botão deve ser habilitado
   useEffect(() => {
-    const isNameFilled = formData.name.trim() !== '';
-    const isDateFilled = (birthDateEnabled && formData.birthDate) || (adoptionDateEnabled && formData.adoptionDate);
-    const isMessageFilled = formData.message && formData.message.trim() !== '';
-    const isProfilePhotoUploaded = !!formData.photo;
-    const isGalleryUploaded = formData.galleryPhotos.length > 0;
-    const isPlanSelected = formData.selectedPlan !== '';
-    setIsButtonEnabled(
-      isNameFilled && (isDateFilled || isMessageFilled) && isProfilePhotoUploaded && isGalleryUploaded && isPlanSelected
-    );
-  }, [formData, birthDateEnabled, adoptionDateEnabled]);
-
-  useEffect(() => {
-    if (!birthDateEnabled) setFormData(prev => ({ ...prev, birthDate: '' }));
-  }, [birthDateEnabled]);
-
-  useEffect(() => {
-    if (!adoptionDateEnabled) setFormData(prev => ({ ...prev, adoptionDate: '' }));
-  }, [adoptionDateEnabled]);
-
-  useEffect(() => {
-    setFormData(prev => ({ ...prev, mostrarDataNascimento: birthDateEnabled }));
-  }, [birthDateEnabled]);
-
-  useEffect(() => {
-    setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
-  }, [adoptionDateEnabled]);
-
-  const criarCobrancaAbacate = async cliente => {
-    const petId = uuidv4();
-    const nomePet = formData.name || 'Pet Sem Nome';
-    const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
-    const email = cliente.email || 'teste@teste.com';
-
-    setLoading(true);
-
-    try {
-      const imageUrls = await Promise.all(
-        images.map(async (image, index) => {
-          const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
-          await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
-        })
-      );
-
-      await setDoc(doc(db, 'pets', uniqueSlug), {
-        ...formData,
-        images: imageUrls,
-        createdAt: new Date(),
-        isPaid: false,
-        paymentMethod: '',
-        userEmail: email || '',
-        petId,
-        uniqueSlug,
-        cellphone: cliente.telefone || '',
-        taxId: cliente.cpfCnpj || '',
-        name: cliente.nome || '',
-      });
-
-      const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uniqueSlug,
-          selectedPlan: formData.selectedPlan,
-          emailCliente: email,
-          nomeCliente: cliente.nome,
-          cellCliente: cliente.telefone,
-          cpfCnpjCliente: cliente.cpfCnpj,
-        }),
-      });
-
-      if (!response.ok) {
-        console.error('Falha ao criar cobrança AbacatePay.');
-        return;
-      }
-
-      const data = await response.json();
-      return data?.url ?? null;
-    } catch (error) {
-      console.error('Erro na cobrança:', error);
-      return null;
-    }
-  };
+    setFormData(prev => ({
+      ...prev,
+      mostrarDataNascimento: birthDateEnabled,
+      mostrarDataAdocao: adoptionDateEnabled,
+    }));
+  }, [birthDateEnabled, adoptionDateEnabled]);
 
   const handlePhotoUpload = event => {
     const file = event.target.files?.[0];
@@ -224,7 +127,11 @@ const Formulary = ({ formData, setFormData }) => {
                 <Label className="font-medium text-petPurple">Incluir Data de Nascimento</Label>
                 <p className="text-sm text-muted-foreground">Aparecerá na página</p>
               </div>
-              <Switch checked={birthDateEnabled} onCheckedChange={setBirthDateEnabled} />
+              <Switch
+                checked={birthDateEnabled}
+                onCheckedChange={setBirthDateEnabled}
+                className="data-[state=checked]:bg-petPurple"
+              />
             </div>
             {birthDateEnabled && (
               <Input
@@ -243,7 +150,11 @@ const Formulary = ({ formData, setFormData }) => {
                 <Label className="font-medium text-petPurple">Incluir Data de Adoção</Label>
                 <p className="text-sm text-muted-foreground">Quando o pet chegou até você</p>
               </div>
-              <Switch checked={adoptionDateEnabled} onCheckedChange={setAdoptionDateEnabled} />
+              <Switch
+                checked={adoptionDateEnabled}
+                onCheckedChange={setAdoptionDateEnabled}
+                className="data-[state=checked]:bg-petPurple"
+              />
             </div>
             {adoptionDateEnabled && (
               <Input
@@ -426,71 +337,8 @@ const Formulary = ({ formData, setFormData }) => {
               </div>
             </div>
           )}
-
-          {/* Botão Criar Página */}
-          <Button
-            className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-3 font-medium"
-            onClick={async e => {
-              e.preventDefault();
-
-              if (!isButtonEnabled || loading) return;
-
-              if (!mostrarSecaoPagamento) {
-                setMostrarSecaoPagamento(true);
-                return;
-              }
-
-              setLoading(true);
-
-              try {
-                const { nome, cpfCnpj, telefone, email } = dadosPagamento;
-
-                if (!nome || !cpfCnpj || !telefone || !email) {
-                  setAlertaAberto(true);
-                  setLoading(false);
-                  return;
-                }
-
-                const url = await criarCobrancaAbacate(dadosPagamento);
-
-                if (url) {
-                  setTimeout(() => {
-                    window.location.href = url;
-                  }, 100);
-                } else {
-                  console.error('URL de pagamento ausente');
-                }
-              } catch (error) {
-                console.error('Erro ao criar cobrança:', error);
-              } finally {
-                setLoading(false);
-              }
-            }}
-            disabled={!isButtonEnabled || loading}
-          >
-            {loading ? 'Criando sua PetPage...' : mostrarSecaoPagamento ? 'Prosseguir para pagamento' : 'Criar Página'}
-          </Button>
         </CardContent>
       </Card>
-
-      <AlertDialog open={alertaAberto} onOpenChange={setAlertaAberto}>
-        <AlertDialogContent className="bg-white dark:bg-gray-950 border border-petPurple/20">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-petPurple text-base font-semibold">
-              ⚠️ Campos obrigatórios
-            </AlertDialogTitle>
-            <p className="text-sm text-muted-foreground">Por favor, preencha todos os campos antes de continuar.</p>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction
-              onClick={() => setAlertaAberto(false)}
-              className="bg-petPurple hover:bg-petBlue text-white"
-            >
-              Fechar
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 };
