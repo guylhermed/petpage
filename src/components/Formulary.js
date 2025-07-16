@@ -69,7 +69,7 @@ const Formulary = ({ formData, setFormData }) => {
     setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
   }, [adoptionDateEnabled]);
 
-  const criarCobrancaAbacatepay = async cliente => {
+  const criarCobrancaAbacate = async cliente => {
     const petId = uuidv4();
     const nomePet = formData.name || 'Pet Sem Nome';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
@@ -121,34 +121,11 @@ const Formulary = ({ formData, setFormData }) => {
       }
 
       const data = await response.json();
-
-      if (data?.url) {
-        try {
-          // Primeiro tenta via router.push
-          router.push(data.url);
-        } catch (e) {
-          // Se falhar, tenta forçar via window.location.href
-          window.location.href = data.url;
-        }
-      } else {
-        console.error('Resposta sem URL da AbacatePay:', data);
-      }
+      return data?.url ?? null;
     } catch (error) {
       console.error('Erro na cobrança:', error);
-    } finally {
-      setLoading(false);
+      return null;
     }
-  };
-
-  const enviarFormularioPagamento = async () => {
-    const { nome, cpfCnpj, telefone, email } = dadosPagamento;
-
-    if (!nome || !cpfCnpj || !telefone || !email) {
-      setAlertaAberto(true);
-      return;
-    }
-
-    await criarCobrancaAbacatepay(dadosPagamento);
   };
 
   const handlePhotoUpload = event => {
@@ -452,14 +429,41 @@ const Formulary = ({ formData, setFormData }) => {
 
           {/* Botão Criar Página */}
           <Button
-            className={`w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-3 font-medium transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 ${isButtonEnabled && !loading ? '' : 'opacity-30 cursor-not-allowed'}`}
+            className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-3 font-medium"
             onClick={async e => {
               e.preventDefault();
+
               if (!isButtonEnabled || loading) return;
+
               if (!mostrarSecaoPagamento) {
                 setMostrarSecaoPagamento(true);
-              } else {
-                await enviarFormularioPagamento();
+                return;
+              }
+
+              setLoading(true);
+
+              try {
+                const { nome, cpfCnpj, telefone, email } = dadosPagamento;
+
+                if (!nome || !cpfCnpj || !telefone || !email) {
+                  setAlertaAberto(true);
+                  setLoading(false);
+                  return;
+                }
+
+                const url = await criarCobrancaAbacate(dadosPagamento);
+
+                if (url) {
+                  setTimeout(() => {
+                    window.location.href = url;
+                  }, 100);
+                } else {
+                  console.error('URL de pagamento ausente');
+                }
+              } catch (error) {
+                console.error('Erro ao criar cobrança:', error);
+              } finally {
+                setLoading(false);
               }
             }}
             disabled={!isButtonEnabled || loading}

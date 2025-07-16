@@ -92,14 +92,6 @@ export default function CriarPagina() {
         </div>
       </main>
       <LandingFooter />
-      <button
-        onClick={() => {
-          window.location.href = 'https://google.com';
-        }}
-        className="fixed bottom-4 left-4 z-50 bg-petBlue text-white px-4 py-2 rounded-lg"
-      >
-        Testar Redirecionamento
-      </button>
     </div>
   );
 }
