@@ -76,8 +76,9 @@ const Formulary = ({ formData, setFormData }) => {
     const email = cliente.email || 'teste@teste.com';
 
     setLoading(true);
+
     try {
-      let imageUrls = await Promise.all(
+      const imageUrls = await Promise.all(
         images.map(async (image, index) => {
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
           await uploadBytes(imageRef, image);
@@ -91,7 +92,7 @@ const Formulary = ({ formData, setFormData }) => {
         createdAt: new Date(),
         isPaid: false,
         paymentMethod: '',
-        userEmail: email,
+        userEmail: email || '',
         petId,
         uniqueSlug,
         cellphone: cliente.telefone || '',
@@ -101,7 +102,9 @@ const Formulary = ({ formData, setFormData }) => {
 
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           uniqueSlug,
           selectedPlan: formData.selectedPlan,
@@ -112,10 +115,23 @@ const Formulary = ({ formData, setFormData }) => {
         }),
       });
 
-      if (!response.ok) return;
+      if (!response.ok) {
+        console.error('Falha ao criar cobrança AbacatePay.');
+        return;
+      }
+
       const data = await response.json();
+
       if (data?.url) {
-        window.location.href = data.url;
+        try {
+          // Primeiro tenta via router.push
+          router.push(data.url);
+        } catch (e) {
+          // Se falhar, tenta forçar via window.location.href
+          window.location.href = data.url;
+        }
+      } else {
+        console.error('Resposta sem URL da AbacatePay:', data);
       }
     } catch (error) {
       console.error('Erro na cobrança:', error);
@@ -124,7 +140,7 @@ const Formulary = ({ formData, setFormData }) => {
     }
   };
 
-  const handleSubmitPagamento = async () => {
+  const enviarFormularioPagamento = async () => {
     const { nome, cpfCnpj, telefone, email } = dadosPagamento;
 
     if (!nome || !cpfCnpj || !telefone || !email) {
@@ -437,11 +453,14 @@ const Formulary = ({ formData, setFormData }) => {
           {/* Botão Criar Página */}
           <Button
             className={`w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-3 font-medium transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 ${isButtonEnabled && !loading ? '' : 'opacity-30 cursor-not-allowed'}`}
-            onClick={e => {
+            onClick={async e => {
               e.preventDefault();
               if (!isButtonEnabled || loading) return;
-              if (!mostrarSecaoPagamento) setMostrarSecaoPagamento(true);
-              else handleSubmitPagamento();
+              if (!mostrarSecaoPagamento) {
+                setMostrarSecaoPagamento(true);
+              } else {
+                await enviarFormularioPagamento();
+              }
             }}
             disabled={!isButtonEnabled || loading}
           >
