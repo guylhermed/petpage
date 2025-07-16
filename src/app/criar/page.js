@@ -196,7 +196,7 @@ export default function CriarPagina() {
           </div>
         </div>
         {/* Botão fora do Formulary — redirecionamento 100% compatível */}
-        <div className="max-w-6xl mx-auto pr-9 mt-10">
+        <div className="max-w-6xl mx-auto md:pr-9 mt-10">
           <Button
             className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-3 font-medium"
             onClick={async () => {

@@ -200,23 +200,33 @@ const Formulary = ({
             />
           </div>
 
-          {/* Imagem de perfil */}
+          {/* Foto de Perfil */}
           <div className="space-y-2">
             <Label className="text-petPurple font-medium">Foto de Perfil</Label>
+
             {formData.photo && (
-              <div className="relative inline-block mb-3">
-                <img src={formData.photo} alt="Foto de perfil" className="w-20 h-20 object-cover rounded-lg" />
+              <div className="relative w-24 h-24">
+                <img src={formData.photo} alt="Foto de perfil" className="w-24 h-24 object-cover rounded-lg" />
                 <button
                   onClick={removeProfilePhoto}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center"
                 >
-                  <X className="w-3 h-3" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             )}
+
             <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:border-petBlue">
               <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" id="upload-foto" />
-              <label htmlFor="upload-foto" className="cursor-pointer text-sm text-petBlue">
+              <label
+                htmlFor="upload-foto"
+                className="cursor-pointer flex flex-col items-center gap-1 text-sm text-petBlue"
+              >
+                <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+                  <polyline points="7 9 12 4 17 9" />
+                  <line x1="12" y1="4" x2="12" y2="16" />
+                </svg>
                 {formData.photo ? 'Trocar foto' : 'Enviar foto'}
               </label>
             </div>
@@ -225,6 +235,7 @@ const Formulary = ({
           {/* Galeria */}
           <div className="space-y-2">
             <Label className="text-petPurple font-medium">Fotos da Galeria (até 5)</Label>
+
             {formData.galleryPhotos.length > 0 && (
               <div className="grid grid-cols-3 gap-2">
                 {formData.galleryPhotos.map((photo, idx) => (
@@ -232,7 +243,7 @@ const Formulary = ({
                     <img src={photo} className="w-full h-20 object-cover rounded" />
                     <button
                       onClick={() => removeGalleryPhoto(idx)}
-                      className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100"
+                      className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -240,6 +251,7 @@ const Formulary = ({
                 ))}
               </div>
             )}
+
             {formData.galleryPhotos.length < 5 && (
               <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:border-petBlue">
                 <input
@@ -250,7 +262,15 @@ const Formulary = ({
                   className="hidden"
                   id="upload-galeria"
                 />
-                <label htmlFor="upload-galeria" className="cursor-pointer text-sm text-petBlue">
+                <label
+                  htmlFor="upload-galeria"
+                  className="cursor-pointer flex flex-col items-center gap-1 text-sm text-petBlue"
+                >
+                  <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+                    <polyline points="7 9 12 4 17 9" />
+                    <line x1="12" y1="4" x2="12" y2="16" />
+                  </svg>
                   Adicionar imagens ({5 - formData.galleryPhotos.length} restantes)
                 </label>
               </div>
