@@ -30,6 +30,7 @@ const Formulary = ({ formData, setFormData }) => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [apelidoString, setApelidoString] = useState('');
+  const [urlParaRedirecionar, setUrlParaRedirecionar] = useState('');
 
   const { resolvedTheme } = useTheme();
 
@@ -66,6 +67,14 @@ const Formulary = ({ formData, setFormData }) => {
   useEffect(() => {
     setFormData(prev => ({ ...prev, mostrarDataAdocao: adoptionDateEnabled }));
   }, [adoptionDateEnabled]);
+
+  useEffect(() => {
+    if (urlParaRedirecionar) {
+      setTimeout(() => {
+        window.location.href = urlParaRedirecionar;
+      }, 300); // permite fechamento do modal no iOS
+    }
+  }, [urlParaRedirecionar]);
 
   const handleAddNickname = () => {
     if (nickname.trim() !== '') {
@@ -167,15 +176,8 @@ const Formulary = ({ formData, setFormData }) => {
 
       if (data?.url) {
         alert(`🔗 Redirecionando para: ${data.url}`);
-
-        // Fecha o modal antes de redirecionar
         setMostrarModal(false);
-
-        // Espera o modal fechar e redireciona
-        setTimeout(() => {
-          // router.push(data.url); // Se continuar falhando no iOS, troque por:
-          window.location.href = data.url;
-        }, 300);
+        setUrlParaRedirecionar(data.url); // será tratado no useEffect
       } else {
         alert(`❌ Nenhuma URL recebida.\nResposta: ${JSON.stringify(data)}`);
       }
