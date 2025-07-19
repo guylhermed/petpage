@@ -17,7 +17,7 @@ export async function enviarEmailConfirmacaoPagamento({ nome, email, linkPetPage
       return;
     }
 
-    console.log('E-mail enviado com sucesso:', data);
+    // console.log('E-mail enviado com sucesso:', data);
   } catch (err) {
     console.error('Erro inesperado ao enviar e-mail:', err);
   }
