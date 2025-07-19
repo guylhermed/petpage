@@ -117,12 +117,12 @@ export default function PetPage() {
           {/* Avatar central */}
           <div className="relative -mt-16 mb-6 flex justify-center">
             <div className="w-24 h-24 rounded-full bg-white p-1 shadow-lg">
-              {petData.photo ? (
+              {petData.images?.[0] ? (
                 <img
-                  src={petData.photo}
+                  src={petData.images[0]}
                   alt={petData.name}
                   className="w-full h-full rounded-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => setEnlargedPhoto(petData.photo)}
+                  onClick={() => setEnlargedPhoto(petData.images[0])}
                 />
               ) : (
                 <div className="w-full h-full rounded-full bg-gradient-to-br from-petPurple/20 to-petBlue/20 flex items-center justify-center">
@@ -192,13 +192,13 @@ export default function PetPage() {
 
           {activeView === 'gallery' && (
             <div className="px-6 pb-6">
-              {petData.galleryPhotos?.length > 0 ? (
+              {petData.images?.length > 1 ? (
                 <div className="grid grid-cols-2 gap-3">
-                  {petData.galleryPhotos.map((photo, index) => (
+                  {petData.images.slice(1).map((photo, index) => (
                     <div key={index} className="aspect-square rounded-xl overflow-hidden">
                       <img
                         src={photo}
-                        alt={`${petData.name} ${index + 1}`}
+                        alt={`${petData.name} ${index + 2}`}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-200 cursor-pointer"
                         onClick={() => setEnlargedPhoto(photo)}
                       />

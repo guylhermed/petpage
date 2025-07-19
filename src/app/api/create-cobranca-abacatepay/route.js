@@ -3,7 +3,8 @@ import { abacatepayApiKey } from '@/app/utils/utils';
 
 export async function POST(req) {
   try {
-    const { uniqueSlug, selectedPlan, emailCliente, nomeCliente, cellCliente, cpfCnpjCliente } = await req.json();
+    const body = await req.json();
+    const { uniqueSlug, selectedPlan, emailCliente, nomeCliente, cellCliente, cpfCnpjCliente } = body;
 
     const planos = {
       basico: {
@@ -25,7 +26,11 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Plano inválido.' }, { status: 400 });
     }
 
-    const origin = req.headers.get('origin');
+    const origin = req.headers.get('origin') || 'https://www.minhapetpage.com';
+
+    if (!emailCliente || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCliente)) {
+      return NextResponse.json({ error: 'Email inválido' }, { status: 400 });
+    }
 
     const payload = {
       frequency: 'ONE_TIME',
@@ -43,7 +48,7 @@ export async function POST(req) {
       returnUrl: `${origin}/`,
       completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`,
       customer: {
-        email: emailCliente || 'email@cliente.com.br',
+        email: emailCliente,
         name: nomeCliente || 'Cliente PetPage',
         cellphone: cellCliente || '48999999999',
         taxId: cpfCnpjCliente || '00000000000',
@@ -67,13 +72,11 @@ export async function POST(req) {
     const result = await response.json();
 
     if (result.error || !result.data?.url) {
-      console.error('Erro na criação da cobrança:', result);
-      return NextResponse.json({ error: 'Erro ao criar cobrança' }, { status: 500 });
+      return NextResponse.json({ error: 'Erro ao criar cobrança', detalhes: result }, { status: 500 });
     }
 
     return NextResponse.json({ url: result.data.url });
   } catch (error) {
-    console.error('Erro geral na rota AbacatePay:', error);
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
   }
 }

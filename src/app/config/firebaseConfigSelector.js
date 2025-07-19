@@ -21,10 +21,6 @@ const firebaseConfigDev = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_DEV_APP_ID,
 };
 
-// 🔥 Log para debug (somente em build)
-console.log('🧪 Firebase ENV:', process.env.NEXT_PUBLIC_FIREBASE_ENV);
-console.log('🧪 NODE_ENV:', process.env.NODE_ENV);
-
 export function firebaseConfigSelector() {
   const isDevEnv = process.env.NEXT_PUBLIC_FIREBASE_ENV === 'dev';
   const firebaseConfig = isDevEnv ? firebaseConfigDev : firebaseConfigProd;
