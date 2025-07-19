@@ -16,8 +16,6 @@ function SuccessContent() {
 
   const petPageUrl = `${baseUrl}/${uniqueSlug}`;
 
-  console.log('uniqueSlug', uniqueSlug);
-
   const handleDownload = () => {
     const qrCanvas = qrCanvasRef.current;
     if (qrCanvas) {

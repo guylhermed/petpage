@@ -18,10 +18,10 @@ export async function POST(req) {
     }
 
     const evento = await req.json();
-    console.log('📦 Evento recebido:', JSON.stringify(evento, null, 2));
+    // console.log('📦 Evento recebido:', JSON.stringify(evento, null, 2));
 
     if (evento.event !== 'billing.paid') {
-      console.log(`⚠️ Evento ignorado: ${evento.event}`);
+      // console.log(`⚠️ Evento ignorado: ${evento.event}`);
       return NextResponse.json({ ok: true });
     }
 
@@ -48,7 +48,7 @@ export async function POST(req) {
       couponsUsed: billing.couponsUsed?.[0] || '',
     });
 
-    console.log(`✅ PetPage atualizada como paga: ${slug}`);
+    // console.log(`✅ PetPage atualizada como paga: ${slug}`);
 
     const linkPetPage = `https://www.minhapetpage.com/${slug}`;
 

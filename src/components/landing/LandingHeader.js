@@ -18,10 +18,19 @@ import {
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { Heart, Settings, Moon } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const LandingHeader = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [isDark, setIsDark] = useState(false);
+  const [modalAberto, setModalAberto] = useState(false);
 
   useEffect(() => {
     setIsDark(resolvedTheme === 'dark');
@@ -88,9 +97,10 @@ const LandingHeader = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="outline" className="hidden sm:flex rounded-xl">
+            <Button variant="outline" className="hidden sm:flex rounded-xl" onClick={() => setModalAberto(true)}>
               Ver Minha Página
             </Button>
+
             <Button
               asChild
               className="bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 rounded-xl"
@@ -100,6 +110,26 @@ const LandingHeader = () => {
           </div>
         </div>
       </div>
+      <AlertDialog open={modalAberto} onOpenChange={setModalAberto}>
+        <AlertDialogContent className="bg-white dark:bg-gray-950 border border-petPurple/20">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-petPurple text-base font-semibold">
+              🚧 Em desenvolvimento
+            </AlertDialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Em breve você poderá acessar sua PetPage com seu e-mail e visualizar tudo aqui!
+            </p>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() => setModalAberto(false)}
+              className="bg-petPurple hover:bg-petBlue text-white"
+            >
+              Fechar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </header>
   );
 };
