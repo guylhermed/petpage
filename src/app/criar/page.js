@@ -83,11 +83,6 @@ export default function CriarPagina() {
     alert('⏳ Etapa 1: Gerando cobrança...');
 
     try {
-      if (!dadosPet.images?.length) {
-        console.warn('⚠️ Nenhuma imagem para upload');
-        alert('Nenhuma imagem encontrada para upload.');
-      }
-
       console.log('📤 Etapa 2: Iniciando upload das imagens...');
       alert('⏳ Enviando imagens...');
 
@@ -105,9 +100,8 @@ export default function CriarPagina() {
       console.log('📝 Etapa 3: Salvando no Firestore...');
       alert('⏳ Salvando dados no banco...');
 
-      await setDoc(doc(db, 'pets', uniqueSlug), {
+      const docData = {
         ...dadosPet,
-        photo: undefined, // <- remove o objeto original para evitar erro de tamanho
         birthDate: dadosPet.mostrarDataNascimento ? dadosPet.birthDate : null,
         adoptionDate: dadosPet.mostrarDataAdocao ? dadosPet.adoptionDate : null,
         images: imageUrls,
@@ -120,7 +114,13 @@ export default function CriarPagina() {
         cellphone: cliente.telefone,
         taxId: cliente.cpfCnpj,
         name: cliente.nome,
-      });
+      };
+
+      // Evita salvar base64 ou objetos
+      delete docData.photo;
+      delete docData.galleryPhotos;
+
+      await setDoc(doc(db, 'pets', uniqueSlug), docData);
 
       console.log('📧 Validando email:', email);
       if (!validarEmail(email)) {
