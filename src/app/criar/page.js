@@ -79,15 +79,23 @@ export default function CriarPagina() {
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
     const email = cliente.email || 'teste@teste.com';
 
+    console.log('🧩 Iniciando geração da cobrança...');
+    alert('⏳ Gerando cobrança...');
+
     try {
+      console.log('📤 Iniciando upload das imagens...');
       const imageUrls = await Promise.all(
         dadosPet.images.map(async (image, index) => {
-          const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
+          const extensao = image.name.split('.').pop();
+          const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
+          const url = await getDownloadURL(imageRef);
+          console.log(`✅ Imagem ${index + 1} enviada:`, url);
+          return url;
         })
       );
 
+      console.log('📝 Salvando dados no Firestore...');
       await setDoc(doc(db, 'pets', uniqueSlug), {
         ...dadosPet,
         birthDate: dadosPet.mostrarDataNascimento ? dadosPet.birthDate : null,
@@ -105,12 +113,13 @@ export default function CriarPagina() {
       });
 
       console.log('📧 Email a ser enviado para AbacatePay:', email);
-
       if (!validarEmail(email)) {
-        console.error('❌ Email inválido detectado antes do envio!');
+        console.error('❌ Email inválido:', email);
+        alert('Email inválido. Corrija antes de prosseguir.');
         return null;
       }
 
+      console.log('📦 Enviando requisição para AbacatePay...');
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,13 +133,20 @@ export default function CriarPagina() {
         }),
       });
 
-      if (!response.ok) return null;
+      if (!response.ok) {
+        const erroTexto = await response.text();
+        console.error('❌ Erro na resposta AbacatePay:', erroTexto);
+        alert('Erro ao gerar link de pagamento. Tente novamente.');
+        return null;
+      }
 
       const data = await response.json();
-      console.log('🔍 Resposta AbacatePay:', data);
+      console.log('✅ Resposta recebida da AbacatePay:', data);
+      alert('Cobrança gerada com sucesso! Redirecionando...');
       return data?.url ?? null;
     } catch (error) {
-      console.error('Erro ao gerar cobrança:', error);
+      console.error('❌ Erro inesperado ao gerar cobrança:', error);
+      alert('Erro inesperado. Tente novamente.');
       return null;
     }
   };
