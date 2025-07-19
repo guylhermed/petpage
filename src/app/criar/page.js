@@ -73,6 +73,21 @@ export default function CriarPagina() {
   const validarDadosPagamento = dados =>
     dados.nome?.trim() && dados.cpfCnpj?.trim() && dados.telefone?.trim() && validarEmail(dados.email);
 
+  const base64ParaFile = (base64, nome) => {
+    const [meta, conteudo] = base64.split(',');
+    const mime = meta.match(/:(.*?);/)[1];
+    const ext = mime.split('/')[1];
+    const byteString = atob(conteudo);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    return new File([arrayBuffer], `${nome}.${ext}`, { type: mime });
+  };
+
   const gerarCobrancaAbacate = async (dadosPet, cliente) => {
     const petId = uuidv4();
     const nomePet = dadosPet.name || 'Pet Sem Nome';
@@ -86,8 +101,19 @@ export default function CriarPagina() {
       console.log('📤 Etapa 2: Iniciando upload das imagens...');
       alert('⏳ Enviando imagens...');
 
+      // 🔁 monta os arquivos a partir de photo e galleryPhotos
+      const imagensConvertidas = [];
+
+      if (dadosPet.photo) {
+        imagensConvertidas.push(base64ParaFile(dadosPet.photo, 'perfil'));
+      }
+
+      dadosPet.galleryPhotos?.forEach((foto, idx) => {
+        imagensConvertidas.push(base64ParaFile(foto, `galeria-${idx + 1}`));
+      });
+
       const imageUrls = await Promise.all(
-        dadosPet.images.map(async (image, index) => {
+        imagensConvertidas.map(async (image, index) => {
           const extensao = image.name.split('.').pop();
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
@@ -116,7 +142,6 @@ export default function CriarPagina() {
         name: cliente.nome,
       };
 
-      // Evita salvar base64 ou objetos
       delete docData.photo;
       delete docData.galleryPhotos;
 
