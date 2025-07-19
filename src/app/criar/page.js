@@ -278,7 +278,6 @@ export default function CriarPagina() {
 
               if (!validarDadosPagamento(dadosPagamento)) {
                 console.log('❌ Dados de pagamento inválidos:', dadosPagamento);
-                alert('Preencha todos os dados de pagamento corretamente!');
                 setAlertaAberto(true);
                 return;
               }
