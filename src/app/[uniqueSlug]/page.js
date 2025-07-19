@@ -115,19 +115,21 @@ export default function PetPage() {
         {/* Conteúdo */}
         <div className="relative px-6 pb-6">
           {/* Avatar central */}
-          <div className="w-24 h-24 rounded-full bg-white p-1 shadow-lg">
-            {petData.images?.[0] ? (
-              <img
-                src={petData.images[0]}
-                alt={petData.name}
-                className="w-full h-full rounded-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => setEnlargedPhoto(petData.images[0])}
-              />
-            ) : (
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-petPurple/20 to-petBlue/20 flex items-center justify-center">
-                <Heart className="w-8 h-8 text-petPurple/60" />
-              </div>
-            )}
+          <div className="relative -mt-16 mb-6 flex justify-center">
+            <div className="w-24 h-24 rounded-full bg-white p-1 shadow-lg">
+              {petData.images?.[0] ? (
+                <img
+                  src={petData.images[0]}
+                  alt={petData.name}
+                  className="w-full h-full rounded-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => setEnlargedPhoto(petData.images[0])}
+                />
+              ) : (
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-petPurple/20 to-petBlue/20 flex items-center justify-center">
+                  <Heart className="w-8 h-8 text-petPurple/60" />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Nome e apelidos */}
@@ -188,7 +190,6 @@ export default function PetPage() {
             ))}
           </div>
 
-          {/* Galeria de fotos */}
           {activeView === 'gallery' && (
             <div className="px-6 pb-6">
               {petData.images?.length > 1 ? (
