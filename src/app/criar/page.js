@@ -208,19 +208,27 @@ export default function CriarPagina() {
           <Button
             className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-9 text-xl font-bold"
             onClick={async () => {
-              if (!isButtonEnabled || loading) return;
+              if (!isButtonEnabled || loading) {
+                console.log('⛔ Botão desabilitado ou carregando');
+                alert('Formulário incompleto ou carregando...');
+                return;
+              }
 
               if (!mostrarSecaoPagamento) {
+                console.log('🔄 Mostrando seção de pagamento');
                 setMostrarSecaoPagamento(true);
                 return;
               }
 
               if (!validarDadosPagamento(dadosPagamento)) {
+                console.log('❌ Dados de pagamento inválidos:', dadosPagamento);
+                alert('Preencha todos os dados de pagamento corretamente!');
                 setAlertaAberto(true);
                 return;
               }
 
               setLoading(true);
+              console.log('🚀 Iniciando criação da cobrança com dados:', { petData, dadosPagamento });
 
               const url = await gerarCobrancaAbacate(petData, dadosPagamento);
 
@@ -228,7 +236,11 @@ export default function CriarPagina() {
 
               if (url) {
                 console.log('➡️ Redirecionando para:', url);
+                alert(`Redirecionando para pagamento...`);
                 window.location.assign(url);
+              } else {
+                console.error('❌ Falha ao gerar link de pagamento!');
+                alert('Erro ao gerar o link de pagamento. Tente novamente.');
               }
             }}
             disabled={!isButtonEnabled || loading}
