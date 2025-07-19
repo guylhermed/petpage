@@ -107,6 +107,7 @@ export default function CriarPagina() {
 
       await setDoc(doc(db, 'pets', uniqueSlug), {
         ...dadosPet,
+        photo: undefined, // <- remove o objeto original para evitar erro de tamanho
         birthDate: dadosPet.mostrarDataNascimento ? dadosPet.birthDate : null,
         adoptionDate: dadosPet.mostrarDataAdocao ? dadosPet.adoptionDate : null,
         images: imageUrls,
