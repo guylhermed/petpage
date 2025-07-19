@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import Formulary from '@/components/Formulary';
 import Preview from '@/components/Preview';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
 import { baseUrl } from '@/app/utils/utils';
@@ -26,7 +25,6 @@ import {
 const { db, storage } = firebaseConfigSelector();
 
 export default function CriarPagina() {
-  const router = useRouter();
   const [petData, setPetData] = useState({
     name: '',
     adoptionDate: '2020-01-01',
