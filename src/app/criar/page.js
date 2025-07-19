@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import Formulary from '@/components/Formulary';
 import Preview from '@/components/Preview';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
 import { baseUrl } from '@/app/utils/utils';
@@ -26,7 +25,6 @@ import {
 const { db, storage } = firebaseConfigSelector();
 
 export default function CriarPagina() {
-  const router = useRouter();
   const [petData, setPetData] = useState({
     name: '',
     adoptionDate: '2020-01-01',
@@ -70,8 +68,10 @@ export default function CriarPagina() {
     setIsButtonEnabled(validarFormularioPet(petData));
   }, [petData]);
 
+  const validarEmail = email => typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const validarDadosPagamento = dados =>
-    dados.nome?.trim() && dados.cpfCnpj?.trim() && dados.telefone?.trim() && dados.email?.trim();
+    dados.nome?.trim() && dados.cpfCnpj?.trim() && dados.telefone?.trim() && validarEmail(dados.email);
 
   const gerarCobrancaAbacate = async (dadosPet, cliente) => {
     const petId = uuidv4();
@@ -79,15 +79,23 @@ export default function CriarPagina() {
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
     const email = cliente.email || 'teste@teste.com';
 
+    console.log('🧩 Iniciando geração da cobrança...');
+    alert('⏳ Gerando cobrança...');
+
     try {
+      console.log('📤 Iniciando upload das imagens...');
       const imageUrls = await Promise.all(
         dadosPet.images.map(async (image, index) => {
-          const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${image.name.split('.').pop()}`);
+          const extensao = image.name.split('.').pop();
+          const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
+          const url = await getDownloadURL(imageRef);
+          console.log(`✅ Imagem ${index + 1} enviada:`, url);
+          return url;
         })
       );
 
+      console.log('📝 Salvando dados no Firestore...');
       await setDoc(doc(db, 'pets', uniqueSlug), {
         ...dadosPet,
         birthDate: dadosPet.mostrarDataNascimento ? dadosPet.birthDate : null,
@@ -104,6 +112,14 @@ export default function CriarPagina() {
         name: cliente.nome,
       });
 
+      console.log('📧 Email a ser enviado para AbacatePay:', email);
+      if (!validarEmail(email)) {
+        console.error('❌ Email inválido:', email);
+        alert('Email inválido. Corrija antes de prosseguir.');
+        return null;
+      }
+
+      console.log('📦 Enviando requisição para AbacatePay...');
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -117,12 +133,20 @@ export default function CriarPagina() {
         }),
       });
 
-      if (!response.ok) return null;
+      if (!response.ok) {
+        const erroTexto = await response.text();
+        console.error('❌ Erro na resposta AbacatePay:', erroTexto);
+        alert('Erro ao gerar link de pagamento. Tente novamente.');
+        return null;
+      }
 
       const data = await response.json();
+      console.log('✅ Resposta recebida da AbacatePay:', data);
+      alert('Cobrança gerada com sucesso! Redirecionando...');
       return data?.url ?? null;
     } catch (error) {
-      console.error('Erro ao gerar cobrança:', error);
+      console.error('❌ Erro inesperado ao gerar cobrança:', error);
+      alert('Erro inesperado. Tente novamente.');
       return null;
     }
   };
@@ -200,28 +224,39 @@ export default function CriarPagina() {
           <Button
             className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-9 text-xl font-bold"
             onClick={async () => {
-              if (!isButtonEnabled || loading) return;
+              if (!isButtonEnabled || loading) {
+                console.log('⛔ Botão desabilitado ou carregando');
+                alert('Formulário incompleto ou carregando...');
+                return;
+              }
 
               if (!mostrarSecaoPagamento) {
+                console.log('🔄 Mostrando seção de pagamento');
                 setMostrarSecaoPagamento(true);
                 return;
               }
 
               if (!validarDadosPagamento(dadosPagamento)) {
+                console.log('❌ Dados de pagamento inválidos:', dadosPagamento);
+                alert('Preencha todos os dados de pagamento corretamente!');
                 setAlertaAberto(true);
                 return;
               }
 
               setLoading(true);
+              console.log('🚀 Iniciando criação da cobrança com dados:', { petData, dadosPagamento });
 
               const url = await gerarCobrancaAbacate(petData, dadosPagamento);
 
               setLoading(false);
 
               if (url) {
-                setTimeout(() => {
-                  window.location.href = url;
-                }, 100);
+                console.log('➡️ Redirecionando para:', url);
+                alert(`Redirecionando para pagamento...`);
+                window.location.assign(url);
+              } else {
+                console.error('❌ Falha ao gerar link de pagamento!');
+                alert('Erro ao gerar o link de pagamento. Tente novamente.');
               }
             }}
             disabled={!isButtonEnabled || loading}
