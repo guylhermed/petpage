@@ -70,8 +70,10 @@ export default function CriarPagina() {
     setIsButtonEnabled(validarFormularioPet(petData));
   }, [petData]);
 
+  const validarEmail = email => typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const validarDadosPagamento = dados =>
-    dados.nome?.trim() && dados.cpfCnpj?.trim() && dados.telefone?.trim() && dados.email?.trim();
+    dados.nome?.trim() && dados.cpfCnpj?.trim() && dados.telefone?.trim() && validarEmail(dados.email);
 
   const gerarCobrancaAbacate = async (dadosPet, cliente) => {
     const petId = uuidv4();
@@ -104,6 +106,13 @@ export default function CriarPagina() {
         name: cliente.nome,
       });
 
+      console.log('📧 Email a ser enviado para AbacatePay:', email);
+
+      if (!validarEmail(email)) {
+        console.error('❌ Email inválido detectado antes do envio!');
+        return null;
+      }
+
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,6 +129,7 @@ export default function CriarPagina() {
       if (!response.ok) return null;
 
       const data = await response.json();
+      console.log('🔍 Resposta AbacatePay:', data);
       return data?.url ?? null;
     } catch (error) {
       console.error('Erro ao gerar cobrança:', error);
@@ -219,9 +229,8 @@ export default function CriarPagina() {
               setLoading(false);
 
               if (url) {
-                setTimeout(() => {
-                  window.location.href = url;
-                }, 100);
+                console.log('➡️ Redirecionando para:', url);
+                window.location.assign(url);
               }
             }}
             disabled={!isButtonEnabled || loading}
