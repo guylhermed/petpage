@@ -80,10 +80,17 @@ export default function CriarPagina() {
     const email = cliente.email || 'teste@teste.com';
 
     console.log('🧩 Iniciando geração da cobrança...');
-    alert('⏳ Gerando cobrança...');
+    alert('⏳ Etapa 1: Gerando cobrança...');
 
     try {
-      console.log('📤 Iniciando upload das imagens...');
+      if (!dadosPet.images?.length) {
+        console.warn('⚠️ Nenhuma imagem para upload');
+        alert('Nenhuma imagem encontrada para upload.');
+      }
+
+      console.log('📤 Etapa 2: Iniciando upload das imagens...');
+      alert('⏳ Enviando imagens...');
+
       const imageUrls = await Promise.all(
         dadosPet.images.map(async (image, index) => {
           const extensao = image.name.split('.').pop();
@@ -95,7 +102,9 @@ export default function CriarPagina() {
         })
       );
 
-      console.log('📝 Salvando dados no Firestore...');
+      console.log('📝 Etapa 3: Salvando no Firestore...');
+      alert('⏳ Salvando dados no banco...');
+
       await setDoc(doc(db, 'pets', uniqueSlug), {
         ...dadosPet,
         birthDate: dadosPet.mostrarDataNascimento ? dadosPet.birthDate : null,
@@ -112,41 +121,46 @@ export default function CriarPagina() {
         name: cliente.nome,
       });
 
-      console.log('📧 Email a ser enviado para AbacatePay:', email);
+      console.log('📧 Validando email:', email);
       if (!validarEmail(email)) {
         console.error('❌ Email inválido:', email);
-        alert('Email inválido. Corrija antes de prosseguir.');
+        alert('❌ Email inválido. Corrija antes de prosseguir.');
         return null;
       }
 
-      console.log('📦 Enviando requisição para AbacatePay...');
+      console.log('📦 Etapa 4: Enviando dados para AbacatePay...');
+      alert('⏳ Criando link de pagamento...');
+
+      const body = {
+        uniqueSlug,
+        selectedPlan: dadosPet.selectedPlan,
+        emailCliente: email,
+        nomeCliente: cliente.nome,
+        cellCliente: cliente.telefone,
+        cpfCnpjCliente: cliente.cpfCnpj,
+      };
+      console.log('📨 Corpo da requisição:', body);
+
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          uniqueSlug,
-          selectedPlan: dadosPet.selectedPlan,
-          emailCliente: email,
-          nomeCliente: cliente.nome,
-          cellCliente: cliente.telefone,
-          cpfCnpjCliente: cliente.cpfCnpj,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
         const erroTexto = await response.text();
-        console.error('❌ Erro na resposta AbacatePay:', erroTexto);
-        alert('Erro ao gerar link de pagamento. Tente novamente.');
+        console.error('❌ Erro na resposta da AbacatePay:', erroTexto);
+        alert('❌ Erro ao gerar link de pagamento. Tente novamente.');
         return null;
       }
 
       const data = await response.json();
-      console.log('✅ Resposta recebida da AbacatePay:', data);
-      alert('Cobrança gerada com sucesso! Redirecionando...');
+      console.log('✅ Etapa 5: Link recebido com sucesso:', data);
+      alert('✅ Cobrança gerada com sucesso! Redirecionando...');
       return data?.url ?? null;
     } catch (error) {
       console.error('❌ Erro inesperado ao gerar cobrança:', error);
-      alert('Erro inesperado. Tente novamente.');
+      alert(`❌ Erro inesperado: ${error.message || 'sem detalhes'}`);
       return null;
     }
   };

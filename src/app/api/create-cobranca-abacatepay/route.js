@@ -3,7 +3,11 @@ import { abacatepayApiKey } from '@/app/utils/utils';
 
 export async function POST(req) {
   try {
-    const { uniqueSlug, selectedPlan, emailCliente, nomeCliente, cellCliente, cpfCnpjCliente } = await req.json();
+    const body = await req.json();
+    const { uniqueSlug, selectedPlan, emailCliente, nomeCliente, cellCliente, cpfCnpjCliente } = body;
+
+    console.log('🟢 Requisição recebida em /api/create-cobranca-abacatepay');
+    console.log('📦 Dados recebidos:', JSON.stringify(body, null, 2));
 
     const planos = {
       basico: {
@@ -22,10 +26,24 @@ export async function POST(req) {
 
     const planoSelecionado = planos[selectedPlan];
     if (!planoSelecionado) {
+      console.error('❌ Plano inválido:', selectedPlan);
       return NextResponse.json({ error: 'Plano inválido.' }, { status: 400 });
     }
 
-    const origin = req.headers.get('origin');
+    const origin = req.headers.get('origin') || 'https://www.minhapetpage.com';
+
+    if (!emailCliente || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCliente)) {
+      console.error('❌ Email inválido recebido:', emailCliente);
+      return NextResponse.json({ error: 'Email inválido' }, { status: 400 });
+    }
+
+    if (!nomeCliente || !cellCliente || !cpfCnpjCliente) {
+      console.warn('⚠️ Dados incompletos do cliente:', {
+        nomeCliente,
+        cellCliente,
+        cpfCnpjCliente,
+      });
+    }
 
     const payload = {
       frequency: 'ONE_TIME',
@@ -43,7 +61,7 @@ export async function POST(req) {
       returnUrl: `${origin}/`,
       completionUrl: `${origin}/success?uniqueSlug=${uniqueSlug}`,
       customer: {
-        email: emailCliente || 'email@cliente.com.br',
+        email: emailCliente,
         name: nomeCliente || 'Cliente PetPage',
         cellphone: cellCliente || '48999999999',
         taxId: cpfCnpjCliente || '00000000000',
@@ -55,6 +73,8 @@ export async function POST(req) {
       },
     };
 
+    console.log('🔻 Payload enviado para AbacatePay:', JSON.stringify(payload, null, 2));
+
     const response = await fetch('https://api.abacatepay.com/v1/billing/create', {
       method: 'POST',
       headers: {
@@ -65,15 +85,16 @@ export async function POST(req) {
     });
 
     const result = await response.json();
+    console.log('📬 Resposta da AbacatePay:', JSON.stringify(result, null, 2));
 
     if (result.error || !result.data?.url) {
-      console.error('Erro na criação da cobrança:', result);
-      return NextResponse.json({ error: 'Erro ao criar cobrança' }, { status: 500 });
+      console.error('❌ Erro na criação da cobrança AbacatePay:', result);
+      return NextResponse.json({ error: 'Erro ao criar cobrança', detalhes: result }, { status: 500 });
     }
 
     return NextResponse.json({ url: result.data.url });
   } catch (error) {
-    console.error('Erro geral na rota AbacatePay:', error);
+    console.error('❌ Erro inesperado na rota AbacatePay:', error);
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
   }
 }
