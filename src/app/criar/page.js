@@ -90,18 +90,11 @@ export default function CriarPagina() {
 
   const gerarCobrancaAbacate = async (dadosPet, cliente) => {
     const petId = uuidv4();
-    const nomePet = dadosPet.name || 'Pet Sem Nome';
+    const nomePet = dadosPet.name || 'pet';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
-    const email = cliente.email || 'teste@teste.com';
-
-    console.log('🧩 Iniciando geração da cobrança...');
-    alert('⏳ Etapa 1: Gerando cobrança...');
+    const email = cliente.email || 'cliente@exemplo.com';
 
     try {
-      console.log('📤 Etapa 2: Iniciando upload das imagens...');
-      alert('⏳ Enviando imagens...');
-
-      // 🔁 monta os arquivos a partir de photo e galleryPhotos
       const imagensConvertidas = [];
 
       if (dadosPet.photo) {
@@ -117,14 +110,9 @@ export default function CriarPagina() {
           const extensao = image.name.split('.').pop();
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
-          const url = await getDownloadURL(imageRef);
-          console.log(`✅ Imagem ${index + 1} enviada:`, url);
-          return url;
+          return await getDownloadURL(imageRef);
         })
       );
-
-      console.log('📝 Etapa 3: Salvando no Firestore...');
-      alert('⏳ Salvando dados no banco...');
 
       const docData = {
         ...dadosPet,
@@ -147,15 +135,10 @@ export default function CriarPagina() {
 
       await setDoc(doc(db, 'pets', uniqueSlug), docData);
 
-      console.log('📧 Validando email:', email);
       if (!validarEmail(email)) {
-        console.error('❌ Email inválido:', email);
-        alert('❌ Email inválido. Corrija antes de prosseguir.');
+        alert('Erro ao validar o e-mail. Verifique e tente novamente.');
         return null;
       }
-
-      console.log('📦 Etapa 4: Enviando dados para AbacatePay...');
-      alert('⏳ Criando link de pagamento...');
 
       const body = {
         uniqueSlug,
@@ -165,7 +148,6 @@ export default function CriarPagina() {
         cellCliente: cliente.telefone,
         cpfCnpjCliente: cliente.cpfCnpj,
       };
-      console.log('📨 Corpo da requisição:', body);
 
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
@@ -174,19 +156,14 @@ export default function CriarPagina() {
       });
 
       if (!response.ok) {
-        const erroTexto = await response.text();
-        console.error('❌ Erro na resposta da AbacatePay:', erroTexto);
-        alert('❌ Erro ao gerar link de pagamento. Tente novamente.');
+        alert('Erro ao gerar o link de pagamento. Tente novamente.');
         return null;
       }
 
       const data = await response.json();
-      console.log('✅ Etapa 5: Link recebido com sucesso:', data);
-      alert('✅ Cobrança gerada com sucesso! Redirecionando...');
       return data?.url ?? null;
     } catch (error) {
-      console.error('❌ Erro inesperado ao gerar cobrança:', error);
-      alert(`❌ Erro inesperado: ${error.message || 'sem detalhes'}`);
+      alert('Erro inesperado. Tente novamente mais tarde.');
       return null;
     }
   };
@@ -264,37 +241,27 @@ export default function CriarPagina() {
           <Button
             className="w-full bg-gradient-to-r from-petPurple to-petBlue text-white rounded-xl py-9 text-xl font-bold"
             onClick={async () => {
-              if (!isButtonEnabled || loading) {
-                console.log('⛔ Botão desabilitado ou carregando');
-                alert('Formulário incompleto ou carregando...');
-                return;
-              }
+              if (!isButtonEnabled || loading) return;
 
               if (!mostrarSecaoPagamento) {
-                console.log('🔄 Mostrando seção de pagamento');
                 setMostrarSecaoPagamento(true);
                 return;
               }
 
               if (!validarDadosPagamento(dadosPagamento)) {
-                console.log('❌ Dados de pagamento inválidos:', dadosPagamento);
                 setAlertaAberto(true);
                 return;
               }
 
               setLoading(true);
-              console.log('🚀 Iniciando criação da cobrança com dados:', { petData, dadosPagamento });
 
               const url = await gerarCobrancaAbacate(petData, dadosPagamento);
 
               setLoading(false);
 
               if (url) {
-                console.log('➡️ Redirecionando para:', url);
-                alert(`Redirecionando para pagamento...`);
                 window.location.assign(url);
               } else {
-                console.error('❌ Falha ao gerar link de pagamento!');
                 alert('Erro ao gerar o link de pagamento. Tente novamente.');
               }
             }}
