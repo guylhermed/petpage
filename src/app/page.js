@@ -10,8 +10,6 @@ import PricingSection from '@/components/landing/PricingSection';
 import FAQSection from '@/components/landing/FAQSection';
 import CTASection from '@/components/landing/CTASection';
 import LandingFooter from '@/components/landing/LandingFooter';
-// import Formulary from '@/components/Formulary';
-// import Preview from '@/components/Preview';
 
 export default function PaginaInicial() {
   return (
@@ -26,9 +24,6 @@ export default function PaginaInicial() {
         <PricingSection />
         <FAQSection />
         <CTASection />
-
-        {/* <Formulary /> */}
-        {/* <Preview /> */}
       </main>
 
       <LandingFooter />

@@ -97,8 +97,8 @@ const LandingHeader = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="outline" className="hidden sm:flex rounded-xl" onClick={() => setModalAberto(true)}>
-              Ver Minha Página
+            <Button variant="outline" className="hidden sm:flex rounded-xl">
+              <Link href="/login">Login</Link>
             </Button>
 
             <Button
