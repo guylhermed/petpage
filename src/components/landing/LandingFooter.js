@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Heart, Mail, MapPin, Phone, Instagram } from 'lucide-react';
+import { Heart, Mail, Instagram } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 const LandingFooter = () => {
@@ -40,49 +40,54 @@ const LandingFooter = () => {
                 </Link>
               </li>
               <li>
-                <a href="#features" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/#features" className="text-gray-300 hover:text-white transition-colors">
                   Recursos
                 </a>
               </li>
               <li>
-                <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/#pricing" className="text-gray-300 hover:text-white transition-colors">
                   Planos
                 </a>
               </li>
               <li>
-                <a href="#faq" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/#faq" className="text-gray-300 hover:text-white transition-colors">
                   Dúvidas
                 </a>
+              </li>
+              <li>
+                <Link href="/roadmap" className="text-gray-300 hover:text-white transition-colors">
+                  Roadmap
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Suporte */}
-          <div>
-            <h4 className="font-semibold mb-4">Suporte</h4>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Central de Ajuda
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Fale Conosco
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Política de Privacidade
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Termos de Uso
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/*<div>*/}
+          {/*  <h4 className="font-semibold mb-4">Suporte</h4>*/}
+          {/*  <ul className="space-y-2">*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Central de Ajuda*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Fale Conosco*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Política de Privacidade*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Termos de Uso*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*  </ul>*/}
+          {/*</div>*/}
 
           {/* Contato */}
           <div>
@@ -92,18 +97,6 @@ const LandingFooter = () => {
                 <Mail className="w-4 h-4" />
                 <span>contato@petpage.com.br</span>
               </li>
-              {/*<li className="flex items-center gap-2 text-gray-300">*/}
-              {/*  <Phone className="w-4 h-4" />*/}
-              {/*  <span>(47) 99999-0000</span>*/}
-              {/*</li>*/}
-              {/*<li className="flex items-start gap-2 text-gray-300">*/}
-              {/*  <MapPin className="w-4 h-4 mt-1" />*/}
-              {/*  <span>*/}
-              {/*    Rua dos Pets, 123*/}
-              {/*    <br />*/}
-              {/*    Petlândia - BR*/}
-              {/*  </span>*/}
-              {/*</li>*/}
               <li className="flex items-center gap-2 text-gray-300">
                 <Instagram className="w-4 h-4" />
                 <a

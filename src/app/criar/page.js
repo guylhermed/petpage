@@ -6,11 +6,9 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useTheme } from 'next-themes';
 import Formulary from '@/components/Formulary';
 import Preview from '@/components/Preview';
-import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
 import { baseUrl } from '@/app/utils/utils';
-import Link from 'next/link';
 import LandingFooter from '@/components/landing/LandingFooter';
 import { firebaseConfigSelector } from '@/app/config/firebaseConfigSelector';
 import {
@@ -21,6 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import LandingHeader from '@/components/landing/LandingHeader';
 
 const { db, storage } = firebaseConfigSelector();
 
@@ -170,27 +169,7 @@ export default function CriarPagina() {
 
   return (
     <div className={`min-h-screen ${resolvedTheme === 'dark' ? 'bg-background' : 'bg-white'}`}>
-      {/* Cabeçalho */}
-      <header className="bg-white/80 dark:bg-background backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center">
-              <img
-                src={resolvedTheme === 'dark' ? '/logo-horizontal-negativo.png' : '/logo-horizontal.png'}
-                alt="Logo PetPage"
-                className="h-12 w-auto"
-              />
-            </Link>
-
-            <Button variant="outline" asChild className="rounded-xl">
-              <Link href="/" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                Voltar
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+      <LandingHeader />
 
       {/* Conteúdo */}
       <main className="container mx-auto px-4 py-8 md:mb-20">
