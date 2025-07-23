@@ -6,18 +6,12 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
-import { Heart, Settings, Moon } from 'lucide-react';
+import { Menu, Moon } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 const LandingHeader = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -58,10 +53,11 @@ const LandingHeader = () => {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
               {[
-                { href: '#features', label: 'Recursos' },
-                { href: '#how-it-works', label: 'Como Funciona' },
-                { href: '#pricing', label: 'Planos' },
-                { href: '#faq', label: 'Dúvidas' },
+                { href: '/#features', label: 'Recursos' },
+                { href: '/#how-it-works', label: 'Como Funciona' },
+                { href: '/#pricing', label: 'Planos' },
+                { href: '/#faq', label: 'Dúvidas' },
+                { href: '/roadmap', label: 'Roadmap' },
               ].map(({ href, label }) => (
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink
@@ -77,28 +73,60 @@ const LandingHeader = () => {
 
           {/* Ações */}
           <div className="flex items-center gap-3">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                  aria-label="Abrir configurações"
-                >
-                  <Settings className="w-5 h-5" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-60">
-                <DropdownMenuItem className="flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <Moon className="w-4 h-4" />
-                    Tema Escuro
-                  </span>
-                  <Switch checked={isDark} onCheckedChange={handleToggle} />
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Menu para mobile usando Sheet */}
+            <div className="flex md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button
+                    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    aria-label="Abrir menu"
+                  >
+                    <Menu className="w-5 h-5" />
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-72">
+                  <SheetHeader>
+                    <SheetTitle className="text-xl font-bold text-petPurple">Menu</SheetTitle>
+                  </SheetHeader>
 
-            <Button variant="outline" className="hidden sm:flex rounded-xl" onClick={() => setModalAberto(true)}>
-              Ver Minha Página
+                  <div className="mt-6 space-y-4">
+                    <Link
+                      href="/login"
+                      className="block text-base text-foreground hover:text-petPurple transition-colors"
+                    >
+                      Login
+                    </Link>
+
+                    {[
+                      { href: '/#features', label: 'Recursos' },
+                      { href: '/#how-it-works', label: 'Como Funciona' },
+                      { href: '/#pricing', label: 'Planos' },
+                      { href: '/#faq', label: 'Dúvidas' },
+                      { href: '/roadmap', label: 'Roadmap' },
+                    ].map(({ href, label }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        className="block text-base text-foreground hover:text-petPurple transition-colors"
+                      >
+                        {label}
+                      </Link>
+                    ))}
+
+                    <div className="flex items-center justify-between pt-4 border-t border-muted">
+                      <span className="flex items-center gap-2 text-sm">
+                        <Moon className="w-4 h-4" />
+                        Tema Escuro
+                      </span>
+                      <Switch checked={isDark} onCheckedChange={handleToggle} />
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+
+            <Button variant="outline" className="hidden sm:flex rounded-xl">
+              <Link href="/login">Login</Link>
             </Button>
 
             <Button
