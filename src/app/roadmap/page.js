@@ -104,7 +104,7 @@ const PaginaRoadmap = () => {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-petPurple/20 via-white to-petBlue/10">
+    <div className="min-h-screen bg-gradient-to-br from-petPurple/20 via-white to-petBlue/10 dark:from-background dark:via-background dark:to-background">
       {/* Cabeçalho */}
       <header className="bg-white/80 dark:bg-background backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
@@ -128,7 +128,7 @@ const PaginaRoadmap = () => {
 
       {/* Título */}
       <div className="text-center mt-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Roadmap da PetPage</h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Roadmap da PetPage</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Veja o que estamos preparando para deixar a PetPage ainda mais especial.
         </p>
@@ -159,13 +159,13 @@ const PaginaRoadmap = () => {
       {/* Itens do roadmap */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto px-4">
         {itensRoadmap.map(item => (
-          <Card key={item.id} className="hover:shadow-lg transition-shadow">
+          <Card key={item.id} className="hover:shadow-lg transition-shadow bg-white dark:bg-gray-900">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <CardTitle className="text-lg">{item.titulo}</CardTitle>
                 {obterIconeStatus(item.status)}
               </div>
-              <CardDescription>{item.descricao}</CardDescription>
+              <CardDescription className="dark:text-gray-300">{item.descricao}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -192,7 +192,9 @@ const PaginaRoadmap = () => {
 
       {/* CTA */}
       <div className="text-center mt-12 mb-20 px-4">
-        <h3 className="text-2xl font-semibold mb-4">Pronto para criar a página do seu pet?</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+          Pronto para criar a página do seu pet?
+        </h3>
         <p className="text-muted-foreground mb-6">Comece agora e aproveite todas as novidades que estão por vir.</p>
         <Link href="/criar">
           <Button size="lg" className="bg-gradient-to-r from-petPurple to-petBlue text-white">

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, Eye, EyeOff, Hammer } from 'lucide-react';
 import LandingFooter from '@/components/landing/LandingFooter';
 
 import { Button } from '@/components/ui/button';
@@ -221,7 +221,7 @@ export default function TelaLogin() {
           <DialogContent className="sm:max-w-md dark:bg-gray-900 dark:border-gray-800">
             <DialogHeader className="text-center flex flex-col items-center">
               <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center mb-4">
-                <Mail className="w-6 h-6 text-green-600 dark:text-green-300" />
+                <Hammer className="w-6 h-6 text-yellow-600 dark:text-yellow-300" />
               </div>
               <DialogTitle className="text-xl font-semibold dark:text-white">Funcionalidade em Construção</DialogTitle>
               <DialogDescription className="text-center dark:text-gray-300">
