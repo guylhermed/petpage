@@ -23,7 +23,7 @@ export default function TelaLogin() {
   const { resolvedTheme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-petLight via-white to-petPurple/10 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-petLight via-white to-petPurple/10 dark:from-background dark:via-background dark:to-background flex flex-col">
       {/* Cabeçalho */}
       <header className="bg-white/80 dark:bg-background backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
@@ -47,19 +47,23 @@ export default function TelaLogin() {
       </header>
 
       <main className="flex-grow flex items-center justify-center px-4 py-8">
-        <Button variant="ghost" asChild className="absolute top-4 left-4 text-petGray hover:text-foreground">
+        <Button
+          variant="ghost"
+          asChild
+          className="absolute top-4 left-4 text-petGray dark:text-gray-300 hover:text-foreground"
+        >
           <Link href="/">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
           </Link>
         </Button>
 
-        <Card className="w-full max-w-md shadow-xl border-0 bg-white/70 backdrop-blur-sm">
+        <Card className="w-full max-w-md shadow-xl border-0 bg-white/70 dark:bg-gray-900/80 backdrop-blur-sm">
           <CardHeader className="text-center space-y-2">
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-petPurple to-petBlue bg-clip-text text-transparent">
               Acesse sua PetPage
             </CardTitle>
-            <CardDescription className="text-petGray">
+            <CardDescription className="text-petGray dark:text-gray-300">
               Escolha uma opção abaixo para ter acesso
               <br />a página do seu pet:
             </CardDescription>
@@ -186,8 +190,9 @@ export default function TelaLogin() {
                   </div>
 
                   <Button
-                    type="submit"
+                    type="button"
                     className="w-full bg-gradient-to-r from-petPurple to-petBlue hover:from-petPurple/90 hover:to-petBlue/90 h-11 rounded-lg"
+                    onClick={() => setMostrarModal(true)}
                   >
                     Entrar
                   </Button>
@@ -197,7 +202,7 @@ export default function TelaLogin() {
           </CardContent>
 
           <CardFooter className="text-center">
-            <p className="text-sm text-petGray">
+            <p className="text-sm text-petGray dark:text-gray-400">
               Ainda não tem conta? Use a opção{' '}
               <Button
                 variant="link"
@@ -213,15 +218,16 @@ export default function TelaLogin() {
 
         {/* Modal de Sucesso */}
         <Dialog open={mostrarModal} onOpenChange={setMostrarModal}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader className="text-center">
-              <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Mail className="w-6 h-6 text-green-600" />
+          <DialogContent className="sm:max-w-md dark:bg-gray-900 dark:border-gray-800">
+            <DialogHeader className="text-center flex flex-col items-center">
+              <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center mb-4">
+                <Mail className="w-6 h-6 text-green-600 dark:text-green-300" />
               </div>
-              <DialogTitle className="text-xl font-semibold">Link enviado!</DialogTitle>
-              <DialogDescription className="text-center">
-                Enviamos um link seguro para <strong>{emailPrimeiroAcesso}</strong>. Verifique seu e-mail e siga as
-                instruções.
+              <DialogTitle className="text-xl font-semibold dark:text-white">Funcionalidade em Construção</DialogTitle>
+              <DialogDescription className="text-center dark:text-gray-300">
+                Estamos implementando esta funcionalidade e em breve ela estará disponível.
+                <br />
+                Quando estiver pronta, avisaremos nas nossas redes sociais e comunicações.
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-center mt-4">
