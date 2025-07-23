@@ -63,31 +63,31 @@ const LandingFooter = () => {
           </div>
 
           {/* Suporte */}
-          <div>
-            <h4 className="font-semibold mb-4">Suporte</h4>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Central de Ajuda
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Fale Conosco
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Política de Privacidade
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Termos de Uso
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/*<div>*/}
+          {/*  <h4 className="font-semibold mb-4">Suporte</h4>*/}
+          {/*  <ul className="space-y-2">*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Central de Ajuda*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Fale Conosco*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Política de Privacidade*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*    <li>*/}
+          {/*      <a href="#" className="text-gray-300 hover:text-white transition-colors">*/}
+          {/*        Termos de Uso*/}
+          {/*      </a>*/}
+          {/*    </li>*/}
+          {/*  </ul>*/}
+          {/*</div>*/}
 
           {/* Contato */}
           <div>
