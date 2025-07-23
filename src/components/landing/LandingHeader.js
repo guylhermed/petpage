@@ -21,6 +21,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const LandingHeader = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -123,6 +129,29 @@ const LandingHeader = () => {
                   </div>
                 </SheetContent>
               </Sheet>
+            </div>
+
+            {/* Tema escuro - Desktop */}
+            <div className="hidden md:flex items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    aria-label="Abrir configurações"
+                  >
+                    <Moon className="w-5 h-5" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-60">
+                  <DropdownMenuItem className="flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <Moon className="w-4 h-4" />
+                      Tema Escuro
+                    </span>
+                    <Switch checked={isDark} onCheckedChange={handleToggle} />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <Button variant="outline" className="hidden sm:flex rounded-xl">
