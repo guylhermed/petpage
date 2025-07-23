@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import LandingHeader from '@/components/landing/LandingHeader';
 import LandingFooter from '@/components/landing/LandingFooter';
 
 import { Button } from '@/components/ui/button';
