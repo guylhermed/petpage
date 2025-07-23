@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { useTheme } from 'next-themes';
+import LandingHeader from '@/components/landing/LandingHeader';
 
 export default function TelaLogin() {
   const [abaSelecionada, setAbaSelecionada] = useState('first-access');
@@ -20,31 +20,10 @@ export default function TelaLogin() {
   const [loginForm, setLoginForm] = useState({ email: '', password: '', rememberMe: false });
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarModal, setMostrarModal] = useState(false);
-  const { resolvedTheme } = useTheme();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-petLight via-white to-petPurple/10 dark:from-background dark:via-background dark:to-background flex flex-col">
-      {/* Cabeçalho */}
-      <header className="bg-white/80 dark:bg-background backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center">
-              <img
-                src={resolvedTheme === 'dark' ? '/logo-horizontal-negativo.png' : '/logo-horizontal.png'}
-                alt="Logo PetPage"
-                className="h-12 w-auto"
-              />
-            </Link>
-
-            <Button variant="outline" asChild className="rounded-xl">
-              <Link href="/" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                Voltar
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+      <LandingHeader />
 
       <main className="flex-grow flex items-center justify-center px-4 py-8">
         <Button

@@ -17,7 +17,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
-import { Heart, Settings, Moon } from 'lucide-react';
+import { Settings, Moon } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -58,10 +58,11 @@ const LandingHeader = () => {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
               {[
-                { href: '#features', label: 'Recursos' },
-                { href: '#how-it-works', label: 'Como Funciona' },
-                { href: '#pricing', label: 'Planos' },
-                { href: '#faq', label: 'Dúvidas' },
+                { href: '/#features', label: 'Recursos' },
+                { href: '/#how-it-works', label: 'Como Funciona' },
+                { href: '/#pricing', label: 'Planos' },
+                { href: '/#faq', label: 'Dúvidas' },
+                { href: '/roadmap', label: 'Roadmap' },
               ].map(({ href, label }) => (
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink

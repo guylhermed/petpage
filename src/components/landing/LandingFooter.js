@@ -40,17 +40,17 @@ const LandingFooter = () => {
                 </Link>
               </li>
               <li>
-                <a href="#features" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/#features" className="text-gray-300 hover:text-white transition-colors">
                   Recursos
                 </a>
               </li>
               <li>
-                <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/#pricing" className="text-gray-300 hover:text-white transition-colors">
                   Planos
                 </a>
               </li>
               <li>
-                <a href="#faq" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/#faq" className="text-gray-300 hover:text-white transition-colors">
                   Dúvidas
                 </a>
               </li>
