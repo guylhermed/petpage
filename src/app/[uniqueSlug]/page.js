@@ -120,7 +120,7 @@ export default function PetPage() {
               {petData.images?.[0] ? (
                 <img
                   src={petData.images[0]}
-                  alt={petData.name}
+                  alt={petData.petName}
                   className="w-full h-full rounded-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => setEnlargedPhoto(petData.images[0])}
                 />
@@ -134,7 +134,7 @@ export default function PetPage() {
 
           {/* Nome e apelidos */}
           <div className="text-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-1">{petData.name || 'Nome do Pet'}</h1>
+            <h1 className="text-2xl font-bold text-gray-800 mb-1">{petData.petName || 'Nome do Pet'}</h1>
             {formatApelidos() && <p className="text-petGray text-sm font-medium">{formatApelidos()}</p>}
           </div>
 
