@@ -16,7 +16,7 @@ const itensRoadmap = [
     descricao:
       'Permitirá acessar todas as páginas PetPage vinculadas ao e-mail, definindo uma senha após receber link.',
     status: 'em-progresso',
-    planos: ['vitalicio', 'mensal'],
+    planos: ['anual', 'mensal'],
     trimestre: '3º trimestre de 2025',
   },
   {
@@ -24,13 +24,13 @@ const itensRoadmap = [
     titulo: 'Edição da Página Pet',
     descricao: 'Será possível alterar fotos, frases, datas e demais dados da página personalizada.',
     status: 'em-progresso',
-    planos: ['vitalicio', 'mensal'],
+    planos: ['anual', 'mensal'],
     trimestre: '3º trimestre de 2025',
   },
   {
     id: 3,
     titulo: 'Lançamento do Plano Mensal',
-    descricao: 'Plano recorrente com os recursos do plano vitalício e funcionalidades extras exclusivas.',
+    descricao: 'Plano recorrente com os recursos do plano anual e funcionalidades extras exclusivas.',
     status: 'planejado',
     planos: ['mensal'],
     trimestre: '4º trimestre de 2025',
@@ -58,14 +58,14 @@ const itensRoadmap = [
     titulo: 'Cupons, Parcerias e Comunidade',
     descricao: 'Sistema de resgate de cupons de desconto com marcas parceiras e criação de uma comunidade de tutores.',
     status: 'em-progresso',
-    planos: ['mensal', 'vitalicio'],
+    planos: ['mensal', 'anual'],
     trimestre: '4º trimestre de 2025',
   },
 ];
 
 const obterVariantePlano = plano => {
   switch (plano) {
-    case 'vitalicio':
+    case 'anual':
       return 'default';
     case 'mensal':
       return 'secondary';
@@ -117,7 +117,7 @@ const PaginaRoadmap = () => {
       {/* Legenda */}
       <div className="flex flex-wrap justify-center gap-4 my-8">
         <div className="flex items-center gap-2">
-          <Badge variant="default">Plano Vitalício</Badge>
+          <Badge variant="default">Plano Anual</Badge>
           <Badge variant="secondary">Plano Mensal</Badge>
         </div>
         <div className="flex items-center gap-4 text-sm">
@@ -160,7 +160,7 @@ const PaginaRoadmap = () => {
                 <div className="flex flex-wrap gap-2">
                   {item.planos.map(plano => (
                     <Badge key={plano} variant={obterVariantePlano(plano)} className="text-xs">
-                      {plano === 'vitalicio' ? 'Plano Vitalício' : 'Plano Mensal'}
+                      {plano === 'anual' ? 'Plano Anual' : 'Plano Mensal'}
                     </Badge>
                   ))}
                 </div>

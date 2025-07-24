@@ -88,7 +88,7 @@ const Formulary = ({
     });
   };
 
-  const limiteFotosGaleria = formData.selectedPlan === 'vitalicio' ? 10 : 3;
+  const limiteFotosGaleria = formData.selectedPlan === 'anual' ? 10 : 3;
 
   return (
     <>
@@ -112,8 +112,8 @@ const Formulary = ({
             </Label>
             <Input
               id="nome-pet"
-              value={formData.name}
-              onChange={e => handleInputChange('name', e.target.value)}
+              value={formData.petName}
+              onChange={e => handleInputChange('petName', e.target.value)}
               placeholder="Ex: Thor"
             />
           </div>
@@ -282,8 +282,8 @@ const Formulary = ({
           <div className="space-y-3 pb-8">
             <Label className="text-petPurple font-medium">Escolha o Plano</Label>
             {[
-              { tipo: 'basico', texto: '30 dias', preco: 'R$9,90' },
-              { tipo: 'vitalicio', texto: 'Vitalício', preco: 'R$29,90' },
+              { tipo: 'basico', texto: 'Básico', preco: 'R$9,90' },
+              { tipo: 'anual', texto: 'Anual', preco: 'R$29,90' },
             ].map(({ tipo, texto, preco }) => (
               <div
                 key={tipo}
@@ -298,7 +298,7 @@ const Formulary = ({
                   <div>
                     <p className="font-semibold text-foreground">{texto}</p>
                     <p className="text-sm text-muted-foreground">
-                      {tipo === 'basico' ? 'Plano temporário' : 'Para sempre'}
+                      {tipo === 'basico' ? '30 dias online' : '12 meses online'}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -312,11 +312,11 @@ const Formulary = ({
                 </div>
               </div>
             ))}
-            {/* Mensagem para plano vitalício */}
-            {formData.selectedPlan === 'vitalicio' && (
+            {/* Mensagem para plano anual */}
+            {formData.selectedPlan === 'anual' && (
               <p className="text-sm text-petPurple mt-1 px-2">
-                Com o plano <strong>vitalício</strong>, você pode enviar até <strong>10 fotos</strong> na galeria — 7 a
-                mais que o plano de 30 dias.
+                Com o Plano <strong>Anual</strong>, você pode enviar até <strong>10 fotos</strong> na galeria — 7 a mais
+                que o Plano Básico.
               </p>
             )}
           </div>

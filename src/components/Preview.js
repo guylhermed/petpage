@@ -14,7 +14,7 @@ const Preview = ({ formData }) => {
   const { resolvedTheme } = useTheme();
 
   // Formata o nome do pet para o URL
-  const petPageUrl = `petpage.com/${formData.name ? formData.name.toLowerCase().replace(/\s+/g, '-') : ''}`;
+  const petPageUrl = `petpage.com/${formData.petName ? formData.petName.toLowerCase().replace(/\s+/g, '-') : ''}`;
 
   // Garante que apelidos seja um array, mesmo que não esteja definido
   const nicknames = formData.nicknames || [];
@@ -87,7 +87,7 @@ const Preview = ({ formData }) => {
               {formData.photo ? (
                 <img
                   src={formData.photo}
-                  alt={formData.name}
+                  alt={formData.petName}
                   className="w-full h-full rounded-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => handlePhotoClick(formData.photo)}
                 />
@@ -100,7 +100,7 @@ const Preview = ({ formData }) => {
           </div>
 
           <div className="text-center mb-4">
-            <h1 className="text-2xl font-bold mb-1">{formData.name || 'Nome do Pet'}</h1>
+            <h1 className="text-2xl font-bold mb-1">{formData.petName || 'Nome do Pet'}</h1>
             {formatNicknames() && <p className="text-petGray text-sm font-medium">{formatNicknames()}</p>}
           </div>
 
@@ -164,7 +164,7 @@ const Preview = ({ formData }) => {
                     <div key={index} className="aspect-square rounded-xl overflow-hidden">
                       <img
                         src={photo}
-                        alt={`${formData.name} ${index + 1}`}
+                        alt={`${formData.petName} ${index + 1}`}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-200 cursor-pointer"
                         onClick={() => handlePhotoClick(photo)}
                       />
@@ -192,7 +192,7 @@ const Preview = ({ formData }) => {
                   </div>
                 </div>
                 <p className="text-sm text-petGray mb-4">
-                  Após criado: aponte a câmera para visitar a página de {formData.name}
+                  Após criado: aponte a câmera para visitar a página de {formData.petName}
                 </p>
               </div>
 

@@ -9,7 +9,7 @@ import { Check, Heart, Star } from 'lucide-react';
 const planos = [
   {
     nome: 'Plano Básico',
-    preco: 'R$9,99',
+    preco: 'R$9,90',
     validade: '30 dias',
     descricao: 'Ideal para quem quer começar com uma linda homenagem.',
     recursos: [
@@ -24,12 +24,12 @@ const planos = [
     textoBotao: 'Escolher Plano Básico',
   },
   {
-    nome: 'Plano Vitalício',
-    preco: 'R$29,99',
-    validade: 'acesso vitalício',
-    descricao: 'A memória do seu pet para sempre com você.',
+    nome: 'Plano Anual',
+    preco: 'R$29,90',
+    validade: '12 meses',
+    descricao: 'Uma homenagem duradoura para o seu pet, com validade de 12 meses.',
     recursos: [
-      'Página permanente (vitalícia)',
+      'Página personalizada válida por 12 meses',
       'Até 10 fotos na galeria',
       'Perfil com nome, datas e mensagem',
       'Compartilhamento via QR Code',
@@ -40,7 +40,7 @@ const planos = [
       'Acesso antecipado a novos recursos',
     ],
     popular: true,
-    textoBotao: 'Escolher Plano Vitalício',
+    textoBotao: 'Escolher Plano Anual',
   },
 ];
 
@@ -64,7 +64,9 @@ const PricingSection = () => {
               className={`relative border-0 shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden ${
                 plano.popular
                   ? 'bg-gradient-to-br from-petPurple/5 to-petBlue/5 ring-2 ring-petPurple/20'
-                  : 'bg-white/80 dark:bg-white/10 backdrop-blur-sm'
+                  : plano.nome === 'Plano Básico'
+                    ? 'bg-white/80 dark:bg-white/10 backdrop-blur-sm ring-2 ring-petPurple/20'
+                    : 'bg-white/80 dark:bg-white/10 backdrop-blur-sm'
               }`}
             >
               {plano.popular && (
@@ -79,11 +81,26 @@ const PricingSection = () => {
 
               <CardHeader className={`text-center ${plano.popular ? 'pt-12' : 'pt-8'}`}>
                 <CardTitle className="text-2xl font-bold text-gray-800 dark:text-white mb-2">{plano.nome}</CardTitle>
+                {plano.nome === 'Plano Básico' && (
+                  <span className="inline-block bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                    🎉 Oferta de Lançamento
+                  </span>
+                )}
+
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-petPurple">{plano.preco}</span>
+                  <div className="flex flex-col items-center">
+                    {plano.nome === 'Plano Básico' && (
+                      <span className="text-sm text-gray-500 line-through">R$15,90</span>
+                    )}
+                    <span className="text-4xl font-bold text-petPurple">{plano.preco}</span>
+                  </div>
+
                   <span className="text-petGray dark:text-gray-300 ml-2">{plano.validade}</span>
                 </div>
                 <p className="text-petGray dark:text-gray-300">{plano.descricao}</p>
+                {plano.nome === 'Plano Básico' && (
+                  <p className="text-red-500 text-sm mt-2 font-medium">Oferta por tempo limitado!</p>
+                )}
               </CardHeader>
 
               <CardContent className="px-8 pb-8">
