@@ -94,9 +94,11 @@ export default function CriarPagina() {
     const email = cliente.email || 'cliente@exemplo.com';
 
     try {
+      alert('📦 Iniciando geração da cobrança...');
       const imagensConvertidas = [];
 
       if (dadosPet.photo) {
+        alert('📸 Foto de perfil detectada.');
         imagensConvertidas.push(base64ParaFile(dadosPet.photo, 'perfil'));
       }
 
@@ -104,14 +106,20 @@ export default function CriarPagina() {
         imagensConvertidas.push(base64ParaFile(foto, `galeria-${idx + 1}`));
       });
 
+      alert(`🖼️ Total de imagens para upload: ${imagensConvertidas.length}`);
+
       const imageUrls = await Promise.all(
         imagensConvertidas.map(async (image, index) => {
-          const extensao = image.petName.split('.').pop();
+          const extensao = image.name.split('.').pop();
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
+          const url = await getDownloadURL(imageRef);
+          alert(`✅ Upload imagem ${index + 1} concluído.`);
+          return url;
         })
       );
+
+      alert('✅ Todas as imagens foram enviadas.');
 
       const docData = {
         ...dadosPet,
@@ -134,9 +142,10 @@ export default function CriarPagina() {
       delete docData.galleryPhotos;
 
       await setDoc(doc(db, 'pets', uniqueSlug), docData);
+      alert('📁 Documento salvo no Firestore com sucesso.');
 
       if (!validarEmail(email)) {
-        alert('Erro ao validar o e-mail. Verifique e tente novamente.');
+        alert(`❌ E-mail inválido: ${email}`);
         return null;
       }
 
@@ -149,6 +158,7 @@ export default function CriarPagina() {
         cpfCnpjCliente: cliente.cpfCnpj,
       };
 
+      alert('🔗 Enviando dados para geração da cobrança...');
       const response = await fetch(`${baseUrl}/api/create-cobranca-abacatepay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -156,14 +166,16 @@ export default function CriarPagina() {
       });
 
       if (!response.ok) {
-        alert('Erro ao gerar o link de pagamento. Tente novamente.');
+        const erro = await response.text();
+        alert(`❌ Erro ao gerar link de pagamento:\n${erro}`);
         return null;
       }
 
       const data = await response.json();
+      alert('✅ Cobrança gerada com sucesso.');
       return data?.url ?? null;
     } catch (error) {
-      alert('Erro inesperado. Tente novamente mais tarde.');
+      alert(`❌ Erro inesperado: ${error.message}`);
       return null;
     }
   };
