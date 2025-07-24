@@ -12,17 +12,17 @@ const duvidas = [
   {
     question: 'Posso editar a página depois de criada?',
     answer:
-      'Atualmente ainda não é possível editar a página após criada, mas já estamos desenvolvendo essa funcionalidade e ela estará disponível em breve para quem adquirir o plano vitalício. Avisaremos sobre essa e outras novidades por e-mail e nas redes sociais!',
+      'Atualmente ainda não é possível editar a página após criada, mas já estamos desenvolvendo essa funcionalidade e ela estará disponível em breve para quem adquirir o plano anual. Avisaremos sobre essa e outras novidades por e-mail e nas redes sociais!',
   },
   {
-    question: 'Qual a diferença entre o plano básico e o plano vitalício?',
+    question: 'Qual a diferença entre o plano básico e o plano anual?',
     answer:
-      'O plano básico mantém a página no ar por 30 dias. Já o plano vitalício garante que a página estará sempre disponível como uma lembrança permanente.',
+      'O plano básico mantém a página no ar por 30 dias. Já o plano anual mantém a página no ar por 12 meses e oferece mais fotos, suporte prioritário e acesso a novos recursos. É uma ótima opção para quem quer uma homenagem duradoura ao seu pet.',
   },
   {
     question: 'Quantas fotos posso enviar?',
     answer:
-      'Você pode enviar uma foto de perfil e até 3 fotos no plano básico, ou até 10 fotos no plano vitalício. Todas otimizadas para carregar rápido e ficar lindas.',
+      'Você pode enviar uma foto de perfil e até 3 fotos no plano básico, ou até 10 fotos no plano anual. Todas otimizadas para carregar rápido e ficar lindas.',
   },
   {
     question: 'Posso compartilhar a página do meu pet nas redes sociais?',
