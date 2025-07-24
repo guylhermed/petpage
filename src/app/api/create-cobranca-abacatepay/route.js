@@ -13,11 +13,11 @@ export async function POST(req) {
         price: 990,
         description: 'Página PetPage personalizada com expiração em 30 dias.',
       },
-      vitalicio: {
-        externalId: 'ppvitalicio',
-        name: 'PetPage Vitalício',
+      anual: {
+        externalId: 'ppanual',
+        name: 'PetPage Anual',
         price: 2990,
-        description: 'Página PetPage personalizada com acesso vitalício.',
+        description: 'Página PetPage personalizada com expiração em 12 meses.',
       },
     };
 

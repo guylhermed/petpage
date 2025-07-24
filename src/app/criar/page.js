@@ -25,7 +25,7 @@ const { db, storage } = firebaseConfigSelector();
 
 export default function CriarPagina() {
   const [petData, setPetData] = useState({
-    name: '',
+    petName: '',
     adoptionDate: '2020-01-01',
     birthDate: '2020-01-01',
     nicknames: '',
@@ -47,7 +47,7 @@ export default function CriarPagina() {
 
   useEffect(() => {
     const validarFormularioPet = pet => {
-      const isNomePreenchido = pet.name?.trim() !== '';
+      const isNomePreenchido = pet.petName?.trim() !== '';
       const isDataPreenchida =
         (pet.mostrarDataNascimento && pet.birthDate) || (pet.mostrarDataAdocao && pet.adoptionDate);
       const isMensagemPreenchida = pet.message?.trim() !== '';
@@ -89,7 +89,7 @@ export default function CriarPagina() {
 
   const gerarCobrancaAbacate = async (dadosPet, cliente) => {
     const petId = uuidv4();
-    const nomePet = dadosPet.name || 'pet';
+    const nomePet = dadosPet.petName || 'pet';
     const uniqueSlug = `${nomePet.replace(/\s+/g, '-').toLowerCase()}-${petId.slice(0, 8)}`;
     const email = cliente.email || 'cliente@exemplo.com';
 
@@ -106,7 +106,7 @@ export default function CriarPagina() {
 
       const imageUrls = await Promise.all(
         imagensConvertidas.map(async (image, index) => {
-          const extensao = image.name.split('.').pop();
+          const extensao = image.petName.split('.').pop();
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
           return await getDownloadURL(imageRef);
@@ -115,6 +115,7 @@ export default function CriarPagina() {
 
       const docData = {
         ...dadosPet,
+        petName: dadosPet.petName,
         birthDate: dadosPet.mostrarDataNascimento ? dadosPet.birthDate : null,
         adoptionDate: dadosPet.mostrarDataAdocao ? dadosPet.adoptionDate : null,
         images: imageUrls,
@@ -126,7 +127,7 @@ export default function CriarPagina() {
         uniqueSlug,
         cellphone: cliente.telefone,
         taxId: cliente.cpfCnpj,
-        name: cliente.nome,
+        clientName: cliente.nome,
       };
 
       delete docData.photo;
