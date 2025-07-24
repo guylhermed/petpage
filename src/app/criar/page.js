@@ -106,7 +106,7 @@ export default function CriarPagina() {
 
       const imageUrls = await Promise.all(
         imagensConvertidas.map(async (image, index) => {
-          const extensao = image.petName.split('.').pop();
+          const extensao = image.name.split('.').pop();
           const imageRef = ref(storage, `pets/${uniqueSlug}/${uniqueSlug}-${index + 1}.${extensao}`);
           await uploadBytes(imageRef, image);
           return await getDownloadURL(imageRef);
