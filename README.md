@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PetPage
 
-## Getting Started
+Aplicação web para criação de páginas personalizadas para pets, permitindo registrar momentos, compartilhar memórias e centralizar informações de forma simples e acessível.
 
-First, run the development server:
+## Visão geral
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+O PetPage nasceu como um MVP focado em validar um produto digital com potencial de escala. A proposta é permitir que qualquer pessoa crie uma página personalizada para seu pet, funcionando como um perfil público com informações, fotos e interações.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O projeto foi desenvolvido com foco em entrega rápida, evolução contínua e estrutura que permita crescimento do produto.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Acesso
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Produção: https://www.minhapetpage.com/
+- Preview: https://petpage-nu.vercel.app/
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Frontend: React / Next.js
+- Backend: API Routes (Next.js)
+- Banco de dados: Firebase (Firestore)
+- Pagamentos: Stripe
+- Infraestrutura: Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Principais funcionalidades
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Criação de páginas personalizadas para pets
+- Upload e gerenciamento de imagens
+- Integração com pagamentos (Stripe)
+- Geração de página pública compartilhável
+- Estrutura preparada para evolução de funcionalidades
 
-## Deploy on Vercel
+## Aspectos técnicos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Arquitetura baseada em componentes e separação de responsabilidades
+- Integração direta com serviços externos (pagamento e storage)
+- Fluxo completo de criação → pagamento → entrega do produto
+- Foco em simplicidade e escalabilidade para MVP
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contexto de desenvolvimento
+
+Este projeto foi desenvolvido de forma independente como um micro SaaS, com foco em:
+
+- validação de produto
+- integração de pagamentos
+- estruturação de aplicação fullstack simplificada
+- deploy e operação em ambiente real
+
+## Status
+
+Projeto em evolução. Algumas funcionalidades podem ser ajustadas ou descontinuadas conforme validação de uso e direcionamento do produto.
+
+## Autor
+
+Guylherme Neves Duarte  
+https://github.com/guylhermed  
+https://www.linkedin.com/in/guylhermed/
